@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import type { DAData } from "@/types/da.types";
 import { initialData } from "./initialData";
 import { Stepper } from "@codegouvfr/react-dsfr/Stepper";
@@ -20,8 +22,35 @@ import Cadre11Dimensionnement from "./components/Cadre11Dimensionnement";
 import Cadre12URLsAnnexe from "./components/Cadre12URLsAnnexe";
 
 export default function FormulaireDA() {
+  const searchParams = useSearchParams();
+  const daId = searchParams.get("id");
+
   const [daData, setDAData] = useState<DAData>(initialData);
   const [currentStep, setCurrentStep] = useState<number>(1);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  // Charger le DA depuis l'URL au montage
+  useEffect(() => {
+    const loadDA = async () => {
+      if (daId && daId !== "new") {
+        try {
+          const response = await fetch(`/da/${daId}.json`);
+          if (response.ok) {
+            const data = await response.json();
+            setDAData(data);
+            console.log(`✅ DA ${daId} chargé avec succès !`);
+          } else {
+            console.error(`❌ DA ${daId} introuvable`);
+          }
+        } catch (error) {
+          console.error("❌ Erreur lors du chargement du DA:", error);
+        }
+      }
+      setIsLoading(false);
+    };
+
+    loadDA();
+  }, [daId]);
 
   // Fonction pour charger les données d'exemple
   const loadExampleData = async () => {
@@ -86,6 +115,15 @@ export default function FormulaireDA() {
     <>
       {/* Menu latéral sticky flottant */}
       <div style={{ position: 'fixed', left: 0, top: 0, zIndex: 1000, width: '300px' }}>
+        <div style={{ padding: '1rem', backgroundColor: '#f6f6f6', borderBottom: '1px solid #ddd' }}>
+          <Link
+            href="/"
+            className="fr-link fr-icon-arrow-left-line fr-link--icon-left"
+            style={{ fontSize: '0.875rem' }}
+          >
+            Retour à la liste
+          </Link>
+        </div>
         <SideMenu
           title="Navigation DA"
           burgerMenuButtonText="Navigation"
@@ -97,19 +135,29 @@ export default function FormulaireDA() {
       </div>
 
       <main className="fr-container fr-my-6w">
-        <h1 className="fr-h1">Formulaire Document d&apos;Architecture (DA)</h1>
+        <h1 className="fr-h1">
+          {daId && daId !== "new"
+            ? `${daData.cadre1_ProjetActeurs.nomDuProjet || "Document d'Architecture"}`
+            : "Formulaire Document d'Architecture (DA)"}
+        </h1>
       <p className="fr-text--sm fr-mb-2w">
         Remplissez tous les champs du Document d&apos;Architecture
       </p>
 
-      <div className="fr-mb-4w">
-        <button
-          className="fr-btn fr-btn--secondary fr-btn--sm"
-          onClick={loadExampleData}
-        >
-          📋 Charger des données d&apos;exemple
-        </button>
-      </div>
+      {isLoading ? (
+        <div className="fr-callout fr-callout--info fr-mb-4w">
+          <p className="fr-callout__text">Chargement du DA...</p>
+        </div>
+      ) : (
+        <div className="fr-mb-4w">
+          <button
+            className="fr-btn fr-btn--secondary fr-btn--sm"
+            onClick={loadExampleData}
+          >
+            📋 Charger des données d&apos;exemple
+          </button>
+        </div>
+      )}
 
       {/* Stepper */}
       <Stepper

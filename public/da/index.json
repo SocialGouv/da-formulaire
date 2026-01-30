@@ -1,0 +1,74 @@
+[
+  {
+    "id": "da-001",
+    "nom": "Portail de Gestion des Ressources Humaines",
+    "dateCreation": "2026-01-15",
+    "dateModification": "2026-01-30"
+  },
+  {
+    "id": "da-002",
+    "nom": "Application de Gestion des Congés",
+    "dateCreation": "2026-01-20",
+    "dateModification": "2026-01-28"
+  },
+  {
+    "id": "da-003",
+    "nom": "Plateforme de Gestion Documentaire",
+    "dateCreation": "2025-12-10",
+    "dateModification": "2026-01-25"
+  },
+  {
+    "id": "da-004",
+    "nom": "Système de Gestion des Formations",
+    "dateCreation": "2025-11-05",
+    "dateModification": "2026-01-22"
+  },
+  {
+    "id": "da-005",
+    "nom": "Application Mobile de Suivi des Projets",
+    "dateCreation": "2026-01-08",
+    "dateModification": "2026-01-29"
+  },
+  {
+    "id": "da-006",
+    "nom": "Portail Intranet du Ministère",
+    "dateCreation": "2025-10-20",
+    "dateModification": "2026-01-18"
+  },
+  {
+    "id": "da-007",
+    "nom": "Système de Gestion des Notes de Frais",
+    "dateCreation": "2025-12-15",
+    "dateModification": "2026-01-27"
+  },
+  {
+    "id": "da-008",
+    "nom": "Plateforme de Télétravail et Collaboration",
+    "dateCreation": "2026-01-03",
+    "dateModification": "2026-01-26"
+  },
+  {
+    "id": "da-009",
+    "nom": "Application de Gestion des Compétences",
+    "dateCreation": "2025-11-28",
+    "dateModification": "2026-01-24"
+  },
+  {
+    "id": "da-010",
+    "nom": "Système de Gestion des Équipements IT",
+    "dateCreation": "2025-12-01",
+    "dateModification": "2026-01-21"
+  },
+  {
+    "id": "da-011",
+    "nom": "Portail de Services aux Citoyens",
+    "dateCreation": "2026-01-12",
+    "dateModification": "2026-01-30"
+  },
+  {
+    "id": "da-012",
+    "nom": "Application de Gestion des Incidents",
+    "dateCreation": "2025-11-15",
+    "dateModification": "2026-01-23"
+  }
+]

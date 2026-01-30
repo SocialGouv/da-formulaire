@@ -85,7 +85,7 @@ export default async function Home() {
                             <th scope="col">Nom du projet</th>
                             <th scope="col" className="fr-col--xs" style={{ textAlign: 'right' }}>Date de création</th>
                             <th scope="col" className="fr-col--xs" style={{ textAlign: 'right' }}>Dernière modification</th>
-                            <th scope="col" className="fr-col--sm">Actions</th>
+                            <th scope="col" className="fr-col--sm" style={{ textAlign: 'right' }}></th>
                           </tr>
                         </thead>
                         <tbody>
@@ -94,8 +94,8 @@ export default async function Home() {
                               <td><strong>{da.nom}</strong></td>
                               <td className="fr-col--xs" style={{ textAlign: 'right' }}>{new Date(da.dateCreation).toLocaleDateString("fr-FR")}</td>
                               <td className="fr-col--xs" style={{ textAlign: 'right' }}>{new Date(da.dateModification).toLocaleDateString("fr-FR")}</td>
-                              <td className="fr-col--sm">
-                                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                              <td className="fr-col--sm" style={{ textAlign: 'right' }}>
+                                <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
                                   <Button
                                     linkProps={{ href: `/formulaire/${da.id}` }}
                                     size="small"

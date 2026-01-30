@@ -57,12 +57,17 @@ export interface ActeurMetierDuSI {
 // ============================================================================
 
 export interface Cadre2_FonctionnalitesDonnees {
-  fonctionnalitesDuSIApplicatif: FonctionnaliteDuSI[];
+  fonctionnalitesDuSIApplicatif: GroupeFonctionnalites[];
   donneesMetierDuSIApplicatif: DonneeMetierDuSI[];
   fichiersMetiersDuSIApplicatif: FichierMetierDuSI[];
   referentielsDonneesHorsSI: ReferentielDonnees[];
   sensibiliteDesDonnees: SensibiliteDonnees;
   servicesUtilisesParApplication: ServiceUtilise[];
+}
+
+export interface GroupeFonctionnalites {
+  groupe: string; // Nom du groupe (ex: "Télédéclaration - Accueil")
+  fonctionnalites: FonctionnaliteDuSI[];
 }
 
 export interface FonctionnaliteDuSI {
@@ -105,7 +110,11 @@ export interface SensibiliteDonnees {
   patrimoine: "Très sensible" | "Sensible" | "";
   appartenanceSyndicale: "Très sensible" | "Sensible" | "";
 
-  // Organisationnel
+  // Champs pour les catégories
+  architectureTechnique: "Très sensible" | "Sensible" | "";
+  organisationnel: "Très sensible" | "Sensible" | "";
+
+  // Organisationnel - items
   justice: "Très sensible" | "Sensible" | "";
   adressePostale: "Très sensible" | "Sensible" | "";
 
@@ -125,7 +134,6 @@ export interface SensibiliteDonnees {
 export interface ReferentielDonnees {
   referentiel: string;
   modeEchange: string;
-  siSource: string;
   M: boolean;
   R: boolean;
   E: boolean;

@@ -3,6 +3,7 @@ import { Input } from "@codegouvfr/react-dsfr/Input";
 import { Select } from "@codegouvfr/react-dsfr/Select";
 import { Checkbox } from "@codegouvfr/react-dsfr/Checkbox";
 import { Button } from "@codegouvfr/react-dsfr/Button";
+import { Table } from "@codegouvfr/react-dsfr/Table";
 
 interface CadreProps {
   daData: DAData;
@@ -54,91 +55,37 @@ export default function Cadre3ContraintesVolumetrie({ daData, setDAData }: Cadre
 
       {/* Dépendances avec d'autres SI */}
       <h3 className="fr-h3 fr-mt-6w">Dépendances avec d'autres SI</h3>
-      <table className="fr-table">
-        <thead>
-          <tr>
-            <th>Système d'information</th>
-            <th>Fournisseur</th>
-            <th>Consommateur</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {daData.cadre3_ContraintesVolumetrie.dependancesAvecDautresSI.map((item, index) => (
-            <tr key={index}>
-              <td>
-                <Input
-                  nativeInputProps={{
-                    type: "text",
-                    value: item.systemeInformation,
-                    onChange: (e) => {
-                      const newItems = [...daData.cadre3_ContraintesVolumetrie.dependancesAvecDautresSI];
-                      newItems[index].systemeInformation = e.target.value;
-                      setDAData({
-                        ...daData,
-                        cadre3_ContraintesVolumetrie: {
-                          ...daData.cadre3_ContraintesVolumetrie,
-                          dependancesAvecDautresSI: newItems,
-                        },
-                      });
-                    },
-                  }}
-                />
-              </td>
-              <td>
-                <Checkbox
-                  options={[
-                    {
-                      label: "",
-                      nativeInputProps: {
-                        checked: item.fournisseur,
-                        onChange: (e) => {
-                          const newItems = [...daData.cadre3_ContraintesVolumetrie.dependancesAvecDautresSI];
-                          newItems[index].fournisseur = e.target.checked;
-                          setDAData({
-                            ...daData,
-                            cadre3_ContraintesVolumetrie: {
-                              ...daData.cadre3_ContraintesVolumetrie,
-                              dependancesAvecDautresSI: newItems,
-                            },
-                          });
-                        },
-                      },
-                    },
-                  ]}
-                />
-              </td>
-              <td>
-                <Checkbox
-                  options={[
-                    {
-                      label: "",
-                      nativeInputProps: {
-                        checked: item.consommateur,
-                        onChange: (e) => {
-                          const newItems = [...daData.cadre3_ContraintesVolumetrie.dependancesAvecDautresSI];
-                          newItems[index].consommateur = e.target.checked;
-                          setDAData({
-                            ...daData,
-                            cadre3_ContraintesVolumetrie: {
-                              ...daData.cadre3_ContraintesVolumetrie,
-                              dependancesAvecDautresSI: newItems,
-                            },
-                          });
-                        },
-                      },
-                    },
-                  ]}
-                />
-              </td>
-              <td>
-                <Button
-                  size="small"
-                  priority="secondary"
-                  onClick={() => {
-                    const newItems = daData.cadre3_ContraintesVolumetrie.dependancesAvecDautresSI.filter(
-                      (_, i) => i !== index
-                    );
+      <Table
+        headers={["Système d'information", "Fournisseur", "Consommateur", "Actions"]}
+        data={daData.cadre3_ContraintesVolumetrie.dependancesAvecDautresSI.map((item, index) => [
+          <Input
+            key={`dependances-systemeInformation-${index}`}
+            nativeInputProps={{
+              type: "text",
+              value: item.systemeInformation,
+              onChange: (e) => {
+                const newItems = [...daData.cadre3_ContraintesVolumetrie.dependancesAvecDautresSI];
+                newItems[index].systemeInformation = e.target.value;
+                setDAData({
+                  ...daData,
+                  cadre3_ContraintesVolumetrie: {
+                    ...daData.cadre3_ContraintesVolumetrie,
+                    dependancesAvecDautresSI: newItems,
+                  },
+                });
+              },
+            }}
+          />,
+          <Checkbox
+            key={`dependances-fournisseur-${index}`}
+            options={[
+              {
+                label: "",
+                nativeInputProps: {
+                  checked: item.fournisseur,
+                  onChange: (e) => {
+                    const newItems = [...daData.cadre3_ContraintesVolumetrie.dependancesAvecDautresSI];
+                    newItems[index].fournisseur = e.target.checked;
                     setDAData({
                       ...daData,
                       cadre3_ContraintesVolumetrie: {
@@ -146,15 +93,54 @@ export default function Cadre3ContraintesVolumetrie({ daData, setDAData }: Cadre
                         dependancesAvecDautresSI: newItems,
                       },
                     });
-                  }}
-                >
-                  Supprimer
-                </Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                  },
+                },
+              },
+            ]}
+          />,
+          <Checkbox
+            key={`dependances-consommateur-${index}`}
+            options={[
+              {
+                label: "",
+                nativeInputProps: {
+                  checked: item.consommateur,
+                  onChange: (e) => {
+                    const newItems = [...daData.cadre3_ContraintesVolumetrie.dependancesAvecDautresSI];
+                    newItems[index].consommateur = e.target.checked;
+                    setDAData({
+                      ...daData,
+                      cadre3_ContraintesVolumetrie: {
+                        ...daData.cadre3_ContraintesVolumetrie,
+                        dependancesAvecDautresSI: newItems,
+                      },
+                    });
+                  },
+                },
+              },
+            ]}
+          />,
+          <Button
+            key={`dependances-actions-${index}`}
+            size="small"
+            priority="secondary"
+            onClick={() => {
+              const newItems = daData.cadre3_ContraintesVolumetrie.dependancesAvecDautresSI.filter(
+                (_, i) => i !== index
+              );
+              setDAData({
+                ...daData,
+                cadre3_ContraintesVolumetrie: {
+                  ...daData.cadre3_ContraintesVolumetrie,
+                  dependancesAvecDautresSI: newItems,
+                },
+              });
+            }}
+          >
+            Supprimer
+          </Button>,
+        ])}
+      />
       <Button
         size="small"
         className="fr-mt-2w"

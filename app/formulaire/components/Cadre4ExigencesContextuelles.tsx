@@ -11,7 +11,7 @@ interface CadreProps {
 export default function Cadre4ExigencesContextuelles({ daData, setDAData }: CadreProps) {
   return (
     <div>
-      <h2 className="fr-h2">Cadre 4 : Exigences Contextuelles</h2>
+      <h2 className="fr-h2">Cadre 4 : Exigences Non Fonctionnelles</h2>
 
       {/* Exigences sur les accès utilisateurs */}
       <Input

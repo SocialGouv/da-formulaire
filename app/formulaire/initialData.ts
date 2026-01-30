@@ -38,11 +38,16 @@ export const initialData: DAData = {
     ],
   },
   cadre2_FonctionnalitesDonnees: {
-    // Tableaux avec lignes vides pré-remplies (environ 10 lignes comme dans le DA)
-    fonctionnalitesDuSIApplicatif: Array(10).fill(null).map(() => ({ fonctionnalite: "", M: false, R: false, E: false, P: false })),
-    donneesMetierDuSIApplicatif: Array(10).fill(null).map(() => ({ donnee: "", M: false, R: false, E: false, P: false })),
-    fichiersMetiersDuSIApplicatif: Array(8).fill(null).map(() => ({ fichier: "", M: false, R: false, E: false, P: false })),
-    referentielsDonneesHorsSI: Array(6).fill(null).map(() => ({ referentiel: "", modeEchange: "", siSource: "", M: false, R: false, E: false, P: false })),
+    // Groupes de fonctionnalités (l'utilisateur peut créer ses propres groupes)
+    fonctionnalitesDuSIApplicatif: [
+      {
+        groupe: "",
+        fonctionnalites: Array(3).fill(null).map(() => ({ fonctionnalite: "", M: false, R: false, E: false, P: false })),
+      },
+    ],
+    donneesMetierDuSIApplicatif: Array(2).fill(null).map(() => ({ donnee: "", M: false, R: false, E: false, P: false })),
+    fichiersMetiersDuSIApplicatif: Array(2).fill(null).map(() => ({ fichier: "", M: false, R: false, E: false, P: false })),
+    referentielsDonneesHorsSI: Array(2).fill(null).map(() => ({ referentiel: "", modeEchange: "", M: false, R: false, E: false, P: false })),
     sensibiliteDesDonnees: {
       NIR: "",
       medicales: "",
@@ -57,6 +62,8 @@ export const initialData: DAData = {
       santeEconomique: "",
       patrimoine: "",
       appartenanceSyndicale: "",
+      architectureTechnique: "",
+      organisationnel: "",
       justice: "",
       adressePostale: "",
       faillesVulnerabilite: "",

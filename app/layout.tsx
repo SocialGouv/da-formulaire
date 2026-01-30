@@ -2,6 +2,7 @@ import { DsfrHeadBase } from "@codegouvfr/react-dsfr/next-app-router/DsfrHead";
 import { DsfrProviderBase, StartDsfrOnHydration } from "@codegouvfr/react-dsfr/next-app-router/DsfrProvider";
 import { createGetHtmlAttributes } from "@codegouvfr/react-dsfr/next-app-router/getHtmlAttributes";
 import { defaultColorScheme } from "./defaultColorScheme";
+import Link from "next/link";
 import type { Metadata } from "next";
 import "./globals.css";
 import "./dsfr-extensions.css";
@@ -24,7 +25,7 @@ export default function RootLayout({
     <html {...getHtmlAttributes({ lang })}>
       <head>
         <DsfrHeadBase
-          Link={undefined}
+          Link={Link}
           preloadFonts={[
             "Marianne-Regular",
             "Marianne-Bold"

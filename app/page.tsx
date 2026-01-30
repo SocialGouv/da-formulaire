@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { promises as fs } from "fs";
 import path from "path";
+import Button from "@codegouvfr/react-dsfr/Button";
 
 interface DA {
   id: string;
@@ -27,56 +27,64 @@ export default async function Home() {
     <main className="fr-container fr-my-6w">
       <div className="fr-grid-row fr-grid-row--center">
         <div className="fr-col-12">
-          <h1 className="fr-h1">Gestionnaire de Documents d'Architecture</h1>
+          <h1 className="fr-h1">Gestionnaire de Documents d&apos;Architecture</h1>
           <p className="fr-text--lead">
-            Créez et gérez vos Documents d'Architecture de manière structurée.
+            Créez et gérez vos Documents d&apos;Architecture de manière structurée.
           </p>
 
           <div className="fr-mt-4w">
-            <Link href="/formulaire?id=new" className="fr-btn fr-btn--lg fr-icon-add-line fr-btn--icon-left">
+            <Button
+              linkProps={{ href: "/formulaire/new" }}
+              size="large"
+              iconId="fr-icon-add-line"
+              iconPosition="left"
+            >
               Nouveau DA
-            </Link>
+            </Button>
           </div>
 
           {daList.length > 0 ? (
             <div className="fr-mt-6w">
-              <h2 className="fr-h2">Mes Documents d'Architecture</h2>
-              <div className="fr-table" style={{ marginTop: "2rem" }}>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Nom du projet</th>
-                      <th>Date de création</th>
-                      <th>Dernière modification</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {daList.map((da) => (
-                      <tr key={da.id}>
-                        <td>
-                          <strong>{da.nom}</strong>
-                        </td>
-                        <td>{new Date(da.dateCreation).toLocaleDateString("fr-FR")}</td>
-                        <td>{new Date(da.dateModification).toLocaleDateString("fr-FR")}</td>
-                        <td>
-                          <Link
-                            href={`/formulaire?id=${da.id}`}
-                            className="fr-btn fr-btn--sm fr-icon-edit-line fr-btn--icon-left"
-                          >
-                            Éditer
-                          </Link>
-                        </td>
+              <h2 className="fr-h2">Mes Documents d&apos;Architecture</h2>
+              <div className="fr-table fr-table--layout-fixed fr-table--no-caption">
+                <div className="fr-table__content">
+                  <table>
+                    <caption>Liste des Documents d&apos;Architecture</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">Nom du projet</th>
+                        <th scope="col" className="fr-col--xs" style={{ textAlign: 'right' }}>Date de création</th>
+                        <th scope="col" className="fr-col--xs" style={{ textAlign: 'right' }}>Dernière modification</th>
+                        <th scope="col" className="fr-col--sm">Actions</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {daList.map((da) => (
+                        <tr key={da.id}>
+                          <td><strong>{da.nom}</strong></td>
+                          <td className="fr-col--xs" style={{ textAlign: 'right' }}>{new Date(da.dateCreation).toLocaleDateString("fr-FR")}</td>
+                          <td className="fr-col--xs" style={{ textAlign: 'right' }}>{new Date(da.dateModification).toLocaleDateString("fr-FR")}</td>
+                          <td className="fr-col--sm">
+                            <Button
+                              linkProps={{ href: `/formulaire/${da.id}` }}
+                              size="small"
+                              iconId="fr-icon-edit-line"
+                              iconPosition="left"
+                            >
+                              Éditer
+                            </Button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           ) : (
             <div className="fr-callout fr-callout--info fr-mt-6w">
               <p className="fr-callout__text">
-                Aucun document d'architecture trouvé. Créez votre premier DA !
+                Aucun document d&apos;architecture trouvé. Créez votre premier DA !
               </p>
             </div>
           )}

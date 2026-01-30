@@ -1,29 +1,30 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import type { DAData } from "@/types/da.types";
-import { initialData } from "./initialData";
+import { initialData } from "../initialData";
 import { Stepper } from "@codegouvfr/react-dsfr/Stepper";
 import { Button } from "@codegouvfr/react-dsfr/Button";
 import { SideMenu } from "@codegouvfr/react-dsfr/SideMenu";
-import Cadre1ProjetActeurs from "./components/Cadre1ProjetActeurs";
-import Cadre2FonctionnalitesDonnees from "./components/Cadre2FonctionnalitesDonnees";
-import Cadre3ContraintesVolumetrie from "./components/Cadre3ContraintesVolumetrie";
-import Cadre4ExigencesContextuelles from "./components/Cadre4ExigencesContextuelles";
-import Cadre5ArchitectureActeurs from "./components/Cadre5ArchitectureActeurs";
-import Cadre6ArchitectureFonctionnelle from "./components/Cadre6ArchitectureFonctionnelle";
-import Cadre7ArchitectureApplicative from "./components/Cadre7ArchitectureApplicative";
-import Cadre8ArchitectureTechnique from "./components/Cadre8ArchitectureTechnique";
-import Cadre9ServeursComposants from "./components/Cadre9ServeursComposants";
-import Cadre10MatricesFlux from "./components/Cadre10MatricesFlux";
-import Cadre11Dimensionnement from "./components/Cadre11Dimensionnement";
-import Cadre12URLsAnnexe from "./components/Cadre12URLsAnnexe";
+import Cadre1ProjetActeurs from "../components/Cadre1ProjetActeurs";
+import Cadre2FonctionnalitesDonnees from "../components/Cadre2FonctionnalitesDonnees";
+import Cadre3ContraintesVolumetrie from "../components/Cadre3ContraintesVolumetrie";
+import Cadre4ExigencesContextuelles from "../components/Cadre4ExigencesContextuelles";
+import Cadre5ArchitectureActeurs from "../components/Cadre5ArchitectureActeurs";
+import Cadre6ArchitectureFonctionnelle from "../components/Cadre6ArchitectureFonctionnelle";
+import Cadre7ArchitectureApplicative from "../components/Cadre7ArchitectureApplicative";
+import Cadre8ArchitectureTechnique from "../components/Cadre8ArchitectureTechnique";
+import Cadre9ServeursComposants from "../components/Cadre9ServeursComposants";
+import Cadre10MatricesFlux from "../components/Cadre10MatricesFlux";
+import Cadre11Dimensionnement from "../components/Cadre11Dimensionnement";
+import Cadre12URLsAnnexe from "../components/Cadre12URLsAnnexe";
 
 export default function FormulaireDA() {
-  const searchParams = useSearchParams();
-  const daId = searchParams.get("id");
+  const params = useParams();
+  const router = useRouter();
+  const daId = params.id as string;
 
   const [daData, setDAData] = useState<DAData>(initialData);
   const [currentStep, setCurrentStep] = useState<number>(1);
@@ -32,37 +33,39 @@ export default function FormulaireDA() {
   // Charger le DA depuis l'URL au montage
   useEffect(() => {
     const loadDA = async () => {
-      if (daId && daId !== "new") {
-        try {
-          const response = await fetch(`/da/${daId}.json`);
-          if (response.ok) {
-            const data = await response.json();
-            setDAData(data);
-            console.log(`✅ DA ${daId} chargé avec succès !`);
-          } else {
-            console.error(`❌ DA ${daId} introuvable`);
-          }
-        } catch (error) {
-          console.error("❌ Erreur lors du chargement du DA:", error);
-        }
+      // Si pas d'id, rediriger vers la home
+      if (!daId) {
+        router.push("/");
+        return;
       }
-      setIsLoading(false);
+
+      // Si "new", on crée un nouveau DA avec les données initiales
+      if (daId === "new") {
+        setIsLoading(false);
+        return;
+      }
+
+      // Sinon, charger le DA existant
+      try {
+        const response = await fetch(`/da/${daId}.json`);
+        if (response.ok) {
+          const data = await response.json();
+          setDAData(data);
+          console.log(`✅ DA ${daId} chargé avec succès !`);
+          setIsLoading(false);
+        } else {
+          console.error(`❌ DA ${daId} introuvable`);
+          router.push("/");
+        }
+      } catch (error) {
+        console.error("❌ Erreur lors du chargement du DA:", error);
+        router.push("/");
+      }
     };
 
     loadDA();
-  }, [daId]);
+  }, [daId, router]);
 
-  // Fonction pour charger les données d'exemple
-  const loadExampleData = async () => {
-    try {
-      const response = await fetch('/example-data.json');
-      const exampleData = await response.json();
-      setDAData(exampleData);
-      console.log('✅ Données d\'exemple chargées avec succès !');
-    } catch (error) {
-      console.error('❌ Erreur lors du chargement des données:', error);
-    }
-  };
 
   const steps = [
     { id: 1, title: "Projet - Acteurs" },
@@ -112,10 +115,16 @@ export default function FormulaireDA() {
   }));
 
   return (
-    <>
-      {/* Menu latéral sticky flottant */}
-      <div style={{ position: 'fixed', left: 0, top: 0, zIndex: 1000, width: '300px' }}>
-        <div style={{ padding: '1rem', backgroundColor: '#f6f6f6', borderBottom: '1px solid #ddd' }}>
+    <div style={{ display: 'flex', minHeight: '100vh' }}>
+      {/* Sidebar gauche fixe */}
+      <aside style={{
+        width: '280px',
+        backgroundColor: 'var(--background-default-grey)',
+        borderRight: '1px solid var(--border-default-grey)',
+        display: 'flex',
+        flexDirection: 'column'
+      }}>
+        <div style={{ padding: '1rem', borderBottom: '1px solid var(--border-default-grey)' }}>
           <Link
             href="/"
             className="fr-link fr-icon-arrow-left-line fr-link--icon-left"
@@ -124,17 +133,20 @@ export default function FormulaireDA() {
             Retour à la liste
           </Link>
         </div>
-        <SideMenu
-          title="Navigation DA"
-          burgerMenuButtonText="Navigation"
-          items={menuItems}
-          sticky={true}
-          fullHeight={true}
-          align="left"
-        />
-      </div>
+        <div style={{ flex: 1, overflowY: 'auto' }}>
+          <SideMenu
+            title="Navigation DA"
+            burgerMenuButtonText="Navigation"
+            items={menuItems}
+            sticky={false}
+            fullHeight={false}
+            align="left"
+          />
+        </div>
+      </aside>
 
-      <main className="fr-container fr-my-6w">
+      {/* Contenu principal */}
+      <main style={{ flex: 1, padding: '2rem 3rem', maxWidth: '1200px', margin: '0 auto', width: '100%' }}>
         <h1 className="fr-h1">
           {daId && daId !== "new"
             ? `${daData.cadre1_ProjetActeurs.nomDuProjet || "Document d'Architecture"}`
@@ -144,18 +156,9 @@ export default function FormulaireDA() {
         Remplissez tous les champs du Document d&apos;Architecture
       </p>
 
-      {isLoading ? (
+      {isLoading && (
         <div className="fr-callout fr-callout--info fr-mb-4w">
           <p className="fr-callout__text">Chargement du DA...</p>
-        </div>
-      ) : (
-        <div className="fr-mb-4w">
-          <button
-            className="fr-btn fr-btn--secondary fr-btn--sm"
-            onClick={loadExampleData}
-          >
-            📋 Charger des données d&apos;exemple
-          </button>
         </div>
       )}
 
@@ -263,6 +266,6 @@ export default function FormulaireDA() {
         </pre>
       </details>
     </main>
-    </>
+    </div>
   );
 }

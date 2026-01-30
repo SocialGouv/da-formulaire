@@ -38,13 +38,7 @@ export const initialData: DAData = {
     ],
   },
   cadre2_FonctionnalitesDonnees: {
-    // Groupes de fonctionnalités (l'utilisateur peut créer ses propres groupes)
-    fonctionnalitesDuSIApplicatif: [
-      {
-        groupe: "",
-        fonctionnalites: Array(3).fill(null).map(() => ({ fonctionnalite: "", M: false, R: false, E: false, P: false })),
-      },
-    ],
+    fonctionnalitesDuSIApplicatif: Array(10).fill(null).map(() => ({ fonctionnalite: "", M: false, R: false, E: false, P: false })),
     donneesMetierDuSIApplicatif: Array(2).fill(null).map(() => ({ donnee: "", M: false, R: false, E: false, P: false })),
     fichiersMetiersDuSIApplicatif: Array(2).fill(null).map(() => ({ fichier: "", M: false, R: false, E: false, P: false })),
     referentielsDonneesHorsSI: Array(2).fill(null).map(() => ({ referentiel: "", modeEchange: "", M: false, R: false, E: false, P: false })),
@@ -72,14 +66,13 @@ export const initialData: DAData = {
       publicationExtranet: "",
       campagneDeCom: "",
       statistiquesPubliables: "",
-      autres: "",
     },
     servicesUtilisesParApplication: [
-      { service: "Messagerie (Exchange)", modeEchange: "", siSource: "", M: false, R: false, E: false, P: false },
-      { service: "Annuaire (Active directory)", modeEchange: "", siSource: "", M: false, R: false, E: false, P: false },
-      { service: "SIG (ArcGIS)", modeEchange: "", siSource: "", M: false, R: false, E: false, P: false },
-      { service: "Décisionnel (BI)", modeEchange: "", siSource: "", M: false, R: false, E: false, P: false },
-      { service: "Transfert de fichiers (CFT)", modeEchange: "", siSource: "", M: false, R: false, E: false, P: false },
+      { service: "Messagerie (Exchange)", modeEchange: "", M: false, R: false, E: false, P: false },
+      { service: "Annuaire (Active directory)", modeEchange: "", M: false, R: false, E: false, P: false },
+      { service: "SIG (ArcGIS)", modeEchange: "", M: false, R: false, E: false, P: false },
+      { service: "Décisionnel (BI)", modeEchange: "", M: false, R: false, E: false, P: false },
+      { service: "Transfert de fichiers (CFT)", modeEchange: "", M: false, R: false, E: false, P: false },
     ],
   },
   cadre3_ContraintesVolumetrie: {
@@ -152,18 +145,16 @@ export const initialData: DAData = {
       domaine: "",
       niveau: "",
       description: "",
+      contexteApplicatif: "",
     },
     exigencePREUVE_ParFonctionnalite: Array(5).fill(null).map(() => ({ fonctionnalite: "", descriptionExigencePreuve: "" })),
-    exigencesSurLesAccesUtilisateurs: "",
-    exigenceDisponibilite: "",
-    exigenceIntegrite: "",
-    exigenceConfidentialite: "",
-    exigenceTracabilite: "",
     garantieDeService: {
       planDeContinuiteActivite_PCA: "",
       planDeRepriseActivite_PRA: "",
       perteDeDonneesNonAdmissible: "",
       dureMaximaleInterruptionAdmissible_DMIA: "",
+      impactMetierEnCasDePerteDeDonnees: "",
+      impactMetierEnCasDeDefaillanceService: "",
     },
     periodesApplicatives: Array(3).fill(null).map(() => ({ periode: "", dateDebut: "", dateFin: "", nuc_NombreUtilisateursConnectes: "", nrs_NombreRequetesSimultaneesParSec: "" })),
     tempsDeReponse: {

@@ -57,17 +57,12 @@ export interface ActeurMetierDuSI {
 // ============================================================================
 
 export interface Cadre2_FonctionnalitesDonnees {
-  fonctionnalitesDuSIApplicatif: GroupeFonctionnalites[];
+  fonctionnalitesDuSIApplicatif: FonctionnaliteDuSI[];
   donneesMetierDuSIApplicatif: DonneeMetierDuSI[];
   fichiersMetiersDuSIApplicatif: FichierMetierDuSI[];
   referentielsDonneesHorsSI: ReferentielDonnees[];
   sensibiliteDesDonnees: SensibiliteDonnees;
   servicesUtilisesParApplication: ServiceUtilise[];
-}
-
-export interface GroupeFonctionnalites {
-  groupe: string; // Nom du groupe (ex: "Télédéclaration - Accueil")
-  fonctionnalites: FonctionnaliteDuSI[];
 }
 
 export interface FonctionnaliteDuSI {
@@ -127,8 +122,6 @@ export interface SensibiliteDonnees {
   publicationExtranet: "Très sensible" | "Sensible" | "";
   campagneDeCom: "Très sensible" | "Sensible" | "";
   statistiquesPubliables: "Très sensible" | "Sensible" | "";
-
-  autres: string; // Pour compléter si données manquantes
 }
 
 export interface ReferentielDonnees {
@@ -143,7 +136,6 @@ export interface ReferentielDonnees {
 export interface ServiceUtilise {
   service: string;
   modeEchange: string;
-  siSource: string;
   M: boolean;
   R: boolean;
   E: boolean;
@@ -222,11 +214,6 @@ export interface Cadre4_ExigencesContextuelles {
   echelleDICT_EBIOS_1a4_GlobalSI: EchelleDICT;
   echelleIMPACT_EBIOS_GlobalSI: EchelleImpactEBIOS;
   exigencePREUVE_ParFonctionnalite: ExigencePreuve[];
-  exigencesSurLesAccesUtilisateurs: string;
-  exigenceDisponibilite: string;
-  exigenceIntegrite: string;
-  exigenceConfidentialite: string;
-  exigenceTracabilite: string;
   garantieDeService: GarantieDeService;
   periodesApplicatives: PeriodeApplicative[];
   tempsDeReponse: TempsDeReponse;
@@ -260,6 +247,7 @@ export interface EchelleImpactEBIOS {
   domaine: string;
   niveau: string;
   description: string;
+  contexteApplicatif: string;
 }
 
 export interface ExigencePreuve {
@@ -272,6 +260,8 @@ export interface GarantieDeService {
   planDeRepriseActivite_PRA: string;
   perteDeDonneesNonAdmissible: string;
   dureMaximaleInterruptionAdmissible_DMIA: string;
+  impactMetierEnCasDePerteDeDonnees: string;
+  impactMetierEnCasDeDefaillanceService: string;
 }
 
 export interface PeriodeApplicative {

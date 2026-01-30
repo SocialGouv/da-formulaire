@@ -18,172 +18,118 @@ export default function Cadre2FonctionnalitesDonnees({ daData, setDAData }: Cadr
       {/* Fonctionnalités du SI applicatif */}
       <h3 className="fr-h3">Fonctionnalités du SI applicatif</h3>
       <p className="fr-text--sm">M = Ministère, R = Réseau Interministériel, E = Extranet, P = Public</p>
-
-      {daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif.map((groupe, groupeIndex) => (
-        <div key={`groupe-${groupeIndex}`} className="fr-mb-4w">
-          {/* Nom du groupe */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.5rem' }}>
+      <Table
+        headers={["Fonctionnalité", "M", "R", "E", "P", "Actions"]}
+        data={[
+          ...daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif.map((item, index) => [
             <Input
-              label=""
-              hideLabel
+              key={`fonc-input-${index}`}
               nativeInputProps={{
-                value: groupe.groupe,
-                placeholder: "Nom du groupe (ex: Télédéclaration - Accueil)",
-                style: { fontWeight: 'bold', fontSize: '1.1rem' },
+                value: item.fonctionnalite,
                 onChange: (e) => {
-                  const newGroupes = [...daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif];
-                  newGroupes[groupeIndex].groupe = e.target.value;
-                  setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, fonctionnalitesDuSIApplicatif: newGroupes}});
+                  const newItems = [...daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif];
+                  newItems[index].fonctionnalite = e.target.value;
+                  setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, fonctionnalitesDuSIApplicatif: newItems}});
                 }
               }}
-            />
+            />,
+            <Checkbox
+              key={`fonc-m-${index}`}
+              options={[{
+                label: "",
+                nativeInputProps: {
+                  checked: item.M,
+                  onChange: (e) => {
+                    const newItems = [...daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif];
+                    newItems[index].M = e.target.checked;
+                    setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, fonctionnalitesDuSIApplicatif: newItems}});
+                  }
+                }
+              }]}
+            />,
+            <Checkbox
+              key={`fonc-r-${index}`}
+              options={[{
+                label: "",
+                nativeInputProps: {
+                  checked: item.R,
+                  onChange: (e) => {
+                    const newItems = [...daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif];
+                    newItems[index].R = e.target.checked;
+                    setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, fonctionnalitesDuSIApplicatif: newItems}});
+                  }
+                }
+              }]}
+            />,
+            <Checkbox
+              key={`fonc-e-${index}`}
+              options={[{
+                label: "",
+                nativeInputProps: {
+                  checked: item.E,
+                  onChange: (e) => {
+                    const newItems = [...daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif];
+                    newItems[index].E = e.target.checked;
+                    setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, fonctionnalitesDuSIApplicatif: newItems}});
+                  }
+                }
+              }]}
+            />,
+            <Checkbox
+              key={`fonc-p-${index}`}
+              options={[{
+                label: "",
+                nativeInputProps: {
+                  checked: item.P,
+                  onChange: (e) => {
+                    const newItems = [...daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif];
+                    newItems[index].P = e.target.checked;
+                    setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, fonctionnalitesDuSIApplicatif: newItems}});
+                  }
+                }
+              }]}
+            />,
             <Button
+              key={`fonc-btn-${index}`}
               size="small"
               priority="secondary"
               onClick={() => {
-                const newGroupes = daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif.filter((_, i) => i !== groupeIndex);
-                setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, fonctionnalitesDuSIApplicatif: newGroupes}});
+                const newItems = daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif.filter((_, i) => i !== index);
+                setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, fonctionnalitesDuSIApplicatif: newItems}});
               }}
             >
-              Supprimer le groupe
+              Supprimer
             </Button>
-          </div>
-
-          {/* Tableau des fonctionnalités du groupe */}
-          <Table
-            headers={["Fonctionnalité", "M", "R", "E", "P", "Actions"]}
-            data={groupe.fonctionnalites.map((item, index) => [
-              <Input
-                key={`g${groupeIndex}-fonc-input-${index}`}
-                nativeInputProps={{
-                  value: item.fonctionnalite,
-                  onChange: (e) => {
-                    const newGroupes = [...daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif];
-                    newGroupes[groupeIndex].fonctionnalites[index].fonctionnalite = e.target.value;
-                    setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, fonctionnalitesDuSIApplicatif: newGroupes}});
-                  }
-                }}
-              />,
-              <Checkbox
-                key={`g${groupeIndex}-fonc-m-${index}`}
-                options={[{
-                  label: "",
-                  nativeInputProps: {
-                    checked: item.M,
-                    onChange: (e) => {
-                      const newGroupes = [...daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif];
-                      newGroupes[groupeIndex].fonctionnalites[index].M = e.target.checked;
-                      setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, fonctionnalitesDuSIApplicatif: newGroupes}});
-                    }
-                  }
-                }]}
-              />,
-              <Checkbox
-                key={`g${groupeIndex}-fonc-r-${index}`}
-                options={[{
-                  label: "",
-                  nativeInputProps: {
-                    checked: item.R,
-                    onChange: (e) => {
-                      const newGroupes = [...daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif];
-                      newGroupes[groupeIndex].fonctionnalites[index].R = e.target.checked;
-                      setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, fonctionnalitesDuSIApplicatif: newGroupes}});
-                    }
-                  }
-                }]}
-              />,
-              <Checkbox
-                key={`g${groupeIndex}-fonc-e-${index}`}
-                options={[{
-                  label: "",
-                  nativeInputProps: {
-                    checked: item.E,
-                    onChange: (e) => {
-                      const newGroupes = [...daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif];
-                      newGroupes[groupeIndex].fonctionnalites[index].E = e.target.checked;
-                      setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, fonctionnalitesDuSIApplicatif: newGroupes}});
-                    }
-                  }
-                }]}
-              />,
-              <Checkbox
-                key={`g${groupeIndex}-fonc-p-${index}`}
-                options={[{
-                  label: "",
-                  nativeInputProps: {
-                    checked: item.P,
-                    onChange: (e) => {
-                      const newGroupes = [...daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif];
-                      newGroupes[groupeIndex].fonctionnalites[index].P = e.target.checked;
-                      setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, fonctionnalitesDuSIApplicatif: newGroupes}});
-                    }
-                  }
-                }]}
-              />,
-              <Button
-                key={`g${groupeIndex}-fonc-btn-${index}`}
-                size="small"
-                priority="secondary"
-                onClick={() => {
-                  const newGroupes = [...daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif];
-                  newGroupes[groupeIndex].fonctionnalites = newGroupes[groupeIndex].fonctionnalites.filter((_, i) => i !== index);
-                  setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, fonctionnalitesDuSIApplicatif: newGroupes}});
-                }}
-              >
-                Supprimer
-              </Button>
-            ])}
-          />
-          <Button
-            size="small"
-            className="fr-mt-2w"
-            onClick={() => {
-              const newGroupes = [...daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif];
-              newGroupes[groupeIndex].fonctionnalites.push({fonctionnalite: "", M: false, R: false, E: false, P: false});
-              setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, fonctionnalitesDuSIApplicatif: newGroupes}});
-            }}
-          >
-            + Ajouter une fonctionnalité
-          </Button>
-        </div>
-      ))}
-
-      {/* Total global */}
-      <Table
-        headers={["", "M", "R", "E", "P", ""]}
-        data={[[
-          <div key="total-label" style={{ backgroundColor: '#e8edff', fontWeight: 'bold', padding: '8px' }}>Total fonctionnalités</div>,
-          <div key="total-m" style={{ backgroundColor: '#e8edff', fontWeight: 'bold', textAlign: 'center', padding: '8px' }}>
-            {daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif.reduce((acc, groupe) =>
-              acc + groupe.fonctionnalites.filter(item => item.M).length, 0)}
-          </div>,
-          <div key="total-r" style={{ backgroundColor: '#e8edff', fontWeight: 'bold', textAlign: 'center', padding: '8px' }}>
-            {daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif.reduce((acc, groupe) =>
-              acc + groupe.fonctionnalites.filter(item => item.R).length, 0)}
-          </div>,
-          <div key="total-e" style={{ backgroundColor: '#e8edff', fontWeight: 'bold', textAlign: 'center', padding: '8px' }}>
-            {daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif.reduce((acc, groupe) =>
-              acc + groupe.fonctionnalites.filter(item => item.E).length, 0)}
-          </div>,
-          <div key="total-p" style={{ backgroundColor: '#e8edff', fontWeight: 'bold', textAlign: 'center', padding: '8px' }}>
-            {daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif.reduce((acc, groupe) =>
-              acc + groupe.fonctionnalites.filter(item => item.P).length, 0)}
-          </div>,
-          <div key="total-actions" style={{ backgroundColor: '#e8edff', padding: '8px' }}></div>
-        ]]}
+          ]),
+          [
+            <div key="total-label" style={{ backgroundColor: '#e8edff', fontWeight: 'bold', padding: '8px' }}>Total fonctionnalités</div>,
+            <div key="total-m" style={{ backgroundColor: '#e8edff', fontWeight: 'bold', textAlign: 'center', padding: '8px' }}>
+              {daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif.filter(item => item.M).length}
+            </div>,
+            <div key="total-r" style={{ backgroundColor: '#e8edff', fontWeight: 'bold', textAlign: 'center', padding: '8px' }}>
+              {daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif.filter(item => item.R).length}
+            </div>,
+            <div key="total-e" style={{ backgroundColor: '#e8edff', fontWeight: 'bold', textAlign: 'center', padding: '8px' }}>
+              {daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif.filter(item => item.E).length}
+            </div>,
+            <div key="total-p" style={{ backgroundColor: '#e8edff', fontWeight: 'bold', textAlign: 'center', padding: '8px' }}>
+              {daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif.filter(item => item.P).length}
+            </div>,
+            <div key="total-actions" style={{ backgroundColor: '#e8edff', padding: '8px' }}></div>
+          ]
+        ]}
       />
-
       <Button
         size="small"
         className="fr-mt-2w"
         onClick={() => {
           setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, fonctionnalitesDuSIApplicatif: [
             ...daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif,
-            {groupe: "", fonctionnalites: [{fonctionnalite: "", M: false, R: false, E: false, P: false}]}
+            {fonctionnalite: "", M: false, R: false, E: false, P: false}
           ]}});
         }}
       >
-        + Ajouter un groupe
+        + Ajouter une fonctionnalité
       </Button>
 
       {/* Données métier du SI Applicatif */}
@@ -642,32 +588,11 @@ export default function Cadre2FonctionnalitesDonnees({ daData, setDAData }: Cadr
           </div>
         </div>
       </div>
-      <Input
-        label="Autres données sensibles"
-        textArea
-        nativeTextAreaProps={{
-          rows: 3,
-          value: daData.cadre2_FonctionnalitesDonnees.sensibiliteDesDonnees.autres,
-          onChange: (e) => {
-            setDAData({
-              ...daData,
-              cadre2_FonctionnalitesDonnees: {
-                ...daData.cadre2_FonctionnalitesDonnees,
-                sensibiliteDesDonnees: {
-                  ...daData.cadre2_FonctionnalitesDonnees.sensibiliteDesDonnees,
-                  autres: e.target.value
-                }
-              }
-            });
-          }
-        }}
-        className="fr-mt-4w"
-      />
-
       {/* Services utilisés par application */}
       <h3 className="fr-h3 fr-mt-6w">Services utilisés par application (externes au SI applicatif)</h3>
+      <h4 className="fr-h4">SI SOURCE</h4>
       <Table
-        headers={["Service", "Mode échange", "SI Source", "M", "R", "E", "P", "Actions"]}
+        headers={["Service", "Mode échange", "M", "R", "E", "P", "Actions"]}
         data={daData.cadre2_FonctionnalitesDonnees.servicesUtilisesParApplication.map((item, index) => [
           <Input
             key={`service-input-${index}`}
@@ -687,17 +612,6 @@ export default function Cadre2FonctionnalitesDonnees({ daData, setDAData }: Cadr
               onChange: (e) => {
                 const newItems = [...daData.cadre2_FonctionnalitesDonnees.servicesUtilisesParApplication];
                 newItems[index].modeEchange = e.target.value;
-                setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, servicesUtilisesParApplication: newItems}});
-              }
-            }}
-          />,
-          <Input
-            key={`service-si-${index}`}
-            nativeInputProps={{
-              value: item.siSource,
-              onChange: (e) => {
-                const newItems = [...daData.cadre2_FonctionnalitesDonnees.servicesUtilisesParApplication];
-                newItems[index].siSource = e.target.value;
                 setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, servicesUtilisesParApplication: newItems}});
               }
             }}
@@ -779,7 +693,7 @@ export default function Cadre2FonctionnalitesDonnees({ daData, setDAData }: Cadr
       <Button
         size="small"
         className="fr-mt-2w"
-        onClick={() => {setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, servicesUtilisesParApplication: [...daData.cadre2_FonctionnalitesDonnees.servicesUtilisesParApplication, {service: "", modeEchange: "", siSource: "", M: false, R: false, E: false, P: false}]}});}}
+        onClick={() => {setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, servicesUtilisesParApplication: [...daData.cadre2_FonctionnalitesDonnees.servicesUtilisesParApplication, {service: "", modeEchange: "", M: false, R: false, E: false, P: false}]}});}}
       >
         + Ajouter un service
       </Button>

@@ -13,101 +13,6 @@ export default function Cadre4ExigencesContextuelles({ daData, setDAData }: Cadr
     <div>
       <h2 className="fr-h2">Cadre 4 : Exigences Non Fonctionnelles</h2>
 
-      {/* Exigences sur les accès utilisateurs */}
-      <Input
-        label="Exigences sur les accès utilisateurs"
-        textArea
-        nativeTextAreaProps={{
-          id: "exigencesSurLesAccesUtilisateurs",
-          rows: 6,
-          value: daData.cadre4_ExigencesContextuelles.exigencesSurLesAccesUtilisateurs,
-          onChange: (e) =>
-            setDAData({
-              ...daData,
-              cadre4_ExigencesContextuelles: {
-                ...daData.cadre4_ExigencesContextuelles,
-                exigencesSurLesAccesUtilisateurs: e.target.value,
-              },
-            }),
-        }}
-      />
-
-      {/* Exigence Disponibilité */}
-      <Input
-        label="Exigence Disponibilité"
-        textArea
-        nativeTextAreaProps={{
-          id: "exigenceDisponibilite",
-          rows: 6,
-          value: daData.cadre4_ExigencesContextuelles.exigenceDisponibilite,
-          onChange: (e) =>
-            setDAData({
-              ...daData,
-              cadre4_ExigencesContextuelles: {
-                ...daData.cadre4_ExigencesContextuelles,
-                exigenceDisponibilite: e.target.value,
-              },
-            }),
-        }}
-      />
-
-      {/* Exigence Intégrité */}
-      <Input
-        label="Exigence Intégrité"
-        textArea
-        nativeTextAreaProps={{
-          id: "exigenceIntegrite",
-          rows: 6,
-          value: daData.cadre4_ExigencesContextuelles.exigenceIntegrite,
-          onChange: (e) =>
-            setDAData({
-              ...daData,
-              cadre4_ExigencesContextuelles: {
-                ...daData.cadre4_ExigencesContextuelles,
-                exigenceIntegrite: e.target.value,
-              },
-            }),
-        }}
-      />
-
-      {/* Exigence Confidentialité */}
-      <Input
-        label="Exigence Confidentialité"
-        textArea
-        nativeTextAreaProps={{
-          id: "exigenceConfidentialite",
-          rows: 6,
-          value: daData.cadre4_ExigencesContextuelles.exigenceConfidentialite,
-          onChange: (e) =>
-            setDAData({
-              ...daData,
-              cadre4_ExigencesContextuelles: {
-                ...daData.cadre4_ExigencesContextuelles,
-                exigenceConfidentialite: e.target.value,
-              },
-            }),
-        }}
-      />
-
-      {/* Exigence Traçabilité */}
-      <Input
-        label="Exigence Traçabilité"
-        textArea
-        nativeTextAreaProps={{
-          id: "exigenceTracabilite",
-          rows: 6,
-          value: daData.cadre4_ExigencesContextuelles.exigenceTracabilite,
-          onChange: (e) =>
-            setDAData({
-              ...daData,
-              cadre4_ExigencesContextuelles: {
-                ...daData.cadre4_ExigencesContextuelles,
-                exigenceTracabilite: e.target.value,
-              },
-            }),
-        }}
-      />
-
       {/* Echelle DICT EBIOS (1 à 4) – global SI */}
       <h3 className="fr-h3 fr-mt-6w">Echelle DICT EBIOS (1 à 4) – global SI</h3>
       <p className="fr-text--sm">Niveau de 1 à 4 pour chaque exigence (Disponibilité, Intégrité, Confidentialité, Traçabilité)</p>
@@ -528,6 +433,27 @@ export default function Cadre4ExigencesContextuelles({ daData, setDAData }: Cadr
             }}
           />
         </div>
+        <div className="fr-col-12">
+          <Input
+            label="Contexte applicatif"
+            textArea
+            nativeTextAreaProps={{
+              rows: 3,
+              value: daData.cadre4_ExigencesContextuelles.echelleIMPACT_EBIOS_GlobalSI.contexteApplicatif,
+              onChange: (e) =>
+                setDAData({
+                  ...daData,
+                  cadre4_ExigencesContextuelles: {
+                    ...daData.cadre4_ExigencesContextuelles,
+                    echelleIMPACT_EBIOS_GlobalSI: {
+                      ...daData.cadre4_ExigencesContextuelles.echelleIMPACT_EBIOS_GlobalSI,
+                      contexteApplicatif: e.target.value,
+                    },
+                  },
+                }),
+            }}
+          />
+        </div>
       </div>
 
       {/* Exigence PREUVE par fonctionnalité (cadre 2) */}
@@ -691,6 +617,48 @@ export default function Cadre4ExigencesContextuelles({ daData, setDAData }: Cadr
                     garantieDeService: {
                       ...daData.cadre4_ExigencesContextuelles.garantieDeService,
                       dureMaximaleInterruptionAdmissible_DMIA: e.target.value,
+                    },
+                  },
+                }),
+            }}
+          />
+        </div>
+        <div className="fr-col-12">
+          <Input
+            label="Impact Métier en cas de perte de données"
+            textArea
+            nativeTextAreaProps={{
+              rows: 3,
+              value: daData.cadre4_ExigencesContextuelles.garantieDeService.impactMetierEnCasDePerteDeDonnees,
+              onChange: (e) =>
+                setDAData({
+                  ...daData,
+                  cadre4_ExigencesContextuelles: {
+                    ...daData.cadre4_ExigencesContextuelles,
+                    garantieDeService: {
+                      ...daData.cadre4_ExigencesContextuelles.garantieDeService,
+                      impactMetierEnCasDePerteDeDonnees: e.target.value,
+                    },
+                  },
+                }),
+            }}
+          />
+        </div>
+        <div className="fr-col-12">
+          <Input
+            label="Impact Métier en cas de défaillance service"
+            textArea
+            nativeTextAreaProps={{
+              rows: 3,
+              value: daData.cadre4_ExigencesContextuelles.garantieDeService.impactMetierEnCasDeDefaillanceService,
+              onChange: (e) =>
+                setDAData({
+                  ...daData,
+                  cadre4_ExigencesContextuelles: {
+                    ...daData.cadre4_ExigencesContextuelles,
+                    garantieDeService: {
+                      ...daData.cadre4_ExigencesContextuelles.garantieDeService,
+                      impactMetierEnCasDeDefaillanceService: e.target.value,
                     },
                   },
                 }),

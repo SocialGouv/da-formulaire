@@ -1,6 +1,7 @@
 import { DsfrHeadBase } from "@codegouvfr/react-dsfr/next-app-router/DsfrHead";
 import { DsfrProviderBase, StartDsfrOnHydration } from "@codegouvfr/react-dsfr/next-app-router/DsfrProvider";
 import { createGetHtmlAttributes } from "@codegouvfr/react-dsfr/next-app-router/getHtmlAttributes";
+import { Header } from "@codegouvfr/react-dsfr/Header";
 import { defaultColorScheme } from "./defaultColorScheme";
 import Link from "next/link";
 import type { Metadata } from "next";
@@ -35,6 +36,15 @@ export default function RootLayout({
       <body>
         <DsfrProviderBase lang={lang}>
           <StartDsfrOnHydration />
+          <Header
+            brandTop={<>RÉPUBLIQUE<br/>FRANÇAISE</>}
+            serviceTitle="Documents d'Architecture"
+            serviceTagline="Outil de création et gestion des DA"
+            homeLinkProps={{
+              href: "/",
+              title: "Accueil - Documents d'Architecture"
+            }}
+          />
           {children}
         </DsfrProviderBase>
       </body>

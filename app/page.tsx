@@ -24,27 +24,44 @@ export default async function Home() {
   const daList = await getDAList();
 
   return (
-    <main className="fr-container fr-my-6w">
-      <div className="fr-grid-row fr-grid-row--center">
-        <div className="fr-col-12">
-          <h1 className="fr-h1">Gestionnaire de Documents d&apos;Architecture</h1>
-          <p className="fr-text--lead">
-            Créez et gérez vos Documents d&apos;Architecture de manière structurée.
-          </p>
-
-          <div className="fr-mt-4w">
+    <>
+      {/* Hero Section */}
+      <div className="fr-container fr-py-12w">
+        <div className="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
+          <div className="fr-col-12 fr-col-md-6">
+            <h1 className="fr-h1">Documents d&apos;Architecture</h1>
+            <p className="fr-text--lead fr-mb-3w">
+              Créez, éditez et exportez vos Documents d&apos;Architecture (DA) conformes aux standards de l&apos;État.
+            </p>
+            <p className="fr-text--sm fr-mb-5w">
+              Structurez votre architecture SI en 12 cadres détaillés : projet, fonctionnalités, contraintes, exigences,
+              architectures (acteurs, fonctionnelle, applicative, technique), serveurs, flux, dimensionnement et annexes.
+            </p>
             <Button
               linkProps={{ href: "/formulaire/new" }}
               size="large"
               iconId="fr-icon-add-line"
               iconPosition="left"
             >
-              Nouveau DA
+              Créer un nouveau DA
             </Button>
           </div>
+          <div className="fr-col-12 fr-col-md-6">
+            <img
+              src="/hero-api.svg"
+              alt="Illustration API"
+              style={{ width: '100%', height: 'auto' }}
+            />
+          </div>
+        </div>
+      </div>
+
+      <main className="fr-container fr-my-6w">
+        <div className="fr-grid-row fr-grid-row--center">
+          <div className="fr-col-12">
 
           {daList.length > 0 ? (
-            <div className="fr-mt-6w">
+            <div>
               <h2 className="fr-h2">Mes Documents d&apos;Architecture</h2>
               <div className="fr-table fr-table--layout-fixed fr-table--no-caption">
                 <div className="fr-table__content">
@@ -102,5 +119,6 @@ export default async function Home() {
         </div>
       </div>
     </main>
+    </>
   );
 }

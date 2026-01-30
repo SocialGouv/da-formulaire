@@ -6,8 +6,7 @@ import Link from "next/link";
 import type { DAData } from "@/types/da.types";
 import { initialData } from "../initialData";
 import { Stepper } from "@codegouvfr/react-dsfr/Stepper";
-import { Button } from "@codegouvfr/react-dsfr/Button";
-import { SideMenu } from "@codegouvfr/react-dsfr/SideMenu";
+import Button from "@codegouvfr/react-dsfr/Button";
 import Cadre1ProjetActeurs from "../components/Cadre1ProjetActeurs";
 import Cadre2FonctionnalitesDonnees from "../components/Cadre2FonctionnalitesDonnees";
 import Cadre3ContraintesVolumetrie from "../components/Cadre3ContraintesVolumetrie";
@@ -104,15 +103,21 @@ export default function FormulaireDA() {
     };
   };
 
-  // Créer les items du menu
-  const menuItems = steps.map((step) => ({
-    text: `${step.id}. ${step.title}`,
-    isActive: currentStep === step.id,
-    linkProps: {
-      href: "#",
-      onClick: handleMenuItemClick(step.id),
-    },
-  }));
+  // Items du menu avec numéro séparé
+  const renderMenuItems = () => {
+    return steps.map((step) => (
+      <li key={step.id}>
+        <button
+          onClick={handleMenuItemClick(step.id)}
+          className={`fr-sidemenu__link ${currentStep === step.id ? 'fr-sidemenu__link--active' : ''}`}
+          style={{ display: 'flex', gap: '0.5rem', textAlign: 'left', width: '100%', alignItems: 'flex-start' }}
+        >
+          <span style={{ flexShrink: 0 }}>{step.id}.</span>
+          <span>{step.title}</span>
+        </button>
+      </li>
+    ));
+  };
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
@@ -120,28 +125,26 @@ export default function FormulaireDA() {
       <aside style={{
         width: '280px',
         backgroundColor: 'var(--background-default-grey)',
-        borderRight: '1px solid var(--border-default-grey)',
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        borderRight: 'none'
       }}>
-        <div style={{ padding: '1rem', borderBottom: '1px solid var(--border-default-grey)' }}>
-          <Link
-            href="/"
-            className="fr-link fr-icon-arrow-left-line fr-link--icon-left"
-            style={{ fontSize: '0.875rem' }}
-          >
+        <div style={{ padding: '1rem 1rem 1rem 1.5rem' }}>
+          <Link href="/" className="fr-btn fr-btn--tertiary fr-btn--sm fr-btn--icon-left fr-icon-arrow-left-line">
             Retour à la liste
           </Link>
         </div>
         <div style={{ flex: 1, overflowY: 'auto' }}>
-          <SideMenu
-            title="Navigation DA"
-            burgerMenuButtonText="Navigation"
-            items={menuItems}
-            sticky={false}
-            fullHeight={false}
-            align="left"
-          />
+          <nav className="fr-sidemenu" aria-label="Menu latéral">
+            <div className="fr-sidemenu__inner">
+              <div className="fr-sidemenu__title" style={{ paddingLeft: '1.5rem' }}>
+                {daData.cadre1_ProjetActeurs.nomDuProjet || "Document d'Architecture"}
+              </div>
+              <ul className="fr-sidemenu__list">
+                {renderMenuItems()}
+              </ul>
+            </div>
+          </nav>
         </div>
       </aside>
 

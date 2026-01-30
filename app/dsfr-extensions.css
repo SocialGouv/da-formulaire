@@ -43,3 +43,59 @@
 .fr-stepper__steps[data-fr-current-step="12"] {
   --current-step: 12;
 }
+
+
+/* Enlever la bordure droite du SideMenu */
+.fr-sidemenu {
+  border-right: none !important;
+  padding-right: 0 !important;
+}
+
+.fr-sidemenu__inner {
+  border-right: none !important;
+  box-shadow: none !important;
+  padding-right: 0 !important;
+}
+
+/* Ajouter du padding au titre du SideMenu */
+.fr-sidemenu__title {
+  padding-left: 1.5rem !important;
+}
+
+/* Styles pour les items du menu personnalisé */
+.fr-sidemenu__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.fr-sidemenu__link {
+  padding: 0.5rem 1rem !important;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  position: relative;
+  color: inherit !important;
+  text-decoration: none;
+}
+
+.fr-sidemenu__link:hover {
+  background-color: var(--background-default-grey-hover);
+}
+
+.fr-sidemenu__link--active {
+  background-color: var(--background-contrast-blue-france);
+  font-weight: 700;
+  color: var(--text-label-blue-france) !important;
+}
+
+.fr-sidemenu__link--active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background-color: var(--border-plain-blue-france);
+}

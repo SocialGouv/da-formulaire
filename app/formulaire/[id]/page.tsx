@@ -152,8 +152,9 @@ export default function FormulaireDA() {
       </aside>
 
       {/* Contenu principal */}
-      <main style={{ flex: 1, padding: '2rem 3rem' }}>
-        <h1 className="fr-h1">
+      <main style={{ flex: 1 }}>
+        <div className="fr-container fr-py-4w">
+          <h1 className="fr-h1">
           {daId && daId !== "new"
             ? `${daData.cadre1_ProjetActeurs.nomDuProjet || "Document d'Architecture"}`
             : "Formulaire Document d'Architecture (DA)"}
@@ -275,7 +276,8 @@ export default function FormulaireDA() {
           {JSON.stringify(daData, null, 2)}
         </pre>
       </details>
-    </main>
+        </div>
+      </main>
     </div>
   );
 }

@@ -1,0 +1,6 @@
+app:
+  ~chart: app
+  probesPath: /api/healthz
+
+pg:
+  ~chart: pg

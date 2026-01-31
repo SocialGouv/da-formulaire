@@ -27,22 +27,18 @@ export default function FormulaireDA() {
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // Charger le DA depuis l'URL au montage
   useEffect(() => {
     const loadDA = async () => {
-      // Si pas d'id, rediriger vers la home
       if (!daId) {
         router.push("/");
         return;
       }
 
-      // Si "new", on crée un nouveau DA avec les données initiales
       if (daId === "new") {
         setIsLoading(false);
         return;
       }
 
-      // Sinon, charger le DA existant
       try {
         const response = await fetch(`/da/${daId}.json`);
         if (response.ok) {
@@ -101,183 +97,125 @@ export default function FormulaireDA() {
     };
   };
 
-  // Items du menu avec numéro séparé
   const renderMenuItems = () => {
     return steps.map((step) => (
-      <li key={step.id}>
-        <button
+      <li className="fr-sidemenu__item" key={step.id}>
+          <a
+          aria-current={currentStep === step.id ? "true" : "false"}
+          type="link"
+          id={`sidemenu-item-${step.id}`}
+          href="#"
+          className="fr-sidemenu__link"
           onClick={handleMenuItemClick(step.id)}
-          className={`fr-sidemenu__link ${currentStep === step.id ? 'fr-sidemenu__link--active' : ''}`}
-          style={{ display: 'flex', gap: '0.5rem', textAlign: 'left', width: '100%', alignItems: 'flex-start' }}
-        >
-          <span style={{ flexShrink: 0 }}>{step.id}.</span>
-          <span>{step.title}</span>
-        </button>
-      </li>
+          >
+            {step.id} . {step.title}
+          </a>
+        </li>
     ));
   };
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh' }}>
-      {/* Sidebar gauche fixe */}
-      <aside style={{
-        width: '280px',
-        flexShrink: 0,
-        backgroundColor: 'var(--background-default-grey)',
-        display: 'flex',
-        flexDirection: 'column',
-        borderRight: 'none',
-        position: 'sticky',
-        top: 0,
-        height: '100vh',
-        overflowY: 'auto'
-      }}>
-        <div style={{ padding: '1rem 1rem 1rem 1.5rem' }}>
-          <Link href="/" className="fr-btn fr-btn--tertiary fr-btn--sm fr-btn--icon-left fr-icon-arrow-left-line">
-            Retour à la liste des DA
-          </Link>
-        </div>
-        <div style={{ flex: 1 }}>
-          <nav className="fr-sidemenu" aria-label="Menu latéral">
-            <div className="fr-sidemenu__inner">
-              <div className="fr-sidemenu__title" style={{ paddingLeft: '1.5rem' }}>
-                {daData.cadre1_ProjetActeurs.nomDuProjet || "Document d'Architecture"}
-              </div>
+
+      <main id="content" className="fr-main" role="main">
+        <div className="fr-container">
+          <div className="fr-grid-row fr-grid-row--gutters fr-grid-row--center">
+            <div className="fr-col-12 fr-col-md-4">
+<nav className="fr-sidemenu fr-sidemenu--sticky-full-height" role="navigation" aria-labelledby="sidemenu-title">
+
+
+          <div className="fr-sidemenu__inner">
+            <ul className="fr-btns-group fr-mt-2w">
+              <li>
+                <Link href="/" className="fr-btn">
+                    <span className="fr-icon-arrow-left-line" aria-hidden="true"></span>
+                    Retour à la liste des DA
+                </Link>
+              </li>
+            </ul>
+            <button aria-expanded="false" aria-controls="sidemenu-collapse-1" type="button" className="fr-sidemenu__btn">Dans cette rubrique</button>
+            <div className="fr-collapse" id="sidemenu-collapse-1">
+              <p className="fr-sidemenu__title fr-mb-1w" id="sidemenu-title">{daData.cadre1_ProjetActeurs.nomDuProjet || "Document d'Architecture"}</p>
               <ul className="fr-sidemenu__list">
                 {renderMenuItems()}
               </ul>
             </div>
-          </nav>
-        </div>
-      </aside>
-
-      {/* Contenu principal */}
-      <main style={{ flex: 1 }}>
-        <div className="fr-container fr-py-4w">
-          <h1 className="fr-h1">
+          </div>
+        </nav>
+            </div>
+            <div className="content-editorial fr-col-12 fr-col-md-8">
+<h1 className="fr-h1">
           {daId && daId !== "new"
             ? `${daData.cadre1_ProjetActeurs.nomDuProjet || "Document d'Architecture"}`
             : "Formulaire Document d'Architecture (DA)"}
-        </h1>
-      <p className="fr-text--sm fr-mb-2w">
-        Remplissez tous les champs du Document d&apos;Architecture
-      </p>
-
-      {isLoading && (
-        <div className="fr-callout fr-callout--info fr-mb-4w">
-          <p className="fr-callout__text">Chargement du DA...</p>
-        </div>
-      )}
-
-      {/* Stepper */}
-      <nav className="fr-stepper" role="navigation" aria-label="Étapes">
-        <h2 className="fr-stepper__title">
-          {steps[currentStep - 1].title}
-          <span className="fr-stepper__state">Étape {currentStep} sur 12</span>
-        </h2>
-        <div className="fr-stepper__steps" data-fr-current-step={currentStep} data-fr-steps={12}></div>
-        {currentStep < 12 && (
-          <p className="fr-stepper__details">
-            <span className="fr-text--bold">Étape suivante :</span> {steps[currentStep].title}
+          </h1>
+          <p className="fr-text--sm fr-mb-2w">
+            Remplissez tous les champs du Document d&apos;Architecture
           </p>
-        )}
-      </nav>
+          {isLoading && (
+            <div className="fr-callout fr-callout--info fr-mb-4w">
+              <p className="fr-callout__text">Chargement du DA...</p>
+            </div>
+          )}
+          <nav className="fr-stepper" role="navigation" aria-label="Étapes">
+            <h2 className="fr-stepper__title">
+              {steps[currentStep - 1].title}
+              <span className="fr-stepper__state">Étape {currentStep} sur 12</span>
+            </h2>
+            <div className="fr-stepper__steps" data-fr-current-step={currentStep} data-fr-steps={12}></div>
+            {currentStep < 12 && (
+              <p className="fr-stepper__details">
+                <span className="fr-text--bold">Étape suivante :</span> {steps[currentStep].title}
+              </p>
+            )}
+          </nav>
 
-      {/* Content */}
-      <div className="fr-mt-4w">
-        {/* ================================================================= */}
-        {/* CADRE 1: PROJET - ACTEURS */}
-        {/* ================================================================= */}
-        {currentStep === 1 && <Cadre1ProjetActeurs daData={daData} setDAData={setDAData} />}
+          <div className="fr-mt-4w">
+            {currentStep === 1 && <Cadre1ProjetActeurs daData={daData} setDAData={setDAData} />}
+            {currentStep === 2 && <Cadre2FonctionnalitesDonnees daData={daData} setDAData={setDAData} />}
+            {currentStep === 3 && <Cadre3ContraintesVolumetrie daData={daData} setDAData={setDAData} />}
+            {currentStep === 4 && <Cadre4ExigencesContextuelles daData={daData} setDAData={setDAData} />}
+            {currentStep === 5 && <Cadre5ArchitectureActeurs daData={daData} setDAData={setDAData} />}
+            {currentStep === 6 && <Cadre6ArchitectureFonctionnelle daData={daData} setDAData={setDAData} />}
+            {currentStep === 7 && <Cadre7ArchitectureApplicative daData={daData} setDAData={setDAData} />}
+            {currentStep === 8 && <Cadre8ArchitectureTechnique daData={daData} setDAData={setDAData} />}
+            {currentStep === 9 && <Cadre9ServeursComposants daData={daData} setDAData={setDAData} />}
+            {currentStep === 10 && <Cadre10MatricesFlux daData={daData} setDAData={setDAData} />}
+            {currentStep === 11 && <Cadre11Dimensionnement daData={daData} setDAData={setDAData} />}
+            {currentStep === 12 && <Cadre12URLsAnnexe daData={daData} setDAData={setDAData} />}
+          </div>
 
-        {/* ================================================================= */}
-        {/* CADRE 2: FONCTIONNALITÉS - DONNÉES */}
-        {/* ================================================================= */}
-        {currentStep === 2 && <Cadre2FonctionnalitesDonnees daData={daData} setDAData={setDAData} />}
+          <div className="fr-mt-4w fr-mb-4w" style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <button
+              className="fr-btn fr-btn--secondary fr-btn--icon-left fr-icon-arrow-left-line"
+              type="button"
+              onClick={handlePrevious}
+              disabled={currentStep === 1}
+            >
+              Précédent
+            </button>
+            <button
+              className="fr-btn fr-btn--secondary fr-btn--icon-right fr-icon-arrow-right-line"
+              type="button"
+              onClick={handleNext}
+              disabled={currentStep === 12}
+            >
+              Suivant
+            </button>
+          </div>
 
-        {/* ================================================================= */}
-        {/* CADRE 3: CONTRAINTES - VOLUMÉTRIE */}
-        {/* ================================================================= */}
-        {currentStep === 3 && <Cadre3ContraintesVolumetrie daData={daData} setDAData={setDAData} />}
-
-        {/* ================================================================= */}
-        {/* CADRE 4: EXIGENCES CONTEXTUELLES */}
-        {/* ================================================================= */}
-        {currentStep === 4 && <Cadre4ExigencesContextuelles daData={daData} setDAData={setDAData} />}
-
-        {/* ================================================================= */}
-        {/* CADRE 5: ARCHITECTURE ACTEURS */}
-        {/* ================================================================= */}
-        {currentStep === 5 && <Cadre5ArchitectureActeurs daData={daData} setDAData={setDAData} />}
-
-        {/* ================================================================= */}
-        {/* CADRE 6: ARCHITECTURE FONCTIONNELLE */}
-        {/* ================================================================= */}
-        {currentStep === 6 && <Cadre6ArchitectureFonctionnelle daData={daData} setDAData={setDAData} />}
-
-        {/* ================================================================= */}
-        {/* CADRE 7: ARCHITECTURE APPLICATIVE */}
-        {/* ================================================================= */}
-        {currentStep === 7 && <Cadre7ArchitectureApplicative daData={daData} setDAData={setDAData} />}
-
-        {/* ================================================================= */}
-        {/* CADRE 8: ARCHITECTURE TECHNIQUE */}
-        {/* ================================================================= */}
-        {currentStep === 8 && <Cadre8ArchitectureTechnique daData={daData} setDAData={setDAData} />}
-
-        {/* ================================================================= */}
-        {/* CADRE 9: SERVEURS & COMPOSANTS */}
-        {/* ================================================================= */}
-        {currentStep === 9 && <Cadre9ServeursComposants daData={daData} setDAData={setDAData} />}
-
-        {/* ================================================================= */}
-        {/* CADRE 10: MATRICES FLUX */}
-        {/* ================================================================= */}
-        {currentStep === 10 && <Cadre10MatricesFlux daData={daData} setDAData={setDAData} />}
-
-        {/* ================================================================= */}
-        {/* CADRE 11: DIMENSIONNEMENT */}
-        {/* ================================================================= */}
-        {currentStep === 11 && <Cadre11Dimensionnement daData={daData} setDAData={setDAData} />}
-
-        {/* ================================================================= */}
-        {/* CADRE 12: URLs & ANNEXE */}
-        {/* ================================================================= */}
-        {currentStep === 12 && <Cadre12URLsAnnexe daData={daData} setDAData={setDAData} />}
-      </div>
-
-      {/* Navigation buttons */}
-      <div className="fr-mt-4w fr-mb-4w" style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <button
-          className="fr-btn fr-btn--secondary fr-btn--icon-left fr-icon-arrow-left-line"
-          type="button"
-          onClick={handlePrevious}
-          disabled={currentStep === 1}
-        >
-          Précédent
-        </button>
-        <button
-          className="fr-btn fr-btn--secondary fr-btn--icon-right fr-icon-arrow-right-line"
-          type="button"
-          onClick={handleNext}
-          disabled={currentStep === 12}
-        >
-          Suivant
-        </button>
-      </div>
-
-      {/* Debug: Afficher les données actuelles */}
-      <details className="fr-mt-6w">
-        <summary className="fr-text--sm">Voir les données JSON (debug)</summary>
-        <pre
-          className="fr-text--xs"
-          style={{ maxHeight: "400px", overflow: "auto", background: "#f6f6f6", padding: "1rem" }}
-        >
-          {JSON.stringify(daData, null, 2)}
-        </pre>
-      </details>
-        </div>
+          <details className="fr-mt-6w">
+            <summary className="fr-text--sm">Voir les données JSON (debug)</summary>
+            <pre
+              className="fr-text--xs"
+              style={{ maxHeight: "400px", overflow: "auto", background: "#f6f6f6", padding: "1rem" }}
+            >
+              {JSON.stringify(daData, null, 2)}
+            </pre>
+          </details>
+            </div>
+          </div>
+</div>
       </main>
-    </div>
+
   );
 }

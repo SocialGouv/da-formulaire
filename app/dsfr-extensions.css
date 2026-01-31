@@ -1,5 +1,14 @@
-/* Extend DSFR Stepper to support more than 8 steps */
-.fr-stepper__steps[data-fr-steps="9"] {
+.fr-sidemenu .fr-sidemenu__item .fr-sidemenu__link {
+  /* white-space: nowrap; */
+}
+
+.fr-sidemenu .fr-sidemenu__title {
+  /* width: 90%;
+  margin: 0 auto;
+  box-sizing: border-box; */
+}
+
+/* .fr-stepper__steps[data-fr-steps="9"] {
   --steps: 9;
   --step-width: calc(100% / 9);
 }
@@ -19,7 +28,6 @@
   --step-width: calc(100% / 12);
 }
 
-/* Hide "next step" details when on the last step */
 .fr-stepper .fr-stepper__steps[data-fr-steps="9"][data-fr-current-step="9"] + .fr-stepper__details,
 .fr-stepper .fr-stepper__steps[data-fr-steps="10"][data-fr-current-step="10"] + .fr-stepper__details,
 .fr-stepper .fr-stepper__steps[data-fr-steps="11"][data-fr-current-step="11"] + .fr-stepper__details,
@@ -27,7 +35,6 @@
   display: none;
 }
 
-/* Add current step CSS variables for steps 9-12 */
 .fr-stepper__steps[data-fr-current-step="9"] {
   --current-step: 9;
 }
@@ -44,8 +51,6 @@
   --current-step: 12;
 }
 
-
-/* Enlever la bordure droite du SideMenu */
 .fr-sidemenu {
   border-right: none !important;
   padding-right: 0 !important;
@@ -57,12 +62,10 @@
   padding-right: 0 !important;
 }
 
-/* Ajouter du padding au titre du SideMenu */
 .fr-sidemenu__title {
   padding-left: 1.5rem !important;
 }
 
-/* Styles pour les items du menu personnalisé */
 .fr-sidemenu__list {
   list-style: none;
   padding: 0;
@@ -100,13 +103,10 @@
   background-color: var(--border-plain-blue-france);
 }
 
-
-/* Adapter les inputs dans les tableaux pour un style "cellule éditable" */
 .fr-table td .fr-input-group {
   margin-bottom: 0;
 }
 
-/* Classes de couleur pour les tableaux */
 .fr-table td.fr-bg-info,
 .fr-table th.fr-bg-info {
   background-color: var(--background-contrast-info);
@@ -132,7 +132,6 @@
   background-color: var(--green-menthe-975-75);
 }
 
-/* Classes pour les totaux avec couleurs vives */
 .fr-table td.fr-bg-red-total {
   background-color: var(--red-marianne-main-472);
   color: var(--grey-1000-50);
@@ -163,33 +162,26 @@
   font-weight: bold;
 }
 
-/* Enlever le padding des cellules qui contiennent des inputs */
 .fr-table td:has(input.fr-input) {
   padding: 0 4px;
 }
 
 .fr-table td input.fr-input {
-  /* Rendre l'input transparent et sans bordure */
   background-color: transparent;
   border: 2px solid transparent;
   border-radius: 0;
 
-  /* Prendre tout l'espace de la cellule */
   width: 100%;
   min-height: 100%;
 
-  /* Hériter la couleur du texte */
   color: inherit;
 
-  /* Enlever l'outline par défaut */
   outline: none;
 
-  /* Enlever les ombres */
   box-shadow: none;
 }
 
 .fr-table td input.fr-input:focus {
-  /* Bordure bleue au focus - le padding reste constant */
   background-color: transparent;
   border-color: var(--border-plain-blue-france);
   outline: none;
@@ -202,7 +194,6 @@
   cursor: default;
 }
 
-/* Input en gras pour les lignes de total */
 .fr-table td input.fr-input--bold {
   font-weight: bold;
-}
+} */

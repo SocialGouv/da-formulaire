@@ -3,7 +3,6 @@ import { Input } from "@codegouvfr/react-dsfr/Input";
 import { Button } from "@codegouvfr/react-dsfr/Button";
 import { Checkbox } from "@codegouvfr/react-dsfr/Checkbox";
 import { RadioButtons } from "@codegouvfr/react-dsfr/RadioButtons";
-import { Table } from "@codegouvfr/react-dsfr/Table";
 
 interface CadreProps {
   daData: DAData;
@@ -13,8 +12,6 @@ interface CadreProps {
 export default function Cadre2FonctionnalitesDonnees({ daData, setDAData }: CadreProps) {
   return (
     <div>
-      <h2 className="fr-h2">Cadre 2 : Fonctionnalités - Données</h2>
-
       {/* Fonctionnalités du SI applicatif */}
       <h3 className="fr-h3">Fonctionnalités du SI applicatif</h3>
       <p className="fr-text--sm">M = Ministère, R = Réseau Interministériel, E = Extranet, P = Public</p>

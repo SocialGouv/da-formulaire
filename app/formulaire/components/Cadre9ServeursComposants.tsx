@@ -12,8 +12,6 @@ interface CadreProps {
 export default function Cadre9ServeursComposants({ daData, setDAData }: CadreProps) {
   return (
     <div>
-      <h2 className="fr-h2">Cadre 9 : Serveurs et Composants Applicatifs</h2>
-
       {daData.cadre9_ServeursComposants.serveurs.map((serveur, serveurIndex) => (
         <div key={serveurIndex} className="fr-mb-6w" style={{ border: "1px solid #ddd", padding: "1rem" }}>
           <h3 className="fr-h3">Serveur {serveurIndex + 1}</h3>

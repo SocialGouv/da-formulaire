@@ -11,8 +11,6 @@ interface CadreProps {
 export default function Cadre5ArchitectureActeurs({ daData, setDAData }: CadreProps) {
   return (
     <div>
-      <h2 className="fr-h2">Cadre 5 : Architecture Acteurs du SI</h2>
-
       <ExcalidrawSchemaEditor
         cadreData={daData.cadre5_ArchitectureActeurs}
         cadreType={5}

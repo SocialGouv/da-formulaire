@@ -11,8 +11,6 @@ interface CadreProps {
 export default function Cadre4ExigencesContextuelles({ daData, setDAData }: CadreProps) {
   return (
     <div>
-      <h2 className="fr-h2">Cadre 4 : Exigences Non Fonctionnelles</h2>
-
       {/* Echelle DICT EBIOS (1 à 4) – global SI */}
       <h3 className="fr-h3 fr-mt-6w">Echelle DICT EBIOS (1 à 4) – global SI</h3>
       <p className="fr-text--sm">Niveau de 1 à 4 pour chaque exigence (Disponibilité, Intégrité, Confidentialité, Traçabilité)</p>

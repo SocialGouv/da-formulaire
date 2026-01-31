@@ -81,7 +81,6 @@ Each DA has 12 "cadres" (sections), managed as separate components in `app/formu
 
 **DSFR Components:**
 - Uses French government design components (Button, Input, Stepper, SideMenu, etc.)
-- **Prefer react-dsfr library components**: Always use components from `@codegouvfr/react-dsfr` when available rather than creating custom components with vanilla DSFR CSS classes
 - Custom styling extensions in `app/dsfr-extensions.css`
 - DSFR provider wraps the entire app in layout.tsx
 
@@ -104,3 +103,9 @@ Each DA has 12 "cadres" (sections), managed as separate components in `app/formu
 - Preserve the 12-step structure when adding features
 - Keep JSON serialization in mind - all DA data must be JSON-serializable for file storage
 - Test both the form editing flow and PDF export when making changes to data structures
+
+## Development environment
+- We use Google Chrome MCP to access, read and test web pages
+
+## Documentation
+- DSFR Componants: https://www.systeme-de-design.gouv.fr/version-courante/fr/composants

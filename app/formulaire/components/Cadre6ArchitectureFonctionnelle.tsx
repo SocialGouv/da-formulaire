@@ -11,8 +11,6 @@ interface CadreProps {
 export default function Cadre6ArchitectureFonctionnelle({ daData, setDAData }: CadreProps) {
   return (
     <div>
-      <h2 className="fr-h2">Cadre 6 : Architecture Fonctionnelle du SI</h2>
-
       <ExcalidrawSchemaEditor
         cadreData={daData.cadre6_ArchitectureFonctionnelle}
         cadreType={6}

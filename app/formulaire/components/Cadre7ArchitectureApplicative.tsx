@@ -11,8 +11,6 @@ interface CadreProps {
 export default function Cadre7ArchitectureApplicative({ daData, setDAData }: CadreProps) {
   return (
     <div>
-      <h2 className="fr-h2">Cadre 7 : Architecture Applicative</h2>
-
       <ExcalidrawSchemaEditor
         cadreData={daData.cadre7_ArchitectureApplicative}
         cadreType={7}

@@ -13,8 +13,6 @@ interface CadreProps {
 export default function Cadre3ContraintesVolumetrie({ daData, setDAData }: CadreProps) {
   return (
     <div>
-      <h2 className="fr-h2">Cadre 3 : Contraintes - Volumétrie</h2>
-
       {/* Contraintes légales */}
       <Input
         label="Contraintes légales"

@@ -99,3 +99,26 @@
   width: 4px;
   background-color: var(--border-plain-blue-france);
 }
+
+
+/* Adapter les inputs dans les tableaux au thème */
+.fr-table td .fr-input-group {
+  margin-bottom: 0;
+}
+
+.fr-table td input.fr-input {
+  background-color: var(--background-default-grey);
+  color: var(--text-default-grey);
+  border-color: var(--border-default-grey);
+}
+
+.fr-table td input.fr-input:focus {
+  background-color: var(--background-default-grey);
+  border-color: var(--border-plain-blue-france);
+}
+
+.fr-table td input.fr-input[readonly] {
+  background-color: var(--background-contrast-info) !important;
+  color: var(--text-default-grey) !important;
+}
+

@@ -9,8 +9,6 @@ interface CadreProps {
 export default function Cadre11Dimensionnement({ daData, setDAData }: CadreProps) {
   return (
     <div>
-      <h2 className="fr-h2">Cadre 11 : Dimensionnement du SI Applicatif</h2>
-
       <h3 className="fr-h3">Justifications PDMA / DMIA / Performances</h3>
 
       <Input

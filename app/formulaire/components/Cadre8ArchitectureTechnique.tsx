@@ -11,8 +11,6 @@ interface CadreProps {
 export default function Cadre8ArchitectureTechnique({ daData, setDAData }: CadreProps) {
   return (
     <div>
-      <h2 className="fr-h2">Cadre 8 : Architecture Technique</h2>
-
       <ExcalidrawSchemaEditor
         cadreData={daData.cadre8_ArchitectureTechnique}
         cadreType={8}

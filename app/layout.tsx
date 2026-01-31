@@ -17,20 +17,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" data-fr-theme="light">
+    <html lang="fr" data-fr-scheme="system" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var s=document.documentElement.getAttribute('data-fr-scheme');if(s==='system'){var d=window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.setAttribute('data-fr-theme',d?'dark':'light');window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',function(e){document.documentElement.setAttribute('data-fr-theme',e.matches?'dark':'light')})}})()`,
+          }}
+        />
+      </head>
       <body>
         <HeaderWithAuth />
         {children}
 
-        {/* JavaScript DSFR */}
         <Script
           src="/dsfr/dsfr.module.min.js"
-          type="module"
-          strategy="afterInteractive"
-        />
-        <Script
-          src="/dsfr/dsfr.nomodule.min.js"
-          noModule
           strategy="afterInteractive"
         />
       </body>

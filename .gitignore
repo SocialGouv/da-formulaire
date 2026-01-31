@@ -48,3 +48,4 @@ da-export-exemple.pdf
 .env*.local
 
 .claude
+.vscode

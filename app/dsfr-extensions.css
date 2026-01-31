@@ -106,6 +106,63 @@
   margin-bottom: 0;
 }
 
+/* Classes de couleur pour les tableaux */
+.fr-table td.fr-bg-info,
+.fr-table th.fr-bg-info {
+  background-color: var(--background-contrast-info);
+}
+
+.fr-table td.fr-bg-red,
+.fr-table th.fr-bg-red {
+  background-color: var(--red-marianne-975-75);
+}
+
+.fr-table td.fr-bg-orange,
+.fr-table th.fr-bg-orange {
+  background-color: var(--orange-terre-battue-975-75);
+}
+
+.fr-table td.fr-bg-yellow,
+.fr-table th.fr-bg-yellow {
+  background-color: var(--yellow-tournesol-975-75);
+}
+
+.fr-table td.fr-bg-green,
+.fr-table th.fr-bg-green {
+  background-color: var(--green-menthe-975-75);
+}
+
+/* Classes pour les totaux avec couleurs vives */
+.fr-table td.fr-bg-red-total {
+  background-color: var(--red-marianne-main-472);
+  color: var(--grey-1000-50);
+  text-align: center;
+  padding: 0.5rem;
+  font-weight: bold;
+}
+
+.fr-table td.fr-bg-orange-total {
+  background-color: var(--orange-terre-battue-main-645);
+  color: var(--text-inverted-grey);
+  text-align: center;
+  padding: 0.5rem;
+  font-weight: bold;
+}
+
+.fr-table td.fr-bg-yellow-total {
+  background-color: var(--yellow-tournesol-main-731);
+  text-align: center;
+  padding: 0.5rem;
+  font-weight: bold;
+}
+
+.fr-table td.fr-bg-green-total {
+  background-color: var(--green-menthe-main-548);
+  text-align: center;
+  padding: 0.5rem;
+  font-weight: bold;
+}
+
 /* Enlever le padding des cellules qui contiennent des inputs */
 .fr-table td:has(input.fr-input) {
   padding: 0 4px;

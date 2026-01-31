@@ -100,7 +100,7 @@ export default function Cadre1ProjetActeurs({ daData, setDAData }: CadreProps) {
                 <tbody>
                   {daData.cadre1_ProjetActeurs.planningProjet.map((item, index) => (
                     <tr key={index}>
-                      <td style={{ backgroundColor: 'var(--background-contrast-info)' }}>
+                      <td className="fr-bg-info">
                         <input
                           className="fr-input"
                           type="text"
@@ -231,7 +231,7 @@ export default function Cadre1ProjetActeurs({ daData, setDAData }: CadreProps) {
                 <tbody>
                   {daData.cadre1_ProjetActeurs.acteursDuProjet.map((item, index) => (
                     <tr key={index}>
-                      <td style={{ backgroundColor: 'var(--background-contrast-info)' }}>
+                      <td className="fr-bg-info">
                         <input
                           className="fr-input"
                           type="text"
@@ -377,16 +377,16 @@ export default function Cadre1ProjetActeurs({ daData, setDAData }: CadreProps) {
                     <th scope="col" className="fr-col--xs" rowSpan={2} style={{ textAlign: 'right' }}></th>
                   </tr>
                   <tr>
-                    <th scope="col" className="fr-col--sm" style={{ textAlign: 'center' }}>M</th>
-                    <th scope="col" className="fr-col--sm" style={{ textAlign: 'center' }}>R</th>
-                    <th scope="col" className="fr-col--sm" style={{ textAlign: 'center' }}>E</th>
-                    <th scope="col" className="fr-col--sm" style={{ textAlign: 'center' }}>P</th>
+                    <th scope="col" className="fr-col--sm fr-bg-red" style={{ textAlign: 'center' }}>M</th>
+                    <th scope="col" className="fr-col--sm fr-bg-orange" style={{ textAlign: 'center' }}>R</th>
+                    <th scope="col" className="fr-col--sm fr-bg-yellow" style={{ textAlign: 'center' }}>E</th>
+                    <th scope="col" className="fr-col--sm fr-bg-green" style={{ textAlign: 'center' }}>P</th>
                   </tr>
                 </thead>
                 <tbody>
                   {daData.cadre1_ProjetActeurs.acteursMetiersDuSIApplicatif.map((item, index) => (
                     <tr key={index}>
-                      <td style={{ backgroundColor: 'var(--background-contrast-info)' }}>
+                      <td className="fr-bg-info">
                         <input
                           className="fr-input"
                           type="text"
@@ -404,7 +404,7 @@ export default function Cadre1ProjetActeurs({ daData, setDAData }: CadreProps) {
                           }}
                         />
                       </td>
-                      <td style={{ backgroundColor: '#ffcccc' }}>
+                      <td>
                         <input
                           className="fr-input"
                           type="number"
@@ -422,7 +422,7 @@ export default function Cadre1ProjetActeurs({ daData, setDAData }: CadreProps) {
                           }}
                         />
                       </td>
-                      <td style={{ backgroundColor: '#ffe5cc' }}>
+                      <td>
                         <input
                           className="fr-input"
                           type="number"
@@ -440,7 +440,7 @@ export default function Cadre1ProjetActeurs({ daData, setDAData }: CadreProps) {
                           }}
                         />
                       </td>
-                      <td style={{ backgroundColor: '#ffffcc' }}>
+                      <td>
                         <input
                           className="fr-input"
                           type="number"
@@ -458,7 +458,7 @@ export default function Cadre1ProjetActeurs({ daData, setDAData }: CadreProps) {
                           }}
                         />
                       </td>
-                      <td style={{ backgroundColor: '#ccffcc' }}>
+                      <td>
                         <input
                           className="fr-input"
                           type="number"
@@ -499,25 +499,25 @@ export default function Cadre1ProjetActeurs({ daData, setDAData }: CadreProps) {
                   {/* Ligne Total */}
                   <tr>
                     <td><strong>Total utilisateurs</strong></td>
-                    <td style={{ backgroundColor: '#ff0000', color: 'white', textAlign: 'center', padding: '0.5rem', fontWeight: 'bold' }}>
+                    <td className="fr-bg-red">
                       {daData.cadre1_ProjetActeurs.acteursMetiersDuSIApplicatif.reduce(
                         (sum, item) => sum + (parseInt(item.nombreUtilisateursM) || 0),
                         0
                       )}
                     </td>
-                    <td style={{ backgroundColor: '#ff9900', color: 'white', textAlign: 'center', padding: '0.5rem', fontWeight: 'bold' }}>
+                    <td className="fr-bg-orange">
                       {daData.cadre1_ProjetActeurs.acteursMetiersDuSIApplicatif.reduce(
                         (sum, item) => sum + (parseInt(item.nombreUtilisateursR) || 0),
                         0
                       )}
                     </td>
-                    <td style={{ backgroundColor: '#ffff00', textAlign: 'center', padding: '0.5rem', fontWeight: 'bold' }}>
+                    <td className="fr-bg-yellow">
                       {daData.cadre1_ProjetActeurs.acteursMetiersDuSIApplicatif.reduce(
                         (sum, item) => sum + (parseInt(item.nombreUtilisateursE) || 0),
                         0
                       )}
                     </td>
-                    <td style={{ backgroundColor: '#00ff00', textAlign: 'center', padding: '0.5rem', fontWeight: 'bold' }}>
+                    <td className="fr-bg-green">
                       {daData.cadre1_ProjetActeurs.acteursMetiersDuSIApplicatif.reduce(
                         (sum, item) => sum + (parseInt(item.nombreUtilisateursP) || 0),
                         0

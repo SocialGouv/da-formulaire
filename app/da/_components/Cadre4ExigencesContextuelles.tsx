@@ -514,7 +514,7 @@ export default function Cadre4ExigencesContextuelles({ daData, setDAData }: Cadr
       <p className="fr-text--sm">
         Les exigences de preuves se traduisent sur : la traçabilité des actions, l'authentification des utilisateurs, l'imputabilité du responsable de l'action
       </p>
-      <div className="fr-table fr-table--no-caption fr-table--bordered">
+      <div className="fr-table fr-table--no-caption fr-table--bordered fr-table--sm">
         <div className="fr-table__wrapper">
           <div className="fr-table__container">
             <div className="fr-table__content">
@@ -770,7 +770,7 @@ export default function Cadre4ExigencesContextuelles({ daData, setDAData }: Cadr
       <p className="fr-text--sm">
         NUC = Nombre Utilisateurs Connectés | NRS = Nombre Requêtes Simultanées
       </p>
-      <div className="fr-table fr-table--no-caption fr-table--bordered">
+      <div className="fr-table fr-table--no-caption fr-table--bordered fr-table--sm">
         <div className="fr-table__wrapper">
           <div className="fr-table__container">
             <div className="fr-table__content">
@@ -944,7 +944,7 @@ export default function Cadre4ExigencesContextuelles({ daData, setDAData }: Cadr
 
       {/* Temps de réponse */}
       <h3 className="fr-h3 fr-mt-6w">Temps de réponse</h3>
-      <div className="fr-table fr-table--no-caption fr-table--bordered">
+      <div className="fr-table fr-table--no-caption fr-table--bordered fr-table--sm">
         <div className="fr-table__wrapper">
           <div className="fr-table__container">
             <div className="fr-table__content">
@@ -1193,7 +1193,7 @@ export default function Cadre4ExigencesContextuelles({ daData, setDAData }: Cadr
 
       {/* Traitements automatisés */}
       <h3 className="fr-h3 fr-mt-6w">Traitements automatisés</h3>
-      <div className="fr-table fr-table--no-caption fr-table--bordered">
+      <div className="fr-table fr-table--no-caption fr-table--bordered fr-table--sm">
         <div className="fr-table__wrapper">
           <div className="fr-table__container">
             <div className="fr-table__content">

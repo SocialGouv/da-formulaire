@@ -8,7 +8,7 @@ interface CadreProps {
 export default function Cadre10MatricesFlux({ daData, setDAData }: CadreProps) {
   return (
     <div>
-      <div className="fr-table">
+      <div className="fr-table fr-table--sm">
         <div className="fr-table__wrapper">
           <div className="fr-table__container">
             <div className="fr-table__content">

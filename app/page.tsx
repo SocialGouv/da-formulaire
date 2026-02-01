@@ -3,7 +3,7 @@ import path from "path";
 import Image from "next/image";
 import Link from "next/link";
 import { auth } from "@/auth";
-import ProConnectLoginButton from "./components/ProConnectLoginButton";
+import ProConnectLoginButton from "./_components/ProConnectLoginButton";
 
 interface DA {
   id: string;
@@ -35,15 +35,18 @@ export default async function Home() {
           <div className="fr-col-12 fr-col-md-6">
             <h1 className="fr-h1">Documents d&apos;Architecture</h1>
             <p className="fr-text--lead fr-mb-3w">
-              Créez, éditez et exportez vos Documents d&apos;Architecture (DA) conformes aux standards de l&apos;État.
+              Créez, éditez et exportez vos Documents d&apos;Architecture (DA)
+              conformes aux standards de l&apos;État.
             </p>
             <p className="fr-text--sm fr-mb-5w">
-              Structurez votre architecture SI en 12 cadres détaillés : projet, fonctionnalités, contraintes, exigences,
-              architectures (acteurs, fonctionnelle, applicative, technique), serveurs, flux, dimensionnement et annexes.
+              Structurez votre architecture SI en 12 cadres détaillés : projet,
+              fonctionnalités, contraintes, exigences, architectures (acteurs,
+              fonctionnelle, applicative, technique), serveurs, flux,
+              dimensionnement et annexes.
             </p>
 
             {session?.user ? (
-              <Link href="/formulaire/new" className="fr-btn fr-btn--lg">
+              <Link href="/da/new" className="fr-btn fr-btn--lg">
                 <span className="fr-icon-add-line" aria-hidden="true"></span>
                 Créer un nouveau DA
               </Link>
@@ -57,7 +60,7 @@ export default async function Home() {
               alt="Illustration API"
               width={600}
               height={600}
-              style={{ width: '100%', height: 'auto' }}
+              style={{ width: "100%", height: "auto" }}
               priority
             />
           </div>
@@ -75,29 +78,85 @@ export default async function Home() {
                   <div className="fr-table fr-table--layout-fixed fr-table--no-caption">
                     <div className="fr-table__content">
                       <table>
-                        <caption>Liste des Documents d&apos;Architecture</caption>
+                        <caption>
+                          Liste des Documents d&apos;Architecture
+                        </caption>
                         <thead>
                           <tr>
                             <th scope="col">Nom du projet</th>
-                            <th scope="col" className="fr-col--xs" style={{ textAlign: 'right' }}>Date de création</th>
-                            <th scope="col" className="fr-col--xs" style={{ textAlign: 'right' }}>Dernière modification</th>
-                            <th scope="col" className="fr-col--sm" style={{ textAlign: 'right' }}></th>
+                            <th
+                              scope="col"
+                              className="fr-col--xs"
+                              style={{ textAlign: "right" }}
+                            >
+                              Date de création
+                            </th>
+                            <th
+                              scope="col"
+                              className="fr-col--xs"
+                              style={{ textAlign: "right" }}
+                            >
+                              Dernière modification
+                            </th>
+                            <th
+                              scope="col"
+                              className="fr-col--sm"
+                              style={{ textAlign: "right" }}
+                            ></th>
                           </tr>
                         </thead>
                         <tbody>
                           {daList.map((da) => (
                             <tr key={da.id}>
-                              <td><strong>{da.nom}</strong></td>
-                              <td className="fr-col--xs" style={{ textAlign: 'right' }}>{new Date(da.dateCreation).toLocaleDateString("fr-FR")}</td>
-                              <td className="fr-col--xs" style={{ textAlign: 'right' }}>{new Date(da.dateModification).toLocaleDateString("fr-FR")}</td>
-                              <td className="fr-col--sm" style={{ textAlign: 'right' }}>
-                                <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
-                                  <Link href={`/formulaire/${da.id}`} className="fr-btn fr-btn--sm">
-                                    <span className="fr-icon-edit-line" aria-hidden="true"></span>
+                              <td>
+                                <strong>{da.nom}</strong>
+                              </td>
+                              <td
+                                className="fr-col--xs"
+                                style={{ textAlign: "right" }}
+                              >
+                                {new Date(da.dateCreation).toLocaleDateString(
+                                  "fr-FR",
+                                )}
+                              </td>
+                              <td
+                                className="fr-col--xs"
+                                style={{ textAlign: "right" }}
+                              >
+                                {new Date(
+                                  da.dateModification,
+                                ).toLocaleDateString("fr-FR")}
+                              </td>
+                              <td
+                                className="fr-col--sm"
+                                style={{ textAlign: "right" }}
+                              >
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    gap: "0.5rem",
+                                    justifyContent: "flex-end",
+                                  }}
+                                >
+                                  <Link
+                                    href={`/da/${da.id}`}
+                                    className="fr-btn fr-btn--sm"
+                                  >
+                                    <span
+                                      className="fr-icon-edit-line"
+                                      aria-hidden="true"
+                                    ></span>
                                     Éditer
                                   </Link>
-                                  <Link href={`/api/export-pdf/${da.id}`} target="_blank" className="fr-btn fr-btn--sm fr-btn--secondary">
-                                    <span className="fr-icon-download-line" aria-hidden="true"></span>
+                                  <Link
+                                    href={`/api/export-pdf/${da.id}`}
+                                    target="_blank"
+                                    className="fr-btn fr-btn--sm fr-btn--secondary"
+                                  >
+                                    <span
+                                      className="fr-icon-download-line"
+                                      aria-hidden="true"
+                                    ></span>
                                     PDF
                                   </Link>
                                 </div>
@@ -112,7 +171,8 @@ export default async function Home() {
               ) : (
                 <div className="fr-callout fr-callout--info fr-mt-6w">
                   <p className="fr-callout__text">
-                    Aucun document d&apos;architecture trouvé. Créez votre premier DA !
+                    Aucun document d&apos;architecture trouvé. Créez votre
+                    premier DA !
                   </p>
                 </div>
               )}

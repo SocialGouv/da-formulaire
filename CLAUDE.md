@@ -9,6 +9,7 @@ This is a French government "Document d'Architecture" (DA) form builder - a Next
 ## Key Commands
 
 **Development:**
+
 ```bash
 pnpm dev          # Start development server on http://localhost:3000
 pnpm build        # Build for production
@@ -19,6 +20,7 @@ pnpm lint         # Run ESLint
 ## Architecture
 
 ### Tech Stack
+
 - **Framework**: Next.js 16 (App Router)
 - **Design System**: DSFR vanilla (pure HTML/CSS - no React library)
 - **Styling**: SASS + inline CSS
@@ -28,6 +30,7 @@ pnpm lint         # Run ESLint
 - **Compiler**: React Compiler enabled
 
 ### Data Persistence
+
 - DA documents are stored as JSON files in `public/da/{id}.json`
 - The DA index is maintained in `public/da/index.json`
 - This is a **file-based system** with no database - all data operations use the filesystem
@@ -35,14 +38,16 @@ pnpm lint         # Run ESLint
 ### Application Structure
 
 **Routes:**
+
 - `/` - Home page displaying list of DA documents (app/page.tsx)
-- `/formulaire/[id]` - DA form editor with 12-step stepper (app/formulaire/[id]/page.tsx)
+- `/da/[id]` - DA form editor with 12-step stepper (app/da/[id]/page.tsx)
   - Uses `id="new"` for creating new documents
   - Loads existing documents from `/da/{id}.json`
 - `/api/export-pdf/[id]` - PDF export endpoint (app/api/export-pdf/[id]/route.ts)
 
 **12-Step Form Structure:**
-Each DA has 12 "cadres" (sections), managed as separate components in `app/formulaire/components/`:
+Each DA has 12 "cadres" (sections), managed as separate components in `app/da/components/`:
+
 1. Projet - Acteurs (Project and stakeholders)
 2. Fonctionnalités - Données (Features and data)
 3. Contraintes - Volumétrie (Constraints and volume metrics)
@@ -57,17 +62,20 @@ Each DA has 12 "cadres" (sections), managed as separate components in `app/formu
 12. URLs & Annexe (URLs and appendix)
 
 **State Management:**
+
 - Form state is managed with React `useState` in the main form component
 - Each cadre component receives `daData` and `setDAData` props to update the global state
 - The complete DA data structure is typed in `types/da.types.ts`
 
 **Excalidraw Integration:**
+
 - Cadres 5, 6, 7, 8, and 10 include architecture diagrams
 - Each stores both JSON (for editing) and base64 PNG (for display/PDF export)
-- The `ExcalidrawSchemaEditor` component (app/formulaire/components/ExcalidrawSchemaEditor.tsx) handles diagram editing
+- The `ExcalidrawSchemaEditor` component (app/da/components/ExcalidrawSchemaEditor.tsx) handles diagram editing
 - Template generation utilities are in `utils/excalidrawTemplates.ts`
 
 **Type System:**
+
 - All DA data structures are strictly typed in `types/da.types.ts`
 - The main type is `DAData` which contains all 12 cadres plus annexe
 - Type path aliases use `@/` prefix (configured in tsconfig.json)
@@ -75,7 +83,8 @@ Each DA has 12 "cadres" (sections), managed as separate components in `app/formu
 ### Key Design Patterns
 
 **Client/Server Split:**
-- The main form (`/formulaire/[id]`) is a client component ("use client") for interactivity
+
+- The main form (`/da/[id]`) is a client component ("use client") for interactivity
 - The home page is a server component that reads the filesystem
 - PDF generation happens server-side in an API route
 
@@ -84,12 +93,14 @@ Each DA has 12 "cadres" (sections), managed as separate components in `app/formu
 This project uses **vanilla DSFR** (pure HTML/CSS from @gouvfr/dsfr package).
 
 **Workflow for UI modifications (MANDATORY):**
+
 1. **ALWAYS consult the official DSFR documentation** at https://www.systeme-de-design.gouv.fr/ BEFORE any implementation
 2. Use existing DSFR components and classes (fr-btn, fr-input, etc.)
 3. Propose implementation to user before coding
 4. **ALWAYS verify the result in Chrome MCP** after modification to ensure correctness
 
 **DSFR structure:**
+
 - CSS: Bundled from node_modules/@gouvfr/dsfr/dist/dsfr.min.css
 - JavaScript: Loaded from public/dsfr/ (dsfr.module.min.js)
 - Assets: Fonts and icons in public/dsfr/
@@ -97,6 +108,7 @@ This project uses **vanilla DSFR** (pure HTML/CSS from @gouvfr/dsfr package).
 Use native DSFR classes. Custom CSS (app/dsfr-extensions.css) should be exceptional.
 
 **Dynamic Imports:**
+
 - Excalidraw is loaded dynamically with `next/dynamic` to avoid SSR issues
 - Set with `ssr: false` since Excalidraw requires browser APIs
 
@@ -117,8 +129,10 @@ Use native DSFR classes. Custom CSS (app/dsfr-extensions.css) should be exceptio
 - Test both the form editing flow and PDF export when making changes to data structures
 
 ## Development environment
+
 - We use Google Chrome MCP to access, read and test web pages
 - **All UI modifications must be verified in Chrome MCP** to ensure they render correctly with DSFR
 
 ## Documentation
+
 - DSFR Componants: https://www.systeme-de-design.gouv.fr/version-courante/fr/composants

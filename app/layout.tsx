@@ -1,7 +1,7 @@
 import "@gouvfr/dsfr/dist/dsfr.min.css";
 import "@gouvfr/dsfr/dist/utility/utility.min.css";
 import Script from "next/script";
-import HeaderWithAuth from "./components/HeaderWithAuth";
+import HeaderWithAuth from "./_components/HeaderWithAuth";
 import type { Metadata } from "next";
 import "./globals.css";
 import "./dsfr-extensions.css";
@@ -29,10 +29,7 @@ export default function RootLayout({
         <HeaderWithAuth />
         {children}
 
-        <Script
-          src="/dsfr/dsfr.module.min.js"
-          strategy="afterInteractive"
-        />
+        <Script src="/dsfr/dsfr.module.min.js" strategy="afterInteractive" />
       </body>
     </html>
   );

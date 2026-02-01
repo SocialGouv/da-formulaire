@@ -10,7 +10,7 @@ export default function Cadre12URLsAnnexe({ daData, setDAData }: CadreProps) {
     <div>
       {/* URLs Applicatives */}
       <h3 className="fr-h3">URLs Applicatives</h3>
-      <div className="fr-table">
+      <div className="fr-table fr-table--sm">
         <div className="fr-table__wrapper">
           <div className="fr-table__container">
             <div className="fr-table__content">
@@ -215,7 +215,7 @@ export default function Cadre12URLsAnnexe({ daData, setDAData }: CadreProps) {
         />
       </div>
 
-      <div className="fr-table">
+      <div className="fr-table fr-table--sm">
         <div className="fr-table__wrapper">
           <div className="fr-table__container">
             <div className="fr-table__content">

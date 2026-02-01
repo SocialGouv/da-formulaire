@@ -54,7 +54,7 @@ export default function Cadre3ContraintesVolumetrie({ daData, setDAData }: Cadre
 
       {/* Dépendances avec d'autres SI */}
       <h3 className="fr-h3 fr-mt-6w">Dépendances avec d'autres SI</h3>
-      <div className="fr-table fr-table--no-caption fr-table--bordered">
+      <div className="fr-table fr-table--no-caption fr-table--bordered fr-table--sm">
         <div className="fr-table__wrapper">
           <div className="fr-table__container">
             <div className="fr-table__content">

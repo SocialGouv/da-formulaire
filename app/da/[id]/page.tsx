@@ -5,18 +5,18 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import type { DAData } from "@/types/da.types";
 import { initialData } from "../initialData";
-import Cadre1ProjetActeurs from "../components/Cadre1ProjetActeurs";
-import Cadre2FonctionnalitesDonnees from "../components/Cadre2FonctionnalitesDonnees";
-import Cadre3ContraintesVolumetrie from "../components/Cadre3ContraintesVolumetrie";
-import Cadre4ExigencesContextuelles from "../components/Cadre4ExigencesContextuelles";
-import Cadre5ArchitectureActeurs from "../components/Cadre5ArchitectureActeurs";
-import Cadre6ArchitectureFonctionnelle from "../components/Cadre6ArchitectureFonctionnelle";
-import Cadre7ArchitectureApplicative from "../components/Cadre7ArchitectureApplicative";
-import Cadre8ArchitectureTechnique from "../components/Cadre8ArchitectureTechnique";
-import Cadre9ServeursComposants from "../components/Cadre9ServeursComposants";
-import Cadre10MatricesFlux from "../components/Cadre10MatricesFlux";
-import Cadre11Dimensionnement from "../components/Cadre11Dimensionnement";
-import Cadre12URLsAnnexe from "../components/Cadre12URLsAnnexe";
+import Cadre1ProjetActeurs from "../_components/Cadre1ProjetActeurs";
+import Cadre2FonctionnalitesDonnees from "../_components/Cadre2FonctionnalitesDonnees";
+import Cadre3ContraintesVolumetrie from "../_components/Cadre3ContraintesVolumetrie";
+import Cadre4ExigencesContextuelles from "../_components/Cadre4ExigencesContextuelles";
+import Cadre5ArchitectureActeurs from "../_components/Cadre5ArchitectureActeurs";
+import Cadre6ArchitectureFonctionnelle from "../_components/Cadre6ArchitectureFonctionnelle";
+import Cadre7ArchitectureApplicative from "../_components/Cadre7ArchitectureApplicative";
+import Cadre8ArchitectureTechnique from "../_components/Cadre8ArchitectureTechnique";
+import Cadre9ServeursComposants from "../_components/Cadre9ServeursComposants";
+import Cadre10MatricesFlux from "../_components/Cadre10MatricesFlux";
+import Cadre11Dimensionnement from "../_components/Cadre11Dimensionnement";
+import Cadre12URLsAnnexe from "../_components/Cadre12URLsAnnexe";
 
 export default function FormulaireDA() {
   const params = useParams();
@@ -156,7 +156,7 @@ export default function FormulaireDA() {
               </div>
             </nav>
           </div>
-          <div className="content-editorial fr-col-12 fr-col-md-8">
+          <div className="content-editorial fr-col-12 fr-col-md-8 fr-mt-2w">
             <h1 className="fr-h1">
               {daId && daId !== "new"
                 ? `${daData.cadre1_ProjetActeurs.nomDuProjet || "Document d'Architecture"}`

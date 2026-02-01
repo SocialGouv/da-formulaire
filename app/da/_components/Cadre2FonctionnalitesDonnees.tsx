@@ -11,7 +11,7 @@ export default function Cadre2FonctionnalitesDonnees({ daData, setDAData }: Cadr
       {/* Fonctionnalités du SI applicatif */}
       <h3 className="fr-h3">Fonctionnalités du SI applicatif</h3>
       <p className="fr-text--sm">M = Ministère, R = Réseau Interministériel, E = Extranet, P = Public</p>
-      <div className="fr-table fr-table--no-caption fr-table--bordered">
+      <div className="fr-table fr-table--no-caption fr-table--bordered fr-table--sm">
         <div className="fr-table__wrapper">
           <div className="fr-table__container">
             <div className="fr-table__content">
@@ -146,7 +146,7 @@ export default function Cadre2FonctionnalitesDonnees({ daData, setDAData }: Cadr
 
       {/* Données métier du SI Applicatif */}
       <h3 className="fr-h3 fr-mt-6w">Données métier du SI Applicatif</h3>
-      <div className="fr-table fr-table--no-caption fr-table--bordered">
+      <div className="fr-table fr-table--no-caption fr-table--bordered fr-table--sm">
         <div className="fr-table__wrapper">
           <div className="fr-table__container">
             <div className="fr-table__content">
@@ -261,7 +261,7 @@ export default function Cadre2FonctionnalitesDonnees({ daData, setDAData }: Cadr
 
       {/* Fichiers métiers du SI applicatif */}
       <h3 className="fr-h3 fr-mt-6w">Fichiers métiers du SI applicatif</h3>
-      <div className="fr-table fr-table--no-caption fr-table--bordered">
+      <div className="fr-table fr-table--no-caption fr-table--bordered fr-table--sm">
         <div className="fr-table__wrapper">
           <div className="fr-table__container">
             <div className="fr-table__content">
@@ -376,7 +376,7 @@ export default function Cadre2FonctionnalitesDonnees({ daData, setDAData }: Cadr
 
       {/* Référentiel données (hors SI) */}
       <h3 className="fr-h3 fr-mt-6w">Référentiel données (hors SI)</h3>
-      <div className="fr-table fr-table--no-caption fr-table--bordered">
+      <div className="fr-table fr-table--no-caption fr-table--bordered fr-table--sm">
         <div className="fr-table__wrapper">
           <div className="fr-table__container">
             <div className="fr-table__content">
@@ -650,7 +650,7 @@ export default function Cadre2FonctionnalitesDonnees({ daData, setDAData }: Cadr
       {/* Services utilisés par application */}
       <h3 className="fr-h3 fr-mt-6w">Services utilisés par application (externes au SI applicatif)</h3>
       <h4 className="fr-h4">SI SOURCE</h4>
-      <div className="fr-table fr-table--no-caption fr-table--bordered">
+      <div className="fr-table fr-table--no-caption fr-table--bordered fr-table--sm">
         <div className="fr-table__wrapper">
           <div className="fr-table__container">
             <div className="fr-table__content">

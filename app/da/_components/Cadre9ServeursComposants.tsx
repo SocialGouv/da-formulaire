@@ -140,7 +140,7 @@ export default function Cadre9ServeursComposants({ daData, setDAData }: CadrePro
           </div>
 
           <h4 className="fr-h4 fr-mt-4w">Composants Logiciels</h4>
-          <div className="fr-table fr-table--no-caption fr-table--bordered">
+          <div className="fr-table fr-table--no-caption fr-table--bordered fr-table--sm">
             <div className="fr-table__wrapper">
               <div className="fr-table__container">
                 <div className="fr-table__content">

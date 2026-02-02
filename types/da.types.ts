@@ -45,6 +45,7 @@ export interface ActeurDuProjet {
 }
 
 export interface ActeurMetierDuSI {
+  [key: string]: string | boolean;
   profilsActeurs: string;
   nombreUtilisateursM: string; // Ministère
   nombreUtilisateursR: string; // Réseau interministériel
@@ -66,6 +67,7 @@ export interface Cadre2_FonctionnalitesDonnees {
 }
 
 export interface FonctionnaliteDuSI {
+  [key: string]: string | boolean;
   fonctionnalite: string;
   M: boolean; // Ministère
   R: boolean; // Réseau interministériel
@@ -74,6 +76,7 @@ export interface FonctionnaliteDuSI {
 }
 
 export interface DonneeMetierDuSI {
+  [key: string]: string | boolean;
   donnee: string;
   M: boolean;
   R: boolean;
@@ -82,6 +85,7 @@ export interface DonneeMetierDuSI {
 }
 
 export interface FichierMetierDuSI {
+  [key: string]: string | boolean;
   fichier: string;
   M: boolean;
   R: boolean;
@@ -125,6 +129,7 @@ export interface SensibiliteDonnees {
 }
 
 export interface ReferentielDonnees {
+  [key: string]: string | boolean;
   referentiel: string;
   modeEchange: string;
   M: boolean;
@@ -134,6 +139,7 @@ export interface ReferentielDonnees {
 }
 
 export interface ServiceUtilise {
+  [key: string]: string | boolean;
   service: string;
   modeEchange: string;
   M: boolean;

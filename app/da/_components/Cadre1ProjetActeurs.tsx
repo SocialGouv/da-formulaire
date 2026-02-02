@@ -1,4 +1,5 @@
 import type { DAData } from "@/types/da.types";
+import EditableTable from "./EditableTable";
 
 interface CadreProps {
   daData: DAData;
@@ -408,293 +409,36 @@ export default function Cadre1ProjetActeurs({ daData, setDAData }: CadreProps) {
       <p className="fr-text--sm fr-mb-2w">
         M = Ministère, R = Réseau interministériel, E = Extranet, P = Public
       </p>
-      <div className="fr-table fr-table--no-caption fr-table--bordered fr-table--sm">
-        <div className="fr-table__wrapper">
-          <div className="fr-table__container">
-            <div className="fr-table__content">
-              <table>
-                <caption>Acteurs métiers du SI applicatif</caption>
-                <thead>
-                  <tr>
-                    <th scope="col" className="fr-col--lg" rowSpan={2}>
-                      Profils acteurs
-                    </th>
-                    <th scope="col" colSpan={4} style={{ textAlign: "center" }}>
-                      Nombre utilisateurs
-                    </th>
-                    <th
-                      scope="col"
-                      className="fr-col--xs"
-                      rowSpan={2}
-                      style={{ textAlign: "right" }}
-                    ></th>
-                  </tr>
-                  <tr>
-                    <th
-                      scope="col"
-                      className="fr-col--sm fr-th--red"
-                      style={{ textAlign: "center" }}
-                    >
-                      M
-                    </th>
-                    <th
-                      scope="col"
-                      className="fr-col--sm fr-th--orange"
-                      style={{ textAlign: "center" }}
-                    >
-                      R
-                    </th>
-                    <th
-                      scope="col"
-                      className="fr-col--sm fr-th--yellow"
-                      style={{ textAlign: "center" }}
-                    >
-                      E
-                    </th>
-                    <th
-                      scope="col"
-                      className="fr-col--sm fr-th--green"
-                      style={{ textAlign: "center" }}
-                    >
-                      P
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {daData.cadre1_ProjetActeurs.acteursMetiersDuSIApplicatif.map(
-                    (item, index) => (
-                      <tr key={index}>
-                        <td className="fr-bg-info">
-                          <input
-                            className="fr-table-input"
-                            type="text"
-                            value={item.profilsActeurs}
-                            onChange={(e) => {
-                              const newActeurs = [
-                                ...daData.cadre1_ProjetActeurs
-                                  .acteursMetiersDuSIApplicatif,
-                              ];
-                              newActeurs[index].profilsActeurs = e.target.value;
-                              setDAData({
-                                ...daData,
-                                cadre1_ProjetActeurs: {
-                                  ...daData.cadre1_ProjetActeurs,
-                                  acteursMetiersDuSIApplicatif: newActeurs,
-                                },
-                              });
-                            }}
-                          />
-                        </td>
-                        <td>
-                          <input
-                            className="fr-table-input fr-table-input--right"
-                            type="number"
-                            value={item.nombreUtilisateursM}
-                            onChange={(e) => {
-                              const newActeurs = [
-                                ...daData.cadre1_ProjetActeurs
-                                  .acteursMetiersDuSIApplicatif,
-                              ];
-                              newActeurs[index].nombreUtilisateursM =
-                                e.target.value;
-                              setDAData({
-                                ...daData,
-                                cadre1_ProjetActeurs: {
-                                  ...daData.cadre1_ProjetActeurs,
-                                  acteursMetiersDuSIApplicatif: newActeurs,
-                                },
-                              });
-                            }}
-                          />
-                        </td>
-                        <td>
-                          <input
-                            className="fr-table-input fr-table-input--right"
-                            type="number"
-                            value={item.nombreUtilisateursR}
-                            onChange={(e) => {
-                              const newActeurs = [
-                                ...daData.cadre1_ProjetActeurs
-                                  .acteursMetiersDuSIApplicatif,
-                              ];
-                              newActeurs[index].nombreUtilisateursR =
-                                e.target.value;
-                              setDAData({
-                                ...daData,
-                                cadre1_ProjetActeurs: {
-                                  ...daData.cadre1_ProjetActeurs,
-                                  acteursMetiersDuSIApplicatif: newActeurs,
-                                },
-                              });
-                            }}
-                          />
-                        </td>
-                        <td>
-                          <input
-                            className="fr-table-input fr-table-input--right"
-                            type="number"
-                            value={item.nombreUtilisateursE}
-                            onChange={(e) => {
-                              const newActeurs = [
-                                ...daData.cadre1_ProjetActeurs
-                                  .acteursMetiersDuSIApplicatif,
-                              ];
-                              newActeurs[index].nombreUtilisateursE =
-                                e.target.value;
-                              setDAData({
-                                ...daData,
-                                cadre1_ProjetActeurs: {
-                                  ...daData.cadre1_ProjetActeurs,
-                                  acteursMetiersDuSIApplicatif: newActeurs,
-                                },
-                              });
-                            }}
-                          />
-                        </td>
-                        <td>
-                          <input
-                            className="fr-table-input fr-table-input--right"
-                            type="number"
-                            value={item.nombreUtilisateursP}
-                            onChange={(e) => {
-                              const newActeurs = [
-                                ...daData.cadre1_ProjetActeurs
-                                  .acteursMetiersDuSIApplicatif,
-                              ];
-                              newActeurs[index].nombreUtilisateursP =
-                                e.target.value;
-                              setDAData({
-                                ...daData,
-                                cadre1_ProjetActeurs: {
-                                  ...daData.cadre1_ProjetActeurs,
-                                  acteursMetiersDuSIApplicatif: newActeurs,
-                                },
-                              });
-                            }}
-                          />
-                        </td>
-                        <td style={{ textAlign: "right" }}>
-                          <button
-                            className="fr-btn fr-btn--tertiary-no-outline"
-                            type="button"
-                            title="Supprimer"
-                            onClick={() => {
-                              const newActeurs =
-                                daData.cadre1_ProjetActeurs.acteursMetiersDuSIApplicatif.filter(
-                                  (_, i) => i !== index,
-                                );
-                              setDAData({
-                                ...daData,
-                                cadre1_ProjetActeurs: {
-                                  ...daData.cadre1_ProjetActeurs,
-                                  acteursMetiersDuSIApplicatif: newActeurs,
-                                },
-                              });
-                            }}
-                          >
-                            <span
-                              className="fr-icon-close-line"
-                              aria-hidden="true"
-                            ></span>
-                          </button>
-                        </td>
-                      </tr>
-                    ),
-                  )}
-                  {/* Ligne Total */}
-                  <tr>
-                    <td>
-                      <strong>Total utilisateurs</strong>
-                    </td>
-                    <td className="fr-td--red">
-                      <input
-                        className="fr-table-input fr-table-input--right fr-text--md"
-                        type="number"
-                        value={daData.cadre1_ProjetActeurs.acteursMetiersDuSIApplicatif.reduce(
-                          (sum, item) =>
-                            sum + (parseInt(item.nombreUtilisateursM) || 0),
-                          0,
-                        )}
-                        readOnly
-                      />
-                    </td>
-                    <td className="fr-td--orange">
-                      <input
-                        className="fr-table-input fr-table-input--right fr-text--md"
-                        type="number"
-                        value={daData.cadre1_ProjetActeurs.acteursMetiersDuSIApplicatif.reduce(
-                          (sum, item) =>
-                            sum + (parseInt(item.nombreUtilisateursR) || 0),
-                          0,
-                        )}
-                        readOnly
-                      />
-                    </td>
-                    <td className="fr-td--yellow">
-                      <input
-                        className="fr-table-input fr-table-input--right fr-text--md"
-                        type="number"
-                        value={daData.cadre1_ProjetActeurs.acteursMetiersDuSIApplicatif.reduce(
-                          (sum, item) =>
-                            sum + (parseInt(item.nombreUtilisateursE) || 0),
-                          0,
-                        )}
-                        readOnly
-                      />
-                    </td>
-                    <td className="fr-td--green">
-                      <input
-                        className="fr-table-input fr-table-input--right fr-text--md"
-                        type="number"
-                        value={daData.cadre1_ProjetActeurs.acteursMetiersDuSIApplicatif.reduce(
-                          (sum, item) =>
-                            sum + (parseInt(item.nombreUtilisateursP) || 0),
-                          0,
-                        )}
-                        readOnly
-                      />
-                    </td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-        <div className="fr-table__footer">
-          <div className="fr-table__footer--end">
-            <ul className="fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-md">
-              <li>
-                <button
-                  className="fr-btn fr-btn--secondary"
-                  onClick={() => {
-                    setDAData({
-                      ...daData,
-                      cadre1_ProjetActeurs: {
-                        ...daData.cadre1_ProjetActeurs,
-                        acteursMetiersDuSIApplicatif: [
-                          ...daData.cadre1_ProjetActeurs
-                            .acteursMetiersDuSIApplicatif,
-                          {
-                            profilsActeurs: "",
-                            nombreUtilisateursM: "0",
-                            nombreUtilisateursR: "0",
-                            nombreUtilisateursE: "0",
-                            nombreUtilisateursP: "0",
-                          },
-                        ],
-                      },
-                    });
-                  }}
-                >
-                  <span className="fr-icon-add-line" aria-hidden="true"></span>
-                  Ajouter un profil acteur
-                </button>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+      <EditableTable
+        caption="Acteurs métiers du SI applicatif"
+        textColumns={[{ key: "profilsActeurs", label: "Profils acteurs" }]}
+        groupHeader="Nombre utilisateurs"
+        columns={[
+          { key: "nombreUtilisateursM", label: "M", type: "number", headerClass: "fr-th--red", totalClass: "fr-td--red" },
+          { key: "nombreUtilisateursR", label: "R", type: "number", headerClass: "fr-th--orange", totalClass: "fr-td--orange" },
+          { key: "nombreUtilisateursE", label: "E", type: "number", headerClass: "fr-th--yellow", totalClass: "fr-td--yellow" },
+          { key: "nombreUtilisateursP", label: "P", type: "number", headerClass: "fr-th--green", totalClass: "fr-td--green" },
+        ]}
+        rows={daData.cadre1_ProjetActeurs.acteursMetiersDuSIApplicatif}
+        totalLabel="Total utilisateurs"
+        addLabel="Ajouter un profil acteur"
+        defaultRow={{
+          profilsActeurs: "",
+          nombreUtilisateursM: "0",
+          nombreUtilisateursR: "0",
+          nombreUtilisateursE: "0",
+          nombreUtilisateursP: "0",
+        }}
+        onRowsChange={(rows) =>
+          setDAData({
+            ...daData,
+            cadre1_ProjetActeurs: {
+              ...daData.cadre1_ProjetActeurs,
+              acteursMetiersDuSIApplicatif: rows,
+            },
+          })
+        }
+      />
     </div>
   );
 }

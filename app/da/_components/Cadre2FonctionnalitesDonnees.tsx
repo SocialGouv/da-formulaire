@@ -1,9 +1,17 @@
 import type { DAData } from "@/types/da.types";
+import EditableTable from "./EditableTable";
 
 interface CadreProps {
   daData: DAData;
   setDAData: (data: DAData) => void;
 }
+
+const CHECKBOX_COLUMNS_MREP = [
+  { key: "M" as const, label: "M", type: "checkbox" as const, headerClass: "fr-th--red", totalClass: "fr-td--red" },
+  { key: "R" as const, label: "R", type: "checkbox" as const, headerClass: "fr-th--orange", totalClass: "fr-td--orange" },
+  { key: "E" as const, label: "E", type: "checkbox" as const, headerClass: "fr-th--yellow", totalClass: "fr-td--yellow" },
+  { key: "P" as const, label: "P", type: "checkbox" as const, headerClass: "fr-th--green", totalClass: "fr-td--green" },
+];
 
 export default function Cadre2FonctionnalitesDonnees({ daData, setDAData }: CadreProps) {
   return (
@@ -11,496 +19,87 @@ export default function Cadre2FonctionnalitesDonnees({ daData, setDAData }: Cadr
       {/* Fonctionnalités du SI applicatif */}
       <h3 className="fr-h3">Fonctionnalités du SI applicatif</h3>
       <p className="fr-text--sm">M = Ministère, R = Réseau Interministériel, E = Extranet, P = Public</p>
-      <div className="fr-table fr-table--no-caption fr-table--bordered fr-table--sm">
-        <div className="fr-table__wrapper">
-          <div className="fr-table__container">
-            <div className="fr-table__content">
-              <table>
-                <caption>Fonctionnalités du SI applicatif</caption>
-                <thead>
-                  <tr>
-                    <th scope="col" className="fr-col--lg">Fonctionnalité</th>
-                    <th scope="col" className="fr-col--sm" style={{ textAlign: 'center' }}>M</th>
-                    <th scope="col" className="fr-col--sm" style={{ textAlign: 'center' }}>R</th>
-                    <th scope="col" className="fr-col--sm" style={{ textAlign: 'center' }}>E</th>
-                    <th scope="col" className="fr-col--sm" style={{ textAlign: 'center' }}>P</th>
-                    <th scope="col" className="fr-col--xs" style={{ textAlign: 'right' }}></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif.map((item, index) => (
-                    <tr key={index}>
-                      <td>
-                        <input
-                          className="fr-input"
-                          type="text"
-                          value={item.fonctionnalite}
-                          onChange={(e) => {
-                            const newItems = [...daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif];
-                            newItems[index].fonctionnalite = e.target.value;
-                            setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, fonctionnalitesDuSIApplicatif: newItems}});
-                          }}
-                        />
-                      </td>
-                      <td style={{ textAlign: 'center' }}>
-                        <input
-                          type="checkbox"
-                          checked={item.M}
-                          onChange={(e) => {
-                            const newItems = [...daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif];
-                            newItems[index].M = e.target.checked;
-                            setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, fonctionnalitesDuSIApplicatif: newItems}});
-                          }}
-                        />
-                      </td>
-                      <td style={{ textAlign: 'center' }}>
-                        <input
-                          type="checkbox"
-                          checked={item.R}
-                          onChange={(e) => {
-                            const newItems = [...daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif];
-                            newItems[index].R = e.target.checked;
-                            setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, fonctionnalitesDuSIApplicatif: newItems}});
-                          }}
-                        />
-                      </td>
-                      <td style={{ textAlign: 'center' }}>
-                        <input
-                          type="checkbox"
-                          checked={item.E}
-                          onChange={(e) => {
-                            const newItems = [...daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif];
-                            newItems[index].E = e.target.checked;
-                            setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, fonctionnalitesDuSIApplicatif: newItems}});
-                          }}
-                        />
-                      </td>
-                      <td style={{ textAlign: 'center' }}>
-                        <input
-                          type="checkbox"
-                          checked={item.P}
-                          onChange={(e) => {
-                            const newItems = [...daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif];
-                            newItems[index].P = e.target.checked;
-                            setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, fonctionnalitesDuSIApplicatif: newItems}});
-                          }}
-                        />
-                      </td>
-                      <td style={{ textAlign: 'right' }}>
-                        <button
-                          className="fr-btn fr-btn--sm fr-btn--secondary"
-                          type="button"
-                          onClick={() => {
-                            const newItems = daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif.filter((_, i) => i !== index);
-                            setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, fonctionnalitesDuSIApplicatif: newItems}});
-                          }}
-                        >
-                          Supprimer
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                  <tr>
-                    <td style={{ backgroundColor: '#e8edff', fontWeight: 'bold', padding: '8px' }}>Total fonctionnalités</td>
-                    <td style={{ backgroundColor: '#e8edff', fontWeight: 'bold', textAlign: 'center', padding: '8px' }}>
-                      {daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif.filter(item => item.M).length}
-                    </td>
-                    <td style={{ backgroundColor: '#e8edff', fontWeight: 'bold', textAlign: 'center', padding: '8px' }}>
-                      {daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif.filter(item => item.R).length}
-                    </td>
-                    <td style={{ backgroundColor: '#e8edff', fontWeight: 'bold', textAlign: 'center', padding: '8px' }}>
-                      {daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif.filter(item => item.E).length}
-                    </td>
-                    <td style={{ backgroundColor: '#e8edff', fontWeight: 'bold', textAlign: 'center', padding: '8px' }}>
-                      {daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif.filter(item => item.P).length}
-                    </td>
-                    <td style={{ backgroundColor: '#e8edff', padding: '8px' }}></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-        <div className="fr-table__footer">
-          <div className="fr-table__footer--end">
-            <ul className="fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-md">
-              <li>
-                <button
-                  className="fr-btn fr-btn--secondary"
-                  type="button"
-                  onClick={() => {
-                    setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, fonctionnalitesDuSIApplicatif: [
-                      ...daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif,
-                      {fonctionnalite: "", M: false, R: false, E: false, P: false}
-                    ]}});
-                  }}
-                >
-                  <span className="fr-icon-add-line" aria-hidden="true"></span>
-                  Ajouter une fonctionnalité
-                </button>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+      <EditableTable
+        caption="Fonctionnalités du SI applicatif"
+        textColumns={[{ key: "fonctionnalite", label: "Fonctionnalité" }]}
+        columns={CHECKBOX_COLUMNS_MREP}
+        rows={daData.cadre2_FonctionnalitesDonnees.fonctionnalitesDuSIApplicatif}
+        totalLabel="Total fonctionnalités"
+        addLabel="Ajouter une fonctionnalité"
+        defaultRow={{ fonctionnalite: "", M: false, R: false, E: false, P: false }}
+        onRowsChange={(rows) =>
+          setDAData({
+            ...daData,
+            cadre2_FonctionnalitesDonnees: {
+              ...daData.cadre2_FonctionnalitesDonnees,
+              fonctionnalitesDuSIApplicatif: rows,
+            },
+          })
+        }
+      />
 
       {/* Données métier du SI Applicatif */}
       <h3 className="fr-h3 fr-mt-6w">Données métier du SI Applicatif</h3>
-      <div className="fr-table fr-table--no-caption fr-table--bordered fr-table--sm">
-        <div className="fr-table__wrapper">
-          <div className="fr-table__container">
-            <div className="fr-table__content">
-              <table>
-                <caption>Données métier du SI Applicatif</caption>
-                <thead>
-                  <tr>
-                    <th scope="col" className="fr-col--lg">Donnée</th>
-                    <th scope="col" className="fr-col--sm" style={{ textAlign: 'center' }}>M</th>
-                    <th scope="col" className="fr-col--sm" style={{ textAlign: 'center' }}>R</th>
-                    <th scope="col" className="fr-col--sm" style={{ textAlign: 'center' }}>E</th>
-                    <th scope="col" className="fr-col--sm" style={{ textAlign: 'center' }}>P</th>
-                    <th scope="col" className="fr-col--xs" style={{ textAlign: 'right' }}></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {daData.cadre2_FonctionnalitesDonnees.donneesMetierDuSIApplicatif.map((item, index) => (
-                    <tr key={index}>
-                      <td>
-                        <input
-                          className="fr-input"
-                          type="text"
-                          value={item.donnee}
-                          onChange={(e) => {
-                            const newItems = [...daData.cadre2_FonctionnalitesDonnees.donneesMetierDuSIApplicatif];
-                            newItems[index].donnee = e.target.value;
-                            setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, donneesMetierDuSIApplicatif: newItems}});
-                          }}
-                        />
-                      </td>
-                      <td style={{ textAlign: 'center' }}>
-                        <input
-                          type="checkbox"
-                          checked={item.M}
-                          onChange={(e) => {
-                            const newItems = [...daData.cadre2_FonctionnalitesDonnees.donneesMetierDuSIApplicatif];
-                            newItems[index].M = e.target.checked;
-                            setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, donneesMetierDuSIApplicatif: newItems}});
-                          }}
-                        />
-                      </td>
-                      <td style={{ textAlign: 'center' }}>
-                        <input
-                          type="checkbox"
-                          checked={item.R}
-                          onChange={(e) => {
-                            const newItems = [...daData.cadre2_FonctionnalitesDonnees.donneesMetierDuSIApplicatif];
-                            newItems[index].R = e.target.checked;
-                            setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, donneesMetierDuSIApplicatif: newItems}});
-                          }}
-                        />
-                      </td>
-                      <td style={{ textAlign: 'center' }}>
-                        <input
-                          type="checkbox"
-                          checked={item.E}
-                          onChange={(e) => {
-                            const newItems = [...daData.cadre2_FonctionnalitesDonnees.donneesMetierDuSIApplicatif];
-                            newItems[index].E = e.target.checked;
-                            setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, donneesMetierDuSIApplicatif: newItems}});
-                          }}
-                        />
-                      </td>
-                      <td style={{ textAlign: 'center' }}>
-                        <input
-                          type="checkbox"
-                          checked={item.P}
-                          onChange={(e) => {
-                            const newItems = [...daData.cadre2_FonctionnalitesDonnees.donneesMetierDuSIApplicatif];
-                            newItems[index].P = e.target.checked;
-                            setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, donneesMetierDuSIApplicatif: newItems}});
-                          }}
-                        />
-                      </td>
-                      <td style={{ textAlign: 'right' }}>
-                        <button
-                          className="fr-btn fr-btn--sm fr-btn--secondary"
-                          type="button"
-                          onClick={() => {
-                            setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, donneesMetierDuSIApplicatif: daData.cadre2_FonctionnalitesDonnees.donneesMetierDuSIApplicatif.filter((_, i) => i !== index)}});
-                          }}
-                        >
-                          Supprimer
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-        <div className="fr-table__footer">
-          <div className="fr-table__footer--end">
-            <ul className="fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-md">
-              <li>
-                <button
-                  className="fr-btn fr-btn--secondary"
-                  type="button"
-                  onClick={() => {
-                    setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, donneesMetierDuSIApplicatif: [...daData.cadre2_FonctionnalitesDonnees.donneesMetierDuSIApplicatif, {donnee: "", M: false, R: false, E: false, P: false}]}});
-                  }}
-                >
-                  <span className="fr-icon-add-line" aria-hidden="true"></span>
-                  Ajouter une donnée
-                </button>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+      <EditableTable
+        caption="Données métier du SI Applicatif"
+        textColumns={[{ key: "donnee", label: "Donnée" }]}
+        columns={CHECKBOX_COLUMNS_MREP}
+        rows={daData.cadre2_FonctionnalitesDonnees.donneesMetierDuSIApplicatif}
+        addLabel="Ajouter une donnée"
+        defaultRow={{ donnee: "", M: false, R: false, E: false, P: false }}
+        onRowsChange={(rows) =>
+          setDAData({
+            ...daData,
+            cadre2_FonctionnalitesDonnees: {
+              ...daData.cadre2_FonctionnalitesDonnees,
+              donneesMetierDuSIApplicatif: rows,
+            },
+          })
+        }
+      />
 
       {/* Fichiers métiers du SI applicatif */}
       <h3 className="fr-h3 fr-mt-6w">Fichiers métiers du SI applicatif</h3>
-      <div className="fr-table fr-table--no-caption fr-table--bordered fr-table--sm">
-        <div className="fr-table__wrapper">
-          <div className="fr-table__container">
-            <div className="fr-table__content">
-              <table>
-                <caption>Fichiers métiers du SI applicatif</caption>
-                <thead>
-                  <tr>
-                    <th scope="col" className="fr-col--lg">Fichier</th>
-                    <th scope="col" className="fr-col--sm" style={{ textAlign: 'center' }}>M</th>
-                    <th scope="col" className="fr-col--sm" style={{ textAlign: 'center' }}>R</th>
-                    <th scope="col" className="fr-col--sm" style={{ textAlign: 'center' }}>E</th>
-                    <th scope="col" className="fr-col--sm" style={{ textAlign: 'center' }}>P</th>
-                    <th scope="col" className="fr-col--xs" style={{ textAlign: 'right' }}></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {daData.cadre2_FonctionnalitesDonnees.fichiersMetiersDuSIApplicatif.map((item, index) => (
-                    <tr key={index}>
-                      <td>
-                        <input
-                          className="fr-input"
-                          type="text"
-                          value={item.fichier}
-                          onChange={(e) => {
-                            const newItems = [...daData.cadre2_FonctionnalitesDonnees.fichiersMetiersDuSIApplicatif];
-                            newItems[index].fichier = e.target.value;
-                            setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, fichiersMetiersDuSIApplicatif: newItems}});
-                          }}
-                        />
-                      </td>
-                      <td style={{ textAlign: 'center' }}>
-                        <input
-                          type="checkbox"
-                          checked={item.M}
-                          onChange={(e) => {
-                            const newItems = [...daData.cadre2_FonctionnalitesDonnees.fichiersMetiersDuSIApplicatif];
-                            newItems[index].M = e.target.checked;
-                            setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, fichiersMetiersDuSIApplicatif: newItems}});
-                          }}
-                        />
-                      </td>
-                      <td style={{ textAlign: 'center' }}>
-                        <input
-                          type="checkbox"
-                          checked={item.R}
-                          onChange={(e) => {
-                            const newItems = [...daData.cadre2_FonctionnalitesDonnees.fichiersMetiersDuSIApplicatif];
-                            newItems[index].R = e.target.checked;
-                            setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, fichiersMetiersDuSIApplicatif: newItems}});
-                          }}
-                        />
-                      </td>
-                      <td style={{ textAlign: 'center' }}>
-                        <input
-                          type="checkbox"
-                          checked={item.E}
-                          onChange={(e) => {
-                            const newItems = [...daData.cadre2_FonctionnalitesDonnees.fichiersMetiersDuSIApplicatif];
-                            newItems[index].E = e.target.checked;
-                            setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, fichiersMetiersDuSIApplicatif: newItems}});
-                          }}
-                        />
-                      </td>
-                      <td style={{ textAlign: 'center' }}>
-                        <input
-                          type="checkbox"
-                          checked={item.P}
-                          onChange={(e) => {
-                            const newItems = [...daData.cadre2_FonctionnalitesDonnees.fichiersMetiersDuSIApplicatif];
-                            newItems[index].P = e.target.checked;
-                            setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, fichiersMetiersDuSIApplicatif: newItems}});
-                          }}
-                        />
-                      </td>
-                      <td style={{ textAlign: 'right' }}>
-                        <button
-                          className="fr-btn fr-btn--sm fr-btn--secondary"
-                          type="button"
-                          onClick={() => {
-                            setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, fichiersMetiersDuSIApplicatif: daData.cadre2_FonctionnalitesDonnees.fichiersMetiersDuSIApplicatif.filter((_, i) => i !== index)}});
-                          }}
-                        >
-                          Supprimer
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-        <div className="fr-table__footer">
-          <div className="fr-table__footer--end">
-            <ul className="fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-md">
-              <li>
-                <button
-                  className="fr-btn fr-btn--secondary"
-                  type="button"
-                  onClick={() => {
-                    setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, fichiersMetiersDuSIApplicatif: [...daData.cadre2_FonctionnalitesDonnees.fichiersMetiersDuSIApplicatif, {fichier: "", M: false, R: false, E: false, P: false}]}});
-                  }}
-                >
-                  <span className="fr-icon-add-line" aria-hidden="true"></span>
-                  Ajouter un fichier
-                </button>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+      <EditableTable
+        caption="Fichiers métiers du SI applicatif"
+        textColumns={[{ key: "fichier", label: "Fichier" }]}
+        columns={CHECKBOX_COLUMNS_MREP}
+        rows={daData.cadre2_FonctionnalitesDonnees.fichiersMetiersDuSIApplicatif}
+        addLabel="Ajouter un fichier"
+        defaultRow={{ fichier: "", M: false, R: false, E: false, P: false }}
+        onRowsChange={(rows) =>
+          setDAData({
+            ...daData,
+            cadre2_FonctionnalitesDonnees: {
+              ...daData.cadre2_FonctionnalitesDonnees,
+              fichiersMetiersDuSIApplicatif: rows,
+            },
+          })
+        }
+      />
 
       {/* Référentiel données (hors SI) */}
       <h3 className="fr-h3 fr-mt-6w">Référentiel données (hors SI)</h3>
-      <div className="fr-table fr-table--no-caption fr-table--bordered fr-table--sm">
-        <div className="fr-table__wrapper">
-          <div className="fr-table__container">
-            <div className="fr-table__content">
-              <table>
-                <caption>Référentiel données (hors SI)</caption>
-                <thead>
-                  <tr>
-                    <th scope="col" className="fr-col--md">Référentiel</th>
-                    <th scope="col" className="fr-col--md">Mode échange</th>
-                    <th scope="col" className="fr-col--sm" style={{ textAlign: 'center' }}>M</th>
-                    <th scope="col" className="fr-col--sm" style={{ textAlign: 'center' }}>R</th>
-                    <th scope="col" className="fr-col--sm" style={{ textAlign: 'center' }}>E</th>
-                    <th scope="col" className="fr-col--sm" style={{ textAlign: 'center' }}>P</th>
-                    <th scope="col" className="fr-col--xs" style={{ textAlign: 'right' }}></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {daData.cadre2_FonctionnalitesDonnees.referentielsDonneesHorsSI.map((item, index) => (
-                    <tr key={index}>
-                      <td>
-                        <input
-                          className="fr-input"
-                          type="text"
-                          value={item.referentiel}
-                          onChange={(e) => {
-                            const newItems = [...daData.cadre2_FonctionnalitesDonnees.referentielsDonneesHorsSI];
-                            newItems[index].referentiel = e.target.value;
-                            setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, referentielsDonneesHorsSI: newItems}});
-                          }}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          className="fr-input"
-                          type="text"
-                          value={item.modeEchange}
-                          onChange={(e) => {
-                            const newItems = [...daData.cadre2_FonctionnalitesDonnees.referentielsDonneesHorsSI];
-                            newItems[index].modeEchange = e.target.value;
-                            setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, referentielsDonneesHorsSI: newItems}});
-                          }}
-                        />
-                      </td>
-                      <td style={{ textAlign: 'center' }}>
-                        <input
-                          type="checkbox"
-                          checked={item.M}
-                          onChange={(e) => {
-                            const newItems = [...daData.cadre2_FonctionnalitesDonnees.referentielsDonneesHorsSI];
-                            newItems[index].M = e.target.checked;
-                            setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, referentielsDonneesHorsSI: newItems}});
-                          }}
-                        />
-                      </td>
-                      <td style={{ textAlign: 'center' }}>
-                        <input
-                          type="checkbox"
-                          checked={item.R}
-                          onChange={(e) => {
-                            const newItems = [...daData.cadre2_FonctionnalitesDonnees.referentielsDonneesHorsSI];
-                            newItems[index].R = e.target.checked;
-                            setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, referentielsDonneesHorsSI: newItems}});
-                          }}
-                        />
-                      </td>
-                      <td style={{ textAlign: 'center' }}>
-                        <input
-                          type="checkbox"
-                          checked={item.E}
-                          onChange={(e) => {
-                            const newItems = [...daData.cadre2_FonctionnalitesDonnees.referentielsDonneesHorsSI];
-                            newItems[index].E = e.target.checked;
-                            setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, referentielsDonneesHorsSI: newItems}});
-                          }}
-                        />
-                      </td>
-                      <td style={{ textAlign: 'center' }}>
-                        <input
-                          type="checkbox"
-                          checked={item.P}
-                          onChange={(e) => {
-                            const newItems = [...daData.cadre2_FonctionnalitesDonnees.referentielsDonneesHorsSI];
-                            newItems[index].P = e.target.checked;
-                            setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, referentielsDonneesHorsSI: newItems}});
-                          }}
-                        />
-                      </td>
-                      <td style={{ textAlign: 'right' }}>
-                        <button
-                          className="fr-btn fr-btn--sm fr-btn--secondary"
-                          type="button"
-                          onClick={() => {
-                            setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, referentielsDonneesHorsSI: daData.cadre2_FonctionnalitesDonnees.referentielsDonneesHorsSI.filter((_, i) => i !== index)}});
-                          }}
-                        >
-                          Supprimer
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-        <div className="fr-table__footer">
-          <div className="fr-table__footer--end">
-            <ul className="fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-md">
-              <li>
-                <button
-                  className="fr-btn fr-btn--secondary"
-                  type="button"
-                  onClick={() => {
-                    setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, referentielsDonneesHorsSI: [...daData.cadre2_FonctionnalitesDonnees.referentielsDonneesHorsSI, {referentiel: "", modeEchange: "", M: false, R: false, E: false, P: false}]}});
-                  }}
-                >
-                  <span className="fr-icon-add-line" aria-hidden="true"></span>
-                  Ajouter un référentiel
-                </button>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+      <EditableTable
+        caption="Référentiel données (hors SI)"
+        textColumns={[
+          { key: "referentiel", label: "Référentiel" },
+          { key: "modeEchange", label: "Mode échange" },
+        ]}
+        columns={CHECKBOX_COLUMNS_MREP}
+        rows={daData.cadre2_FonctionnalitesDonnees.referentielsDonneesHorsSI}
+        addLabel="Ajouter un référentiel"
+        defaultRow={{ referentiel: "", modeEchange: "", M: false, R: false, E: false, P: false }}
+        onRowsChange={(rows) =>
+          setDAData({
+            ...daData,
+            cadre2_FonctionnalitesDonnees: {
+              ...daData.cadre2_FonctionnalitesDonnees,
+              referentielsDonneesHorsSI: rows,
+            },
+          })
+        }
+      />
 
       {/* Sensibilité des données */}
       <h3 className="fr-h3 fr-mt-6w">Sensibilité des données dans le SI Applicatif</h3>
@@ -650,131 +249,26 @@ export default function Cadre2FonctionnalitesDonnees({ daData, setDAData }: Cadr
       {/* Services utilisés par application */}
       <h3 className="fr-h3 fr-mt-6w">Services utilisés par application (externes au SI applicatif)</h3>
       <h4 className="fr-h4">SI SOURCE</h4>
-      <div className="fr-table fr-table--no-caption fr-table--bordered fr-table--sm">
-        <div className="fr-table__wrapper">
-          <div className="fr-table__container">
-            <div className="fr-table__content">
-              <table>
-                <caption>Services utilisés par application</caption>
-                <thead>
-                  <tr>
-                    <th scope="col" className="fr-col--md">Service</th>
-                    <th scope="col" className="fr-col--md">Mode échange</th>
-                    <th scope="col" className="fr-col--sm" style={{ textAlign: 'center' }}>M</th>
-                    <th scope="col" className="fr-col--sm" style={{ textAlign: 'center' }}>R</th>
-                    <th scope="col" className="fr-col--sm" style={{ textAlign: 'center' }}>E</th>
-                    <th scope="col" className="fr-col--sm" style={{ textAlign: 'center' }}>P</th>
-                    <th scope="col" className="fr-col--xs" style={{ textAlign: 'right' }}></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {daData.cadre2_FonctionnalitesDonnees.servicesUtilisesParApplication.map((item, index) => (
-                    <tr key={index}>
-                      <td>
-                        <input
-                          className="fr-input"
-                          type="text"
-                          value={item.service}
-                          onChange={(e) => {
-                            const newItems = [...daData.cadre2_FonctionnalitesDonnees.servicesUtilisesParApplication];
-                            newItems[index].service = e.target.value;
-                            setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, servicesUtilisesParApplication: newItems}});
-                          }}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          className="fr-input"
-                          type="text"
-                          value={item.modeEchange}
-                          onChange={(e) => {
-                            const newItems = [...daData.cadre2_FonctionnalitesDonnees.servicesUtilisesParApplication];
-                            newItems[index].modeEchange = e.target.value;
-                            setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, servicesUtilisesParApplication: newItems}});
-                          }}
-                        />
-                      </td>
-                      <td style={{ textAlign: 'center' }}>
-                        <input
-                          type="checkbox"
-                          checked={item.M}
-                          onChange={(e) => {
-                            const newItems = [...daData.cadre2_FonctionnalitesDonnees.servicesUtilisesParApplication];
-                            newItems[index].M = e.target.checked;
-                            setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, servicesUtilisesParApplication: newItems}});
-                          }}
-                        />
-                      </td>
-                      <td style={{ textAlign: 'center' }}>
-                        <input
-                          type="checkbox"
-                          checked={item.R}
-                          onChange={(e) => {
-                            const newItems = [...daData.cadre2_FonctionnalitesDonnees.servicesUtilisesParApplication];
-                            newItems[index].R = e.target.checked;
-                            setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, servicesUtilisesParApplication: newItems}});
-                          }}
-                        />
-                      </td>
-                      <td style={{ textAlign: 'center' }}>
-                        <input
-                          type="checkbox"
-                          checked={item.E}
-                          onChange={(e) => {
-                            const newItems = [...daData.cadre2_FonctionnalitesDonnees.servicesUtilisesParApplication];
-                            newItems[index].E = e.target.checked;
-                            setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, servicesUtilisesParApplication: newItems}});
-                          }}
-                        />
-                      </td>
-                      <td style={{ textAlign: 'center' }}>
-                        <input
-                          type="checkbox"
-                          checked={item.P}
-                          onChange={(e) => {
-                            const newItems = [...daData.cadre2_FonctionnalitesDonnees.servicesUtilisesParApplication];
-                            newItems[index].P = e.target.checked;
-                            setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, servicesUtilisesParApplication: newItems}});
-                          }}
-                        />
-                      </td>
-                      <td style={{ textAlign: 'right' }}>
-                        <button
-                          className="fr-btn fr-btn--sm fr-btn--secondary"
-                          type="button"
-                          onClick={() => {
-                            setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, servicesUtilisesParApplication: daData.cadre2_FonctionnalitesDonnees.servicesUtilisesParApplication.filter((_, i) => i !== index)}});
-                          }}
-                        >
-                          Supprimer
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-        <div className="fr-table__footer">
-          <div className="fr-table__footer--end">
-            <ul className="fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-md">
-              <li>
-                <button
-                  className="fr-btn fr-btn--secondary"
-                  type="button"
-                  onClick={() => {
-                    setDAData({...daData, cadre2_FonctionnalitesDonnees: {...daData.cadre2_FonctionnalitesDonnees, servicesUtilisesParApplication: [...daData.cadre2_FonctionnalitesDonnees.servicesUtilisesParApplication, {service: "", modeEchange: "", M: false, R: false, E: false, P: false}]}});
-                  }}
-                >
-                  <span className="fr-icon-add-line" aria-hidden="true"></span>
-                  Ajouter un service
-                </button>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+      <EditableTable
+        caption="Services utilisés par application"
+        textColumns={[
+          { key: "service", label: "Service" },
+          { key: "modeEchange", label: "Mode échange" },
+        ]}
+        columns={CHECKBOX_COLUMNS_MREP}
+        rows={daData.cadre2_FonctionnalitesDonnees.servicesUtilisesParApplication}
+        addLabel="Ajouter un service"
+        defaultRow={{ service: "", modeEchange: "", M: false, R: false, E: false, P: false }}
+        onRowsChange={(rows) =>
+          setDAData({
+            ...daData,
+            cadre2_FonctionnalitesDonnees: {
+              ...daData.cadre2_FonctionnalitesDonnees,
+              servicesUtilisesParApplication: rows,
+            },
+          })
+        }
+      />
     </div>
   );
 }

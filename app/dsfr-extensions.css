@@ -23,6 +23,24 @@
   background-color: var(--green-emeraude-sun-425-moon-753);
 }
 
+.fr-table--sm .fr-table__content th.fr-th--red,
+.fr-table--sm .fr-table__content th.fr-th--orange,
+.fr-table--sm .fr-table__content th.fr-th--yellow,
+.fr-table--sm .fr-table__content th.fr-th--green,
+.fr-table--sm .fr-table__content td.fr-td--red,
+.fr-table--sm .fr-table__content td.fr-td--orange,
+.fr-table--sm .fr-table__content td.fr-td--yellow,
+.fr-table--sm .fr-table__content td.fr-td--green {
+  color: var(--grey-1000-50);
+}
+
+.fr-table--sm .fr-table__content td.fr-td--red input,
+.fr-table--sm .fr-table__content td.fr-td--orange input,
+.fr-table--sm .fr-table__content td.fr-td--yellow input,
+.fr-table--sm .fr-table__content td.fr-td--green input {
+  color: var(--grey-1000-50);
+}
+
 .fr-table.fr-table--no-scroll .fr-table__wrapper,
 .fr-table.fr-table--no-scroll .fr-table__wrapper .fr-table__content table {
   width: 100%;

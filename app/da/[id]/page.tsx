@@ -43,6 +43,17 @@ export default function FormulaireDA() {
         const response = await fetch(`/da/${daId}.json`);
         if (response.ok) {
           const data = await response.json();
+          // Migration: convert old cadre11 resource format (object) to new format (array)
+          if (data.cadre11_Dimensionnement?.justificationsAllocationsRessourcesMaterielles &&
+              !Array.isArray(data.cadre11_Dimensionnement.justificationsAllocationsRessourcesMaterielles)) {
+            const old = data.cadre11_Dimensionnement.justificationsAllocationsRessourcesMaterielles;
+            data.cadre11_Dimensionnement.justificationsAllocationsRessourcesMaterielles = [{
+              nom: "",
+              detailsHypotheses: [old.detailsCalculs, old.nombreCPU, old.nombreServeurs].filter(Boolean).join("\n"),
+              nombreCPU: "",
+              nombreServeurs: "",
+            }];
+          }
           setDAData(data);
           console.log(`✅ DA ${daId} chargé avec succès !`);
           setIsLoading(false);

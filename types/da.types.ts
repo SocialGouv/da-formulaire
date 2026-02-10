@@ -410,7 +410,7 @@ export interface FluxApplicatif {
 
 export interface Cadre11_Dimensionnement {
   justificationsPDMA_DMIA_Performances: JustificationDimensionnement;
-  justificationsAllocationsRessourcesMaterielles: JustificationRessources;
+  justificationsAllocationsRessourcesMaterielles: RessourceMaterielle[];
 }
 
 export interface JustificationDimensionnement {
@@ -419,10 +419,11 @@ export interface JustificationDimensionnement {
   performancesApplicatives: string;
 }
 
-export interface JustificationRessources {
+export interface RessourceMaterielle {
+  nom: string;
+  detailsHypotheses: string;
   nombreCPU: string;
   nombreServeurs: string;
-  detailsCalculs: string;
 }
 
 // ============================================================================

@@ -569,18 +569,14 @@ export const DADocument: React.FC<DADocumentProps> = ({ data }) => {
         </Text>
 
         <Text style={styles.subsectionTitle}>Justifications allocations ressources matérielles</Text>
-        <Text style={styles.text}>
-          Nombre de CPU:{" "}
-          {data.cadre11_Dimensionnement.justificationsAllocationsRessourcesMaterielles.nombreCPU}
-        </Text>
-        <Text style={styles.text}>
-          Nombre de serveurs:{" "}
-          {data.cadre11_Dimensionnement.justificationsAllocationsRessourcesMaterielles.nombreServeurs}
-        </Text>
-        <Text style={styles.text}>
-          Détails des calculs:{" "}
-          {data.cadre11_Dimensionnement.justificationsAllocationsRessourcesMaterielles.detailsCalculs}
-        </Text>
+        {data.cadre11_Dimensionnement.justificationsAllocationsRessourcesMaterielles.map((ressource, index) => (
+          <View key={index} style={{ marginBottom: 4 }}>
+            <Text style={styles.text}>
+              {ressource.nom}{ressource.nom ? " — " : ""}{ressource.detailsHypotheses}
+              {(ressource.nombreCPU || ressource.nombreServeurs) ? ` (CPU: ${ressource.nombreCPU || "—"}, Serveurs: ${ressource.nombreServeurs || "—"})` : ""}
+            </Text>
+          </View>
+        ))}
 
         <Text style={styles.footer}>{projectName}</Text>
         <Text style={styles.pageNumber} render={({ pageNumber }) => `Page ${pageNumber}`} fixed />

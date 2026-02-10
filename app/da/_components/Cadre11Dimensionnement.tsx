@@ -84,79 +84,151 @@ export default function Cadre11Dimensionnement({ daData, setDAData }: CadreProps
 
       <h3 className="fr-h3 fr-mt-6w">Justifications Allocations Ressources Matérielles</h3>
 
-      <div className="fr-input-group">
-        <label className="fr-label" htmlFor="nombre-cpu">
-          Nombre de CPU
-        </label>
-        <textarea
-          className="fr-input"
-          id="nombre-cpu"
-          rows={4}
-          placeholder="Justifiez le nombre de CPU alloués"
-          value={daData.cadre11_Dimensionnement.justificationsAllocationsRessourcesMaterielles.nombreCPU}
-          onChange={(e) =>
-            setDAData({
-              ...daData,
-              cadre11_Dimensionnement: {
-                ...daData.cadre11_Dimensionnement,
-                justificationsAllocationsRessourcesMaterielles: {
-                  ...daData.cadre11_Dimensionnement.justificationsAllocationsRessourcesMaterielles,
-                  nombreCPU: e.target.value,
-                },
-              },
-            })
-          }
-        />
-      </div>
-
-      <div className="fr-input-group">
-        <label className="fr-label" htmlFor="nombre-serveurs">
-          Nombre de Serveurs
-        </label>
-        <textarea
-          className="fr-input"
-          id="nombre-serveurs"
-          rows={4}
-          placeholder="Justifiez le nombre de serveurs alloués"
-          value={daData.cadre11_Dimensionnement.justificationsAllocationsRessourcesMaterielles.nombreServeurs}
-          onChange={(e) =>
-            setDAData({
-              ...daData,
-              cadre11_Dimensionnement: {
-                ...daData.cadre11_Dimensionnement,
-                justificationsAllocationsRessourcesMaterielles: {
-                  ...daData.cadre11_Dimensionnement.justificationsAllocationsRessourcesMaterielles,
-                  nombreServeurs: e.target.value,
-                },
-              },
-            })
-          }
-        />
-      </div>
-
-      <div className="fr-input-group">
-        <label className="fr-label" htmlFor="details-calculs">
-          Détails des Calculs
-        </label>
-        <textarea
-          className="fr-input"
-          id="details-calculs"
-          rows={6}
-          placeholder="Détaillez les calculs de dimensionnement"
-          value={daData.cadre11_Dimensionnement.justificationsAllocationsRessourcesMaterielles.detailsCalculs}
-          onChange={(e) =>
-            setDAData({
-              ...daData,
-              cadre11_Dimensionnement: {
-                ...daData.cadre11_Dimensionnement,
-                justificationsAllocationsRessourcesMaterielles: {
-                  ...daData.cadre11_Dimensionnement.justificationsAllocationsRessourcesMaterielles,
-                  detailsCalculs: e.target.value,
-                },
-              },
-            })
-          }
-        />
+      <div className="fr-table fr-table--no-scroll fr-table--no-caption fr-table--bordered fr-table--sm">
+        <div className="fr-table__wrapper">
+          <div className="fr-table__container">
+            <div className="fr-table__content">
+              <table>
+                <caption>Justifications Allocations Ressources Matérielles</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Détail des hypothèses de calcul et résultats pour le dimensionnement</th>
+                    <th scope="col">Nombre CPU</th>
+                    <th scope="col">Nombre serveurs</th>
+                    <th scope="col" style={{ textAlign: "right" }}></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {daData.cadre11_Dimensionnement.justificationsAllocationsRessourcesMaterielles.map((ressource, index) => (
+                    <tr key={index}>
+                      <td>
+                        <input
+                          className="fr-table-input"
+                          type="text"
+                          value={ressource.nom}
+                          onChange={(e) => {
+                            const newRessources = [...daData.cadre11_Dimensionnement.justificationsAllocationsRessourcesMaterielles];
+                            newRessources[index] = { ...newRessources[index], nom: e.target.value };
+                            setDAData({
+                              ...daData,
+                              cadre11_Dimensionnement: {
+                                ...daData.cadre11_Dimensionnement,
+                                justificationsAllocationsRessourcesMaterielles: newRessources,
+                              },
+                            });
+                          }}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          className="fr-table-input"
+                          type="text"
+                          value={ressource.detailsHypotheses}
+                          onChange={(e) => {
+                            const newRessources = [...daData.cadre11_Dimensionnement.justificationsAllocationsRessourcesMaterielles];
+                            newRessources[index] = { ...newRessources[index], detailsHypotheses: e.target.value };
+                            setDAData({
+                              ...daData,
+                              cadre11_Dimensionnement: {
+                                ...daData.cadre11_Dimensionnement,
+                                justificationsAllocationsRessourcesMaterielles: newRessources,
+                              },
+                            });
+                          }}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          className="fr-table-input"
+                          type="text"
+                          value={ressource.nombreCPU}
+                          onChange={(e) => {
+                            const newRessources = [...daData.cadre11_Dimensionnement.justificationsAllocationsRessourcesMaterielles];
+                            newRessources[index] = { ...newRessources[index], nombreCPU: e.target.value };
+                            setDAData({
+                              ...daData,
+                              cadre11_Dimensionnement: {
+                                ...daData.cadre11_Dimensionnement,
+                                justificationsAllocationsRessourcesMaterielles: newRessources,
+                              },
+                            });
+                          }}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          className="fr-table-input"
+                          type="text"
+                          value={ressource.nombreServeurs}
+                          onChange={(e) => {
+                            const newRessources = [...daData.cadre11_Dimensionnement.justificationsAllocationsRessourcesMaterielles];
+                            newRessources[index] = { ...newRessources[index], nombreServeurs: e.target.value };
+                            setDAData({
+                              ...daData,
+                              cadre11_Dimensionnement: {
+                                ...daData.cadre11_Dimensionnement,
+                                justificationsAllocationsRessourcesMaterielles: newRessources,
+                              },
+                            });
+                          }}
+                        />
+                      </td>
+                      <td style={{ textAlign: "right" }}>
+                        <button
+                          className="fr-btn fr-btn--tertiary-no-outline"
+                          type="button"
+                          title="Supprimer"
+                          onClick={() => {
+                            const newRessources = daData.cadre11_Dimensionnement.justificationsAllocationsRessourcesMaterielles.filter(
+                              (_, i) => i !== index
+                            );
+                            setDAData({
+                              ...daData,
+                              cadre11_Dimensionnement: {
+                                ...daData.cadre11_Dimensionnement,
+                                justificationsAllocationsRessourcesMaterielles: newRessources,
+                              },
+                            });
+                          }}
+                        >
+                          <span className="fr-icon-close-line" aria-hidden="true"></span>
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div className="fr-table__footer">
+          <div className="fr-table__footer--end">
+            <ul className="fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-md">
+              <li>
+                <button
+                  className="fr-btn fr-btn--secondary"
+                  type="button"
+                  onClick={() => {
+                    setDAData({
+                      ...daData,
+                      cadre11_Dimensionnement: {
+                        ...daData.cadre11_Dimensionnement,
+                        justificationsAllocationsRessourcesMaterielles: [
+                          ...daData.cadre11_Dimensionnement.justificationsAllocationsRessourcesMaterielles,
+                          { nom: "", detailsHypotheses: "", nombreCPU: "", nombreServeurs: "" },
+                        ],
+                      },
+                    });
+                  }}
+                >
+                  <span className="fr-icon-add-line" aria-hidden="true"></span>
+                  Ajouter une ressource
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -229,11 +229,12 @@ export const initialData: DAData = {
       dureeMaximaleInterruptionAdmissible: "",
       performancesApplicatives: "",
     },
-    justificationsAllocationsRessourcesMaterielles: {
+    justificationsAllocationsRessourcesMaterielles: [{
+      nom: "",
+      detailsHypotheses: "",
       nombreCPU: "",
       nombreServeurs: "",
-      detailsCalculs: "",
-    },
+    }],
   },
   cadre12_URLs: {
     urls: Array(5).fill(null).map(() => ({

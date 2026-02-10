@@ -10,28 +10,29 @@ export default function Cadre12URLsAnnexe({ daData, setDAData }: CadreProps) {
     <div>
       {/* URLs Applicatives */}
       <h3 className="fr-h3">URLs Applicatives</h3>
-      <div className="fr-table fr-table--sm">
+      <div className="fr-table fr-table--no-scroll fr-table--no-caption fr-table--bordered fr-table--sm">
         <div className="fr-table__wrapper">
           <div className="fr-table__container">
             <div className="fr-table__content">
               <table>
+                <caption>URLs Applicatives</caption>
                 <thead>
                   <tr>
-                    <th>Libellé URL</th>
-                    <th>Acteur Appelant</th>
-                    <th>Ressource Appelée</th>
-                    <th>Fonctionnalité/Service Fourni</th>
-                    <th>Données Transitent</th>
-                    <th>Précisions</th>
-                    <th>Actions</th>
+                    <th scope="col" className="fr-col--md">Libellé URL</th>
+                    <th scope="col" className="fr-col--sm">Acteur Appelant</th>
+                    <th scope="col" className="fr-col--sm">Ressource Appelée</th>
+                    <th scope="col" className="fr-col--md">Fonctionnalité/Service Fourni</th>
+                    <th scope="col" className="fr-col--sm">Données Transitent</th>
+                    <th scope="col" className="fr-col--md">Précisions</th>
+                    <th scope="col" className="fr-col--xs" style={{ textAlign: "right" }}></th>
                   </tr>
                 </thead>
                 <tbody>
                   {daData.cadre12_URLs.urls.map((url, index) => (
                     <tr key={index}>
-                      <td>
+                      <td className="fr-bg-info">
                         <input
-                          className="fr-input"
+                          className="fr-table-input"
                           type="text"
                           value={url.libelleURL}
                           onChange={(e) => {
@@ -48,7 +49,7 @@ export default function Cadre12URLsAnnexe({ daData, setDAData }: CadreProps) {
                       </td>
                       <td>
                         <input
-                          className="fr-input"
+                          className="fr-table-input"
                           type="text"
                           value={url.acteurAppelant}
                           onChange={(e) => {
@@ -65,7 +66,7 @@ export default function Cadre12URLsAnnexe({ daData, setDAData }: CadreProps) {
                       </td>
                       <td>
                         <input
-                          className="fr-input"
+                          className="fr-table-input"
                           type="text"
                           value={url.ressourceAppelee}
                           onChange={(e) => {
@@ -82,7 +83,7 @@ export default function Cadre12URLsAnnexe({ daData, setDAData }: CadreProps) {
                       </td>
                       <td>
                         <input
-                          className="fr-input"
+                          className="fr-table-input"
                           type="text"
                           value={url.fonctionnaliteOuServiceFourni}
                           onChange={(e) => {
@@ -99,7 +100,7 @@ export default function Cadre12URLsAnnexe({ daData, setDAData }: CadreProps) {
                       </td>
                       <td>
                         <input
-                          className="fr-input"
+                          className="fr-table-input"
                           type="text"
                           value={url.donneesTransitent}
                           onChange={(e) => {
@@ -116,7 +117,7 @@ export default function Cadre12URLsAnnexe({ daData, setDAData }: CadreProps) {
                       </td>
                       <td>
                         <input
-                          className="fr-input"
+                          className="fr-table-input"
                           type="text"
                           value={url.precisions}
                           onChange={(e) => {
@@ -131,9 +132,9 @@ export default function Cadre12URLsAnnexe({ daData, setDAData }: CadreProps) {
                           }}
                         />
                       </td>
-                      <td>
+                      <td style={{ textAlign: "right" }}>
                         <button
-                          className="fr-btn fr-btn--sm fr-btn--secondary"
+                          className="fr-btn fr-btn--tertiary-no-outline"
                           type="button"
                           title="Supprimer"
                           onClick={() => {
@@ -146,7 +147,7 @@ export default function Cadre12URLsAnnexe({ daData, setDAData }: CadreProps) {
                             });
                           }}
                         >
-                          <span className="fr-icon-delete-line" aria-hidden="true"></span>
+                          <span className="fr-icon-close-line" aria-hidden="true"></span>
                         </button>
                       </td>
                     </tr>
@@ -215,27 +216,28 @@ export default function Cadre12URLsAnnexe({ daData, setDAData }: CadreProps) {
         />
       </div>
 
-      <div className="fr-table fr-table--sm">
+      <div className="fr-table fr-table--no-scroll fr-table--no-caption fr-table--bordered fr-table--sm">
         <div className="fr-table__wrapper">
           <div className="fr-table__container">
             <div className="fr-table__content">
               <table>
+                <caption>Suivi des Changements</caption>
                 <thead>
                   <tr>
-                    <th>Version</th>
-                    <th>Date</th>
-                    <th>Demandeur Changement</th>
-                    <th>Rapporteur Changement</th>
-                    <th>Description Détaillée</th>
-                    <th>Actions</th>
+                    <th scope="col" className="fr-col--sm">Version</th>
+                    <th scope="col" className="fr-col--sm">Date</th>
+                    <th scope="col" className="fr-col--md">Demandeur Changement</th>
+                    <th scope="col" className="fr-col--md">Rapporteur Changement</th>
+                    <th scope="col" className="fr-col--lg">Description Détaillée</th>
+                    <th scope="col" className="fr-col--xs" style={{ textAlign: "right" }}></th>
                   </tr>
                 </thead>
                 <tbody>
                   {daData.annexe_SuiviChangements.changements.map((changement, index) => (
                     <tr key={index}>
-                      <td>
+                      <td className="fr-bg-info">
                         <input
-                          className="fr-input"
+                          className="fr-table-input"
                           type="text"
                           placeholder="x.y.z"
                           value={changement.version}
@@ -254,7 +256,7 @@ export default function Cadre12URLsAnnexe({ daData, setDAData }: CadreProps) {
                       </td>
                       <td>
                         <input
-                          className="fr-input"
+                          className="fr-table-input"
                           type="date"
                           value={changement.date}
                           onChange={(e) => {
@@ -272,7 +274,7 @@ export default function Cadre12URLsAnnexe({ daData, setDAData }: CadreProps) {
                       </td>
                       <td>
                         <input
-                          className="fr-input"
+                          className="fr-table-input"
                           type="text"
                           value={changement.demandeurChangement}
                           onChange={(e) => {
@@ -290,7 +292,7 @@ export default function Cadre12URLsAnnexe({ daData, setDAData }: CadreProps) {
                       </td>
                       <td>
                         <input
-                          className="fr-input"
+                          className="fr-table-input"
                           type="text"
                           value={changement.rapporteurChangement}
                           onChange={(e) => {
@@ -308,7 +310,7 @@ export default function Cadre12URLsAnnexe({ daData, setDAData }: CadreProps) {
                       </td>
                       <td>
                         <input
-                          className="fr-input"
+                          className="fr-table-input"
                           type="text"
                           value={changement.descriptionDetaillee}
                           onChange={(e) => {
@@ -324,9 +326,9 @@ export default function Cadre12URLsAnnexe({ daData, setDAData }: CadreProps) {
                           }}
                         />
                       </td>
-                      <td>
+                      <td style={{ textAlign: "right" }}>
                         <button
-                          className="fr-btn fr-btn--sm fr-btn--secondary"
+                          className="fr-btn fr-btn--tertiary-no-outline"
                           type="button"
                           title="Supprimer"
                           onClick={() => {
@@ -342,7 +344,7 @@ export default function Cadre12URLsAnnexe({ daData, setDAData }: CadreProps) {
                             });
                           }}
                         >
-                          <span className="fr-icon-delete-line" aria-hidden="true"></span>
+                          <span className="fr-icon-close-line" aria-hidden="true"></span>
                         </button>
                       </td>
                     </tr>

@@ -246,14 +246,4 @@ export const initialData: DAData = {
       precisions: "",
     })),
   },
-  annexe_SuiviChangements: {
-    versionnage: "1.0.0",
-    changements: Array(3).fill(null).map(() => ({
-      version: "",
-      date: "",
-      demandeurChangement: "",
-      rapporteurChangement: "",
-      descriptionDetaillee: "",
-    })),
-  },
 };

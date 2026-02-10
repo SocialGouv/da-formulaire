@@ -76,7 +76,7 @@
   box-sizing: border-box;
 } */
 
-/* .fr-stepper__steps[data-fr-steps="9"] {
+.fr-stepper__steps[data-fr-steps="9"] {
   --steps: 9;
   --step-width: calc(100% / 9);
 }
@@ -264,4 +264,4 @@
 
 .fr-table td input.fr-input--bold {
   font-weight: bold;
-} */
+}

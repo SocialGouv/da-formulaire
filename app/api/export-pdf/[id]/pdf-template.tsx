@@ -114,7 +114,7 @@ export const DADocument: React.FC<DADocumentProps> = ({ data }) => {
             {projectName}
           </Text>
           <Text style={{ fontSize: 12, textAlign: "center", color: "#666" }}>
-            Version {data.annexe_SuiviChangements.versionnage || "1.0.0.0"}
+            Document d'Architecture
           </Text>
           <Text style={{ fontSize: 10, textAlign: "center", color: "#666", marginTop: 10 }}>
             {new Date().toLocaleDateString("fr-FR")}
@@ -613,38 +613,6 @@ export const DADocument: React.FC<DADocumentProps> = ({ data }) => {
         <Text style={styles.pageNumber} render={({ pageNumber }) => `Page ${pageNumber}`} fixed />
       </Page>
 
-      {/* ANNEXE: SUIVI DES CHANGEMENTS */}
-      <Page size="A4" style={styles.page}>
-        <Text style={styles.header}>ANNEXE - SUIVI DES CHANGEMENTS</Text>
-
-        <Text style={styles.subsectionTitle}>
-          Version: {data.annexe_SuiviChangements.versionnage}
-        </Text>
-
-        <View style={styles.table}>
-          <View style={styles.tableHeaderRow}>
-            <Text style={[styles.tableHeaderCol, { width: "10%" }]}>Version</Text>
-            <Text style={[styles.tableHeaderCol, { width: "15%" }]}>Date</Text>
-            <Text style={[styles.tableHeaderCol, { width: "20%" }]}>Demandeur</Text>
-            <Text style={[styles.tableHeaderCol, { width: "20%" }]}>Rapporteur</Text>
-            <Text style={[styles.tableHeaderCol, { width: "35%" }]}>Description</Text>
-          </View>
-          {data.annexe_SuiviChangements.changements.map((change, index) => (
-            <View key={index} style={styles.tableRow}>
-              <Text style={[styles.tableCol, { width: "10%" }]}>{change.version}</Text>
-              <Text style={[styles.tableCol, { width: "15%" }]}>{change.date}</Text>
-              <Text style={[styles.tableCol, { width: "20%" }]}>{change.demandeurChangement}</Text>
-              <Text style={[styles.tableCol, { width: "20%" }]}>{change.rapporteurChangement}</Text>
-              <Text style={[styles.tableCol, { width: "35%" }]}>
-                {change.descriptionDetaillee}
-              </Text>
-            </View>
-          ))}
-        </View>
-
-        <Text style={styles.footer}>{projectName}</Text>
-        <Text style={styles.pageNumber} render={({ pageNumber }) => `Page ${pageNumber}`} fixed />
-      </Page>
     </Document>
   );
 };

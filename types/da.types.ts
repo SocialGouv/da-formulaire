@@ -14,7 +14,6 @@ export interface DAData {
   cadre10_MatricesFlux: Cadre10_MatricesFlux;
   cadre11_Dimensionnement: Cadre11_Dimensionnement;
   cadre12_URLs: Cadre12_URLs;
-  annexe_SuiviChangements: Annexe_SuiviChangements;
 }
 
 // ============================================================================
@@ -443,19 +442,3 @@ export interface URLApplicative {
   precisions: string;
 }
 
-// ============================================================================
-// ANNEXE : SUIVI DES CHANGEMENTS
-// ============================================================================
-
-export interface Annexe_SuiviChangements {
-  versionnage: string; // Format X.Y.Z.K
-  changements: Changement[];
-}
-
-export interface Changement {
-  version: string; // x.y.z
-  date: string;
-  demandeurChangement: string;
-  rapporteurChangement: string;
-  descriptionDetaillee: string;
-}

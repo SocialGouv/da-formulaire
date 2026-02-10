@@ -82,7 +82,7 @@ export default function FormulaireDA() {
     { id: 9, title: "Serveurs & Composants" },
     { id: 10, title: "Matrices Flux" },
     { id: 11, title: "Dimensionnement" },
-    { id: 12, title: "URLs & Annexe" },
+    { id: 12, title: "URLs" },
   ];
 
   const handleNext = () => {
@@ -181,7 +181,7 @@ export default function FormulaireDA() {
                 <p className="fr-callout__text">Chargement du DA...</p>
               </div>
             )}
-            <nav className="fr-stepper" role="navigation" aria-label="Étapes">
+            <div className="fr-stepper">
               <h2 className="fr-stepper__title">
                 {steps[currentStep - 1].title}
                 <span className="fr-stepper__state">
@@ -199,7 +199,7 @@ export default function FormulaireDA() {
                   {steps[currentStep].title}
                 </p>
               )}
-            </nav>
+            </div>
 
             <div className="fr-mt-4w">
               {currentStep === 1 && (

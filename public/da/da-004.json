@@ -717,17 +717,5 @@
         "precisions": "Lecture seule"
       }
     ]
-  },
-  "annexe_SuiviChangements": {
-    "versionnage": "1.0.0",
-    "changements": [
-      {
-        "version": "1.0.0",
-        "date": "2026-01-30",
-        "demandeurChangement": "DRH",
-        "rapporteurChangement": "Chef de projet MOA",
-        "descriptionDetaillee": "Version initiale du DA pour le portail RH. Cadres 1 à 12 complétés."
-      }
-    ]
   }
 }

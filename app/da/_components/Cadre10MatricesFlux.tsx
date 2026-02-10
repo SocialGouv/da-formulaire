@@ -8,27 +8,28 @@ interface CadreProps {
 export default function Cadre10MatricesFlux({ daData, setDAData }: CadreProps) {
   return (
     <div>
-      <div className="fr-table fr-table--sm">
+      <div className="fr-table fr-table--no-scroll fr-table--no-caption fr-table--bordered fr-table--sm">
         <div className="fr-table__wrapper">
           <div className="fr-table__container">
             <div className="fr-table__content">
               <table>
+                <caption>Matrices des flux applicatifs</caption>
                 <thead>
                   <tr>
-                    <th>Numéro Flux</th>
-                    <th>Source</th>
-                    <th>Destination</th>
-                    <th>Protocole</th>
-                    <th>Commentaires</th>
-                    <th>Actions</th>
+                    <th scope="col" className="fr-col--sm">Numéro Flux</th>
+                    <th scope="col" className="fr-col--md">Source</th>
+                    <th scope="col" className="fr-col--md">Destination</th>
+                    <th scope="col" className="fr-col--sm">Protocole</th>
+                    <th scope="col" className="fr-col--md">Commentaires</th>
+                    <th scope="col" className="fr-col--xs" style={{ textAlign: "right" }}></th>
                   </tr>
                 </thead>
                 <tbody>
                   {daData.cadre10_MatricesFlux.fluxApplicatifs.map((flux, index) => (
                     <tr key={index}>
-                      <td>
+                      <td className="fr-bg-info">
                         <input
-                          className="fr-input"
+                          className="fr-table-input"
                           type="text"
                           value={flux.numeroFlux}
                           onChange={(e) => {
@@ -45,7 +46,7 @@ export default function Cadre10MatricesFlux({ daData, setDAData }: CadreProps) {
                       </td>
                       <td>
                         <input
-                          className="fr-input"
+                          className="fr-table-input"
                           type="text"
                           value={flux.source}
                           onChange={(e) => {
@@ -62,7 +63,7 @@ export default function Cadre10MatricesFlux({ daData, setDAData }: CadreProps) {
                       </td>
                       <td>
                         <input
-                          className="fr-input"
+                          className="fr-table-input"
                           type="text"
                           value={flux.destination}
                           onChange={(e) => {
@@ -79,7 +80,7 @@ export default function Cadre10MatricesFlux({ daData, setDAData }: CadreProps) {
                       </td>
                       <td>
                         <input
-                          className="fr-input"
+                          className="fr-table-input"
                           type="text"
                           value={flux.protocole}
                           onChange={(e) => {
@@ -96,7 +97,7 @@ export default function Cadre10MatricesFlux({ daData, setDAData }: CadreProps) {
                       </td>
                       <td>
                         <input
-                          className="fr-input"
+                          className="fr-table-input"
                           type="text"
                           value={flux.commentaires}
                           onChange={(e) => {
@@ -111,9 +112,9 @@ export default function Cadre10MatricesFlux({ daData, setDAData }: CadreProps) {
                           }}
                         />
                       </td>
-                      <td>
+                      <td style={{ textAlign: "right" }}>
                         <button
-                          className="fr-btn fr-btn--sm fr-btn--secondary fr-icon-delete-line"
+                          className="fr-btn fr-btn--tertiary-no-outline"
                           type="button"
                           title="Supprimer"
                           onClick={() => {
@@ -127,7 +128,9 @@ export default function Cadre10MatricesFlux({ daData, setDAData }: CadreProps) {
                               },
                             });
                           }}
-                        />
+                        >
+                          <span className="fr-icon-close-line" aria-hidden="true"></span>
+                        </button>
                       </td>
                     </tr>
                   ))}

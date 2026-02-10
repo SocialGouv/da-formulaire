@@ -140,7 +140,7 @@ export default function Cadre9ServeursComposants({ daData, setDAData }: CadrePro
           </div>
 
           <h4 className="fr-h4 fr-mt-4w">Composants Logiciels</h4>
-          <div className="fr-table fr-table--no-caption fr-table--bordered fr-table--sm">
+          <div className="fr-table fr-table--no-scroll fr-table--no-caption fr-table--bordered fr-table--sm">
             <div className="fr-table__wrapper">
               <div className="fr-table__container">
                 <div className="fr-table__content">
@@ -158,9 +158,9 @@ export default function Cadre9ServeursComposants({ daData, setDAData }: CadrePro
                     <tbody>
                       {serveur.composantsLogiciels.map((composant, composantIndex) => (
                         <tr key={composantIndex}>
-                          <td>
+                          <td className="fr-bg-info">
                             <input
-                              className="fr-input"
+                              className="fr-table-input"
                               type="text"
                               value={composant.categorie}
                               onChange={(e) => {
@@ -177,7 +177,7 @@ export default function Cadre9ServeursComposants({ daData, setDAData }: CadrePro
                           </td>
                           <td>
                             <input
-                              className="fr-input"
+                              className="fr-table-input"
                               type="text"
                               value={composant.composant}
                               onChange={(e) => {
@@ -194,7 +194,7 @@ export default function Cadre9ServeursComposants({ daData, setDAData }: CadrePro
                           </td>
                           <td>
                             <input
-                              className="fr-input"
+                              className="fr-table-input"
                               type="text"
                               value={composant.version}
                               onChange={(e) => {
@@ -211,7 +211,7 @@ export default function Cadre9ServeursComposants({ daData, setDAData }: CadrePro
                           </td>
                           <td>
                             <input
-                              className="fr-input"
+                              className="fr-table-input"
                               type="text"
                               value={composant.role}
                               onChange={(e) => {
@@ -226,10 +226,11 @@ export default function Cadre9ServeursComposants({ daData, setDAData }: CadrePro
                               }}
                             />
                           </td>
-                          <td style={{ textAlign: 'right' }}>
+                          <td style={{ textAlign: "right" }}>
                             <button
-                              className="fr-btn fr-btn--sm fr-btn--secondary"
+                              className="fr-btn fr-btn--tertiary-no-outline"
                               type="button"
+                              title="Supprimer"
                               onClick={() => {
                                 const newServeurs = [...daData.cadre9_ServeursComposants.serveurs];
                                 newServeurs[serveurIndex].composantsLogiciels = newServeurs[serveurIndex].composantsLogiciels.filter(
@@ -243,7 +244,7 @@ export default function Cadre9ServeursComposants({ daData, setDAData }: CadrePro
                                 });
                               }}
                             >
-                              Supprimer
+                              <span className="fr-icon-close-line" aria-hidden="true"></span>
                             </button>
                           </td>
                         </tr>

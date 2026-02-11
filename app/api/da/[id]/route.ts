@@ -3,6 +3,7 @@ import { auth } from "@/auth";
 import {
   getFormById,
   updateFormData,
+  deleteForm,
   checkFormAccess,
 } from "@/lib/db/queries/forms";
 import type { DAData } from "@/types/da.types";
@@ -121,4 +122,35 @@ export async function PUT(
     nom: updated.nom,
     updatedAt: updated.updatedAt,
   });
+}
+
+/**
+ * DELETE /api/da/[id] — Supprimer un DA (admin uniquement)
+ */
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  const session = await auth();
+  if (!session?.user?.dbUserId) {
+    return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
+  }
+
+  if (!session.user.isAdmin) {
+    return NextResponse.json(
+      { error: "Seuls les administrateurs peuvent supprimer un DA" },
+      { status: 403 },
+    );
+  }
+
+  const { id } = await params;
+
+  const form = await getFormById(id);
+  if (!form) {
+    return NextResponse.json({ error: "DA introuvable" }, { status: 404 });
+  }
+
+  await deleteForm(id);
+
+  return NextResponse.json({ success: true });
 }

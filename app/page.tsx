@@ -3,6 +3,7 @@ import Link from "next/link";
 import { auth } from "@/auth";
 import { getFormsForUser } from "@/lib/db/queries/forms";
 import ProConnectLoginButton from "./_components/ProConnectLoginButton";
+import DeleteDAButton from "./_components/DeleteDAButton";
 
 export default async function Home() {
   const session = await auth();
@@ -146,6 +147,12 @@ export default async function Home() {
                                     ></span>
                                     PDF
                                   </Link>
+                                  {session.user.isAdmin && (
+                                    <DeleteDAButton
+                                      daId={da.id}
+                                      daNom={da.nom}
+                                    />
+                                  )}
                                 </div>
                               </td>
                             </tr>

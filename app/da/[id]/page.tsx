@@ -17,6 +17,8 @@ import Cadre9ServeursComposants from "../_components/Cadre9ServeursComposants";
 import Cadre10MatricesFlux from "../_components/Cadre10MatricesFlux";
 import Cadre11Dimensionnement from "../_components/Cadre11Dimensionnement";
 import Cadre12URLsAnnexe from "../_components/Cadre12URLsAnnexe";
+import FormAccessManager from "../_components/FormAccessManager";
+import VersionManager from "../_components/VersionManager";
 
 type SaveStatus = "idle" | "saving" | "saved" | "error" | "conflict";
 
@@ -30,6 +32,7 @@ export default function FormulaireDA() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [saveStatus, setSaveStatus] = useState<SaveStatus>("idle");
   const [formId, setFormId] = useState<string | null>(null);
+  const [userAccess, setUserAccess] = useState<string | null>(null);
   const [lastUpdatedAt, setLastUpdatedAt] = useState<string | null>(null);
   const lastUpdatedAtRef = useRef<string | null>(null);
   const saveStatusRef = useRef<SaveStatus>("idle");
@@ -115,6 +118,7 @@ export default function FormulaireDA() {
 
           setDAData(data);
           setFormId(result.id);
+          setUserAccess(result.access);
           setLastUpdatedAt(result.updatedAt);
           lastUpdatedAtRef.current = result.updatedAt;
           isFirstLoad.current = true;
@@ -376,6 +380,18 @@ export default function FormulaireDA() {
             <p className="fr-text--sm fr-mb-2w">
               Remplissez tous les champs du Document d&apos;Architecture
             </p>
+
+            {/* Actions admin et versionnement */}
+            {formId && (
+              <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+                {userAccess === "admin" && (
+                  <FormAccessManager formId={formId} />
+                )}
+                {userAccess !== "viewer" && (
+                  <VersionManager formId={formId} onRestore={setDAData} />
+                )}
+              </div>
+            )}
 
             {isLoading && (
               <div className="fr-callout fr-callout--info fr-mb-4w">

@@ -17,7 +17,6 @@ import Cadre9ServeursComposants from "../_components/Cadre9ServeursComposants";
 import Cadre10MatricesFlux from "../_components/Cadre10MatricesFlux";
 import Cadre11Dimensionnement from "../_components/Cadre11Dimensionnement";
 import Cadre12URLsAnnexe from "../_components/Cadre12URLsAnnexe";
-import FormAccessManager from "../_components/FormAccessManager";
 import VersionManager from "../_components/VersionManager";
 
 type SaveStatus = "idle" | "saving" | "saved" | "error" | "conflict";
@@ -34,6 +33,8 @@ export default function FormulaireDA() {
   const [formId, setFormId] = useState<string | null>(null);
   const [userAccess, setUserAccess] = useState<string | null>(null);
   const [lastUpdatedAt, setLastUpdatedAt] = useState<string | null>(null);
+  const lastUpdatedAtRef = useRef<string | null>(null);
+  const saveStatusRef = useRef<SaveStatus>("idle");
 
   // Refs pour l'auto-save
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -118,6 +119,7 @@ export default function FormulaireDA() {
           setFormId(result.id);
           setUserAccess(result.access);
           setLastUpdatedAt(result.updatedAt);
+          lastUpdatedAtRef.current = result.updatedAt;
           isFirstLoad.current = true;
           setIsLoading(false);
         } else if (response.status === 403) {
@@ -142,29 +144,38 @@ export default function FormulaireDA() {
       if (!formId) return;
 
       setSaveStatus("saving");
+      saveStatusRef.current = "saving";
       try {
         const response = await fetch(`/api/da/${formId}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ data, updatedAt: lastUpdatedAt }),
+          body: JSON.stringify({ data, updatedAt: lastUpdatedAtRef.current }),
         });
 
         if (response.ok) {
           const result = await response.json();
           setLastUpdatedAt(result.updatedAt);
+          lastUpdatedAtRef.current = result.updatedAt;
           setSaveStatus("saved");
+          saveStatusRef.current = "saved";
           // Revenir à "idle" après 3 secondes
-          setTimeout(() => setSaveStatus("idle"), 3000);
+          setTimeout(() => {
+            setSaveStatus("idle");
+            saveStatusRef.current = "idle";
+          }, 3000);
         } else if (response.status === 409) {
           setSaveStatus("conflict");
+          saveStatusRef.current = "conflict";
         } else {
           setSaveStatus("error");
+          saveStatusRef.current = "error";
         }
       } catch {
         setSaveStatus("error");
+        saveStatusRef.current = "error";
       }
     },
-    [formId, lastUpdatedAt],
+    [formId],
   );
 
   // Déclencher l'auto-save quand daData change
@@ -178,7 +189,7 @@ export default function FormulaireDA() {
     if (!formId) return;
 
     // Stopper l'auto-save en cas de conflit
-    if (saveStatus === "conflict") return;
+    if (saveStatusRef.current === "conflict") return;
 
     // Annuler le timeout précédent
     if (saveTimeoutRef.current) {
@@ -195,7 +206,7 @@ export default function FormulaireDA() {
         clearTimeout(saveTimeoutRef.current);
       }
     };
-  }, [daData, formId, saveToServer, saveStatus]);
+  }, [daData, formId, saveToServer]);
 
   const steps = [
     { id: 1, title: "Projet - Acteurs" },
@@ -281,7 +292,12 @@ export default function FormulaireDA() {
           </div>
         );
       default:
-        return null;
+        // Placeholder invisible pour éviter le décalage du menu
+        return (
+          <span className="fr-text--xs" style={{ visibility: "hidden" }}>
+            &nbsp;
+          </span>
+        );
     }
   };
 
@@ -364,15 +380,10 @@ export default function FormulaireDA() {
               Remplissez tous les champs du Document d&apos;Architecture
             </p>
 
-            {/* Actions admin et versionnement */}
-            {formId && (
+            {/* Versionnement */}
+            {formId && userAccess !== "viewer" && (
               <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-                {userAccess === "admin" && (
-                  <FormAccessManager formId={formId} />
-                )}
-                {userAccess !== "viewer" && (
-                  <VersionManager formId={formId} onRestore={setDAData} />
-                )}
+                <VersionManager formId={formId} onRestore={setDAData} />
               </div>
             )}
 

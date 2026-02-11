@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { forms, formAccess } from "@/lib/db/schema";
-import { eq, desc, sql, and } from "drizzle-orm";
+import { eq, desc, sql } from "drizzle-orm";
 import type { DAData } from "@/types/da.types";
 
 /**
@@ -78,9 +78,21 @@ export async function updateFormData(
   const nom =
     data.cadre1_ProjetActeurs?.nomDuProjet || "Document d'Architecture";
 
-  const whereClause = expectedUpdatedAt
-    ? and(eq(forms.id, formId), eq(forms.updatedAt, expectedUpdatedAt))
-    : eq(forms.id, formId);
+  // Optimistic locking : vérification applicative du timestamp
+  if (expectedUpdatedAt) {
+    const [current] = await db
+      .select({ updatedAt: forms.updatedAt })
+      .from(forms)
+      .where(eq(forms.id, formId))
+      .limit(1);
+
+    if (
+      current &&
+      current.updatedAt.getTime() !== expectedUpdatedAt.getTime()
+    ) {
+      return null; // Conflit détecté
+    }
+  }
 
   const result = await db
     .update(forms)
@@ -89,10 +101,9 @@ export async function updateFormData(
       nom,
       updatedAt: new Date(),
     })
-    .where(whereClause)
+    .where(eq(forms.id, formId))
     .returning();
 
-  // Si aucune ligne mise à jour et qu'on avait un expectedUpdatedAt → conflit
   if (result.length === 0) {
     return null;
   }

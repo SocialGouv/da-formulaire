@@ -5,6 +5,8 @@ import { getFormsForUser } from "@/lib/db/queries/forms";
 import ProConnectLoginButton from "./_components/ProConnectLoginButton";
 import DeleteDAButton from "./_components/DeleteDAButton";
 import FormAccessManager from "./da/_components/FormAccessManager";
+import SnapshotManager from "./_components/SnapshotManager";
+import EditLogViewer from "./_components/EditLogViewer";
 
 export default async function Home() {
   const session = await auth();
@@ -128,6 +130,12 @@ export default async function Home() {
                                     ></span>
                                     PDF
                                   </Link>
+                                  {session.user.isAdmin && (
+                                    <SnapshotManager formId={da.id} />
+                                  )}
+                                  {session.user.isAdmin && (
+                                    <EditLogViewer formId={da.id} />
+                                  )}
                                   {session.user.isAdmin && (
                                     <FormAccessManager formId={da.id} />
                                   )}

@@ -71,7 +71,7 @@ export const formAccess = pgTable(
 );
 
 // ============================================================================
-// VERSIONS (historique des DA)
+// VERSIONS / SNAPSHOTS (versions nommées des DA)
 // ============================================================================
 
 export const versions = pgTable("versions", {
@@ -80,9 +80,24 @@ export const versions = pgTable("versions", {
     .notNull()
     .references(() => forms.id, { onDelete: "cascade" }),
   versionNumber: integer("version_number").notNull(),
-  name: text("name"), // null = auto-save, non-null = snapshot nommé
+  name: text("name").notNull(), // Nom du snapshot (obligatoire)
   data: jsonb("data").notNull().$type<DAData>(),
   createdBy: uuid("created_by").references(() => users.id),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
+// ============================================================================
+// EDIT LOGS (journal des modifications)
+// ============================================================================
+
+export const editLogs = pgTable("edit_logs", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  formId: uuid("form_id")
+    .notNull()
+    .references(() => forms.id, { onDelete: "cascade" }),
+  userId: uuid("user_id").references(() => users.id),
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),

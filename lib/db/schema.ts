@@ -80,7 +80,7 @@ export const versions = pgTable("versions", {
     .notNull()
     .references(() => forms.id, { onDelete: "cascade" }),
   versionNumber: integer("version_number").notNull(),
-  name: text("name"), // null = auto-save, non-null = snapshot nommé
+  name: text("name"),
   data: jsonb("data").notNull().$type<DAData>(),
   createdBy: uuid("created_by").references(() => users.id),
   createdAt: timestamp("created_at", { withTimezone: true })

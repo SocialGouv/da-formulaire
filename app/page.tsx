@@ -1,80 +1,48 @@
-import { promises as fs } from "fs";
-import path from "path";
 import Image from "next/image";
 import Link from "next/link";
 import { auth } from "@/auth";
+import { getFormsForUser } from "@/lib/db/queries/forms";
 import ProConnectLoginButton from "./_components/ProConnectLoginButton";
-
-interface DA {
-  id: string;
-  nom: string;
-  dateCreation: string;
-  dateModification: string;
-}
-
-async function getDAList(): Promise<DA[]> {
-  try {
-    const filePath = path.join(process.cwd(), "public/da/index.json");
-    const fileContents = await fs.readFile(filePath, "utf8");
-    return JSON.parse(fileContents);
-  } catch (error) {
-    console.error("Erreur lors du chargement de la liste des DA:", error);
-    return [];
-  }
-}
+import DeleteDAButton from "./_components/DeleteDAButton";
 
 export default async function Home() {
   const session = await auth();
-  const daList = session?.user ? await getDAList() : [];
+
+  const daList =
+    session?.user?.dbUserId
+      ? await getFormsForUser(session.user.dbUserId, session.user.isAdmin)
+      : [];
 
   return (
     <>
-      {/* Hero Section */}
-      <div className="fr-container fr-py-12w">
-        <div className="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
-          <div className="fr-col-12 fr-col-md-6">
-            <h1 className="fr-h1">Documents d&apos;Architecture</h1>
-            <p className="fr-text--lead fr-mb-3w">
-              Créez, éditez et exportez vos Documents d&apos;Architecture (DA)
-              conformes aux standards de l&apos;État.
-            </p>
-            <p className="fr-text--sm fr-mb-5w">
-              Structurez votre architecture SI en 12 cadres détaillés : projet,
-              fonctionnalités, contraintes, exigences, architectures (acteurs,
-              fonctionnelle, applicative, technique), serveurs, flux,
-              dimensionnement et annexes.
-            </p>
-
-            {session?.user ? (
-              <Link href="/da/new" className="fr-btn fr-btn--lg">
-                <span className="fr-icon-add-line" aria-hidden="true"></span>
-                Créer un nouveau DA
-              </Link>
-            ) : (
-              <ProConnectLoginButton />
-            )}
-          </div>
-          <div className="fr-col-12 fr-col-md-6">
-            <Image
-              src="/hero-api.svg"
-              alt="Illustration API"
-              width={600}
-              height={600}
-              style={{ width: "100%", height: "auto" }}
-              priority
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Liste des DA - visible uniquement si connecté */}
-      {session?.user && (
+      {session?.user ? (
+        /* Utilisateur connecté : accès direct aux DA */
         <main className="fr-container fr-my-6w">
           <div className="fr-grid-row fr-grid-row--center">
             <div className="fr-col-12">
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: "1.5rem",
+                }}
+              >
+                <h1 className="fr-h1" style={{ marginBottom: 0 }}>
+                  Mes Documents d&apos;Architecture
+                </h1>
+                {session.user.isAdmin && (
+                  <Link href="/da/new" className="fr-btn">
+                    <span
+                      className="fr-icon-add-line"
+                      aria-hidden="true"
+                    ></span>
+                    Créer un nouveau DA
+                  </Link>
+                )}
+              </div>
               {daList.length > 0 ? (
                 <div>
-                  <h2 className="fr-h2">Mes Documents d&apos;Architecture</h2>
                   <div className="fr-table fr-table--layout-fixed fr-table--no-caption">
                     <div className="fr-table__content">
                       <table>
@@ -115,7 +83,7 @@ export default async function Home() {
                                 className="fr-col--xs"
                                 style={{ textAlign: "right" }}
                               >
-                                {new Date(da.dateCreation).toLocaleDateString(
+                                {new Date(da.createdAt).toLocaleDateString(
                                   "fr-FR",
                                 )}
                               </td>
@@ -123,9 +91,9 @@ export default async function Home() {
                                 className="fr-col--xs"
                                 style={{ textAlign: "right" }}
                               >
-                                {new Date(
-                                  da.dateModification,
-                                ).toLocaleDateString("fr-FR")}
+                                {new Date(da.updatedAt).toLocaleDateString(
+                                  "fr-FR",
+                                )}
                               </td>
                               <td
                                 className="fr-col--sm"
@@ -159,6 +127,36 @@ export default async function Home() {
                                     ></span>
                                     PDF
                                   </Link>
+                                  {session.user.isAdmin && (
+                                    <Link
+                                      href={`/da/${da.id}/snapshots`}
+                                      className="fr-btn fr-btn--sm fr-btn--tertiary fr-btn--icon-left fr-icon-git-branch-line"
+                                    >
+                                      Snapshots
+                                    </Link>
+                                  )}
+                                  {session.user.isAdmin && (
+                                    <Link
+                                      href={`/da/${da.id}/logs`}
+                                      className="fr-btn fr-btn--sm fr-btn--tertiary fr-btn--icon-left fr-icon-time-line"
+                                    >
+                                      Historique
+                                    </Link>
+                                  )}
+                                  {session.user.isAdmin && (
+                                    <Link
+                                      href={`/da/${da.id}/access`}
+                                      className="fr-btn fr-btn--sm fr-btn--tertiary fr-btn--icon-left fr-icon-team-line"
+                                    >
+                                      Accès
+                                    </Link>
+                                  )}
+                                  {session.user.isAdmin && (
+                                    <DeleteDAButton
+                                      daId={da.id}
+                                      daNom={da.nom}
+                                    />
+                                  )}
                                 </div>
                               </td>
                             </tr>
@@ -171,14 +169,45 @@ export default async function Home() {
               ) : (
                 <div className="fr-callout fr-callout--info fr-mt-6w">
                   <p className="fr-callout__text">
-                    Aucun document d&apos;architecture trouvé. Créez votre
-                    premier DA !
+                    {session.user.isAdmin
+                      ? "Aucun document d'architecture trouvé. Créez votre premier DA !"
+                      : "Aucun document d'architecture ne vous a été partagé pour le moment."}
                   </p>
                 </div>
               )}
             </div>
           </div>
         </main>
+      ) : (
+        /* Utilisateur non connecté : hero marketing */
+        <div className="fr-container fr-py-12w">
+          <div className="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
+            <div className="fr-col-12 fr-col-md-6">
+              <h1 className="fr-h1">Documents d&apos;Architecture</h1>
+              <p className="fr-text--lead fr-mb-3w">
+                Créez, éditez et exportez vos Documents d&apos;Architecture (DA)
+                conformes aux standards de l&apos;État.
+              </p>
+              <p className="fr-text--sm fr-mb-5w">
+                Structurez votre architecture SI en 12 cadres détaillés : projet,
+                fonctionnalités, contraintes, exigences, architectures (acteurs,
+                fonctionnelle, applicative, technique), serveurs, flux,
+                dimensionnement et annexes.
+              </p>
+              <ProConnectLoginButton />
+            </div>
+            <div className="fr-col-12 fr-col-md-6">
+              <Image
+                src="/hero-api.svg"
+                alt="Illustration API"
+                width={600}
+                height={600}
+                style={{ width: "100%", height: "auto" }}
+                priority
+              />
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

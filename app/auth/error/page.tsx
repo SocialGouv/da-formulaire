@@ -14,7 +14,7 @@ export default async function AuthError({
             <h3 className="fr-alert__title">Erreur d&apos;authentification</h3>
             <p>
               {error === "Configuration" && "Erreur de configuration de ProConnect. Vérifiez que l'URL PROCONNECT_ISSUER est correcte et que les redirect URIs sont bien configurés dans ProConnect."}
-              {error === "AccessDenied" && "L'accès a été refusé. Vous avez annulé la connexion."}
+              {error === "AccessDenied" && "L'accès a été refusé. Votre adresse email n'est pas autorisée à accéder à cette application."}
               {error === "Verification" && "Le lien de vérification a expiré ou a déjà été utilisé."}
               {!error && "Une erreur est survenue lors de l'authentification."}
             </p>
@@ -26,8 +26,8 @@ export default async function AuthError({
           </div>
 
           <div className="fr-mt-4w">
-            <a className="fr-btn fr-btn--secondary" href="/auth/signin">
-              Retour à la page de connexion
+            <a className="fr-btn fr-btn--secondary" href="/">
+              Retour à l&apos;accueil
             </a>
           </div>
         </div>

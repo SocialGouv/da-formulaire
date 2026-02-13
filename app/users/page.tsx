@@ -112,8 +112,8 @@ export default function Users() {
   }
 
   return (
-    <div className="fr-container">
-      <div className="fr-grid-row fr-grid-row--middle fr-my-4w">
+    <div className="fr-container fr-my-6w">
+      <div className="fr-grid-row fr-grid-row--center">
         <div className="fr-col-12">
           <h1 className="fr-h1">Gestion des utilisateurs</h1>
           <p className="fr-text--lead">

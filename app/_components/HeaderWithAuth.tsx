@@ -91,20 +91,34 @@ export default async function HeaderWithAuth() {
           >
             <ul className="fr-nav__list">
               {session?.user?.isAdmin && (
-                <li className="fr-nav__item">
-                  <Link
-                    id="navigation-item-2"
-                    type="link"
-                    href="/users"
-                    className="fr-nav__link"
-                  >
-                    <span
-                      className="fr-icon-account-line fr-mr-1w"
-                      aria-hidden="true"
-                    ></span>
-                    Gestion des utilisateurs
-                  </Link>
-                </li>
+                <>
+                  <li className="fr-nav__item">
+                    <Link
+                      id="navigation-item-1"
+                      href="/"
+                      className="fr-nav__link"
+                    >
+                      <span
+                        className="fr-icon-file-text-line fr-mr-1w"
+                        aria-hidden="true"
+                      ></span>
+                      Gestion des DA
+                    </Link>
+                  </li>
+                  <li className="fr-nav__item">
+                    <Link
+                      id="navigation-item-2"
+                      href="/users"
+                      className="fr-nav__link"
+                    >
+                      <span
+                        className="fr-icon-account-line fr-mr-1w"
+                        aria-hidden="true"
+                      ></span>
+                      Gestion des utilisateurs
+                    </Link>
+                  </li>
+                </>
               )}
             </ul>
           </nav>

@@ -3,13 +3,13 @@ import { redirect } from "next/navigation";
 
 /**
  * Vérifie que l'utilisateur est authentifié.
- * Redirige vers /auth/signin si non connecté.
+ * Redirige vers / si non connecté.
  * À utiliser dans les Server Components et Server Actions.
  */
 export async function requireAuth() {
   const session = await auth();
   if (!session?.user) {
-    redirect("/auth/signin");
+    redirect("/");
   }
   return session;
 }

@@ -71,7 +71,7 @@ export const formAccess = pgTable(
 );
 
 // ============================================================================
-// VERSIONS / SNAPSHOTS (versions nommées des DA)
+// VERSIONS / SNAPSHOTS (versions des DA)
 // ============================================================================
 
 export const versions = pgTable("versions", {
@@ -80,7 +80,7 @@ export const versions = pgTable("versions", {
     .notNull()
     .references(() => forms.id, { onDelete: "cascade" }),
   versionNumber: integer("version_number").notNull(),
-  name: text("name").notNull(), // Nom du snapshot (obligatoire)
+  name: text("name"),
   data: jsonb("data").notNull().$type<DAData>(),
   createdBy: uuid("created_by").references(() => users.id),
   createdAt: timestamp("created_at", { withTimezone: true })

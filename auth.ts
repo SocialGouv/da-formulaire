@@ -4,6 +4,18 @@ import { findOrCreateUser } from "@/lib/db/queries/users";
 
 const isDev = process.env.NODE_ENV === "development";
 
+const allowedEmailDomains = (process.env.ALLOWED_EMAIL_DOMAINS || "")
+  .split(",")
+  .map((d) => d.trim().toLowerCase())
+  .filter(Boolean);
+
+function isEmailAllowed(email: string | null | undefined): boolean {
+  if (allowedEmailDomains.length === 0) return true;
+  if (!email) return false;
+  const domain = email.split("@")[1]?.toLowerCase();
+  return !!domain && allowedEmailDomains.includes(domain);
+}
+
 // Provider de dev pour bypasser ProConnect quand l'instance de test est indisponible
 const devProvider = Credentials({
   id: "dev-login",
@@ -102,6 +114,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     ...(isDev ? [devProvider] : []),
   ],
   callbacks: {
+    async signIn({ user }) {
+      if (!isEmailAllowed(user.email)) {
+        return false;
+      }
+      return true;
+    },
     authorized({ request, auth }) {
       const { pathname } = request.nextUrl;
       if (pathname.startsWith("/auth")) return true;
@@ -161,7 +179,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   session: { strategy: "jwt" },
   pages: {
-    signIn: "/auth/signin",
+    signIn: "/",
     error: "/auth/error",
   },
 });

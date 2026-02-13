@@ -8,6 +8,7 @@ import {
 } from "@/lib/db/queries/forms";
 import type { DAData } from "@/types/da.types";
 import { createEditLog } from "@/lib/db/queries/editLogs";
+import { createAutoSaveVersion } from "@/lib/db/queries/versions";
 
 /**
  * GET /api/da/[id] — Récupérer un DA (avec vérification d'accès)
@@ -113,8 +114,14 @@ export async function PUT(
   try {
     await createEditLog(id, session.user.dbUserId);
   } catch (error) {
-    // Ne pas bloquer la sauvegarde si le log échoue
     console.error("Erreur lors de la création du log d'édition:", error);
+  }
+
+  // Créer une version auto-save (throttlée côté serveur)
+  try {
+    await createAutoSaveVersion(id, body.data, session.user.dbUserId);
+  } catch (error) {
+    console.error("Erreur lors de la création de la version auto-save:", error);
   }
 
   return NextResponse.json({

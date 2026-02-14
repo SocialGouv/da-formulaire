@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { auth } from "@/auth";
-import { getFormsForUser } from "@/lib/db/queries/forms";
+import { getFormsForUser, getAllForms } from "@/lib/db/queries/forms";
 import ProConnectLoginButton from "./_components/ProConnectLoginButton";
 import DeleteDAButton from "./_components/DeleteDAButton";
 
@@ -13,6 +13,15 @@ export default async function Home() {
       ? await getFormsForUser(session.user.dbUserId, session.user.isAdmin)
       : [];
 
+  const allDaList =
+    session?.user?.dbUserId && !session.user.isAdmin
+      ? await getAllForms()
+      : [];
+
+  // IDs des DA partagés pour les exclure de la liste "tous les DA"
+  const sharedIds = new Set(daList.map((da) => da.id));
+  const otherDaList = allDaList.filter((da) => !sharedIds.has(da.id));
+
   return (
     <>
       {session?.user ? (
@@ -20,162 +29,309 @@ export default async function Home() {
         <main className="fr-container fr-my-6w">
           <div className="fr-grid-row fr-grid-row--center">
             <div className="fr-col-12">
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: "1.5rem",
-                }}
-              >
-                <h1 className="fr-h1" style={{ marginBottom: 0 }}>
-                  Mes Documents d&apos;Architecture
-                </h1>
-                {session.user.isAdmin && (
-                  <Link href="/da/new" className="fr-btn">
-                    <span
-                      className="fr-icon-add-line"
-                      aria-hidden="true"
-                    ></span>
-                    Créer un nouveau DA
-                  </Link>
-                )}
-              </div>
-              {daList.length > 0 ? (
-                <div>
-                  <div className="fr-table fr-table--layout-fixed fr-table--no-caption">
-                    <div className="fr-table__content">
-                      <table>
-                        <caption>
-                          Liste des Documents d&apos;Architecture
-                        </caption>
-                        <thead>
-                          <tr>
-                            <th scope="col">Nom du projet</th>
-                            <th
-                              scope="col"
-                              className="fr-col--xs"
-                              style={{ textAlign: "right" }}
-                            >
-                              Date de création
-                            </th>
-                            <th
-                              scope="col"
-                              className="fr-col--xs"
-                              style={{ textAlign: "right" }}
-                            >
-                              Dernière modification
-                            </th>
-                            <th
-                              scope="col"
-                              className="fr-col--sm"
-                              style={{ textAlign: "right" }}
-                            ></th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {daList.map((da) => (
-                            <tr key={da.id}>
-                              <td>
-                                <Link href={`/view/${da.id}`}>
-                                  <strong>{da.nom}</strong>
-                                </Link>
-                              </td>
-                              <td
+              {session.user.isAdmin ? (
+                /* --- Admin: une seule liste avec toutes les actions --- */
+                <>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      marginBottom: "1.5rem",
+                    }}
+                  >
+                    <h1 className="fr-h1" style={{ marginBottom: 0 }}>
+                      Documents d&apos;Architecture
+                    </h1>
+                    <Link href="/da/new" className="fr-btn">
+                      <span
+                        className="fr-icon-add-line"
+                        aria-hidden="true"
+                      ></span>
+                      Créer un nouveau DA
+                    </Link>
+                  </div>
+                  {daList.length > 0 ? (
+                    <div className="fr-table fr-table--layout-fixed fr-table--no-caption">
+                      <div className="fr-table__content">
+                        <table>
+                          <caption>
+                            Liste des Documents d&apos;Architecture
+                          </caption>
+                          <thead>
+                            <tr>
+                              <th scope="col">Nom du projet</th>
+                              <th
+                                scope="col"
                                 className="fr-col--xs"
                                 style={{ textAlign: "right" }}
                               >
-                                {new Date(da.createdAt).toLocaleDateString(
-                                  "fr-FR",
-                                )}
-                              </td>
-                              <td
+                                Date de création
+                              </th>
+                              <th
+                                scope="col"
                                 className="fr-col--xs"
                                 style={{ textAlign: "right" }}
                               >
-                                {new Date(da.updatedAt).toLocaleDateString(
-                                  "fr-FR",
-                                )}
-                              </td>
-                              <td
+                                Dernière modification
+                              </th>
+                              <th
+                                scope="col"
                                 className="fr-col--sm"
                                 style={{ textAlign: "right" }}
-                              >
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    gap: "0.5rem",
-                                    justifyContent: "flex-end",
-                                  }}
+                              ></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {daList.map((da) => (
+                              <tr key={da.id}>
+                                <td>
+                                  <Link href={`/view/${da.id}`}>
+                                    <strong>{da.nom}</strong>
+                                  </Link>
+                                </td>
+                                <td
+                                  className="fr-col--xs"
+                                  style={{ textAlign: "right" }}
                                 >
-                                  <Link
-                                    href={`/da/${da.id}`}
-                                    className="fr-btn fr-btn--sm"
+                                  {new Date(da.createdAt).toLocaleDateString(
+                                    "fr-FR",
+                                  )}
+                                </td>
+                                <td
+                                  className="fr-col--xs"
+                                  style={{ textAlign: "right" }}
+                                >
+                                  {new Date(da.updatedAt).toLocaleDateString(
+                                    "fr-FR",
+                                  )}
+                                </td>
+                                <td
+                                  className="fr-col--sm"
+                                  style={{ textAlign: "right" }}
+                                >
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      gap: "0.25rem",
+                                      justifyContent: "flex-end",
+                                    }}
                                   >
-                                    <span
-                                      className="fr-icon-edit-line"
-                                      aria-hidden="true"
-                                    ></span>
-                                    Éditer
-                                  </Link>
-                                  <Link
-                                    href={`/api/export-pdf/${da.id}`}
-                                    target="_blank"
-                                    className="fr-btn fr-btn--sm fr-btn--secondary"
-                                  >
-                                    <span
-                                      className="fr-icon-download-line"
-                                      aria-hidden="true"
-                                    ></span>
-                                    PDF
-                                  </Link>
-                                  {session.user.isAdmin && (
+                                    <Link
+                                      href={`/da/${da.id}`}
+                                      className="fr-btn fr-btn--sm fr-icon-edit-line"
+                                      title="Éditer"
+                                    />
+                                    <Link
+                                      href={`/api/export-pdf/${da.id}`}
+                                      target="_blank"
+                                      className="fr-btn fr-btn--sm fr-btn--secondary fr-icon-download-line"
+                                      title="Télécharger en PDF"
+                                    />
                                     <Link
                                       href={`/da/${da.id}/snapshots`}
-                                      className="fr-btn fr-btn--sm fr-btn--tertiary fr-btn--icon-left fr-icon-git-branch-line"
-                                    >
-                                      Snapshots
-                                    </Link>
-                                  )}
-                                  {session.user.isAdmin && (
+                                      className="fr-btn fr-btn--sm fr-btn--tertiary fr-icon-git-branch-line"
+                                      title="Snapshots"
+                                    />
                                     <Link
                                       href={`/da/${da.id}/logs`}
-                                      className="fr-btn fr-btn--sm fr-btn--tertiary fr-btn--icon-left fr-icon-time-line"
-                                    >
-                                      Historique
-                                    </Link>
-                                  )}
-                                  {session.user.isAdmin && (
+                                      className="fr-btn fr-btn--sm fr-btn--tertiary fr-icon-time-line"
+                                      title="Historique"
+                                    />
                                     <Link
                                       href={`/da/${da.id}/access`}
-                                      className="fr-btn fr-btn--sm fr-btn--tertiary fr-btn--icon-left fr-icon-team-line"
-                                    >
-                                      Accès
-                                    </Link>
-                                  )}
-                                  {session.user.isAdmin && (
+                                      className="fr-btn fr-btn--sm fr-btn--tertiary fr-icon-team-line"
+                                      title="Accès"
+                                    />
                                     <DeleteDAButton
                                       daId={da.id}
                                       daNom={da.nom}
                                     />
-                                  )}
-                                </div>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                                  </div>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
-                  </div>
-                </div>
+                  ) : (
+                    <div className="fr-callout fr-callout--info fr-mt-6w">
+                      <p className="fr-callout__text">
+                        Aucun document d&apos;architecture trouvé. Créez votre
+                        premier DA !
+                      </p>
+                    </div>
+                  )}
+                </>
               ) : (
-                <div className="fr-callout fr-callout--info fr-mt-6w">
-                  <p className="fr-callout__text">
-                    {session.user.isAdmin
-                      ? "Aucun document d'architecture trouvé. Créez votre premier DA !"
-                      : "Aucun document d'architecture ne vous a été partagé pour le moment."}
-                  </p>
-                </div>
+                /* --- Non-admin: deux listes --- */
+                <>
+                  {/* Section 1 : DA partagés avec moi */}
+                  <h2 className="fr-h3" style={{ marginBottom: "1.5rem" }}>
+                    DA partagés avec moi
+                  </h2>
+                  {daList.length > 0 ? (
+                    <div className="fr-table fr-table--layout-fixed fr-table--no-caption">
+                      <div className="fr-table__content">
+                        <table>
+                          <caption>
+                            Documents d&apos;Architecture partagés avec moi
+                          </caption>
+                          <thead>
+                            <tr>
+                              <th scope="col">Nom du projet</th>
+                              <th
+                                scope="col"
+                                className="fr-col--xs"
+                                style={{ textAlign: "right" }}
+                              >
+                                Date de création
+                              </th>
+                              <th
+                                scope="col"
+                                className="fr-col--xs"
+                                style={{ textAlign: "right" }}
+                              >
+                                Dernière modification
+                              </th>
+                              <th
+                                scope="col"
+                                style={{ textAlign: "right", width: "120px" }}
+                              ></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {daList.map((da) => (
+                              <tr key={da.id}>
+                                <td>
+                                  <Link href={`/view/${da.id}`}>
+                                    <strong>{da.nom}</strong>
+                                  </Link>
+                                </td>
+                                <td
+                                  className="fr-col--xs"
+                                  style={{ textAlign: "right" }}
+                                >
+                                  {new Date(da.createdAt).toLocaleDateString(
+                                    "fr-FR",
+                                  )}
+                                </td>
+                                <td
+                                  className="fr-col--xs"
+                                  style={{ textAlign: "right" }}
+                                >
+                                  {new Date(da.updatedAt).toLocaleDateString(
+                                    "fr-FR",
+                                  )}
+                                </td>
+                                <td style={{ textAlign: "right" }}>
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      gap: "0.25rem",
+                                      justifyContent: "flex-end",
+                                    }}
+                                  >
+                                    <Link
+                                      href={`/da/${da.id}`}
+                                      className="fr-btn fr-btn--sm fr-icon-edit-line"
+                                      title="Éditer"
+                                    />
+                                    <Link
+                                      href={`/api/export-pdf/${da.id}`}
+                                      target="_blank"
+                                      className="fr-btn fr-btn--sm fr-btn--secondary fr-icon-download-line"
+                                      title="Télécharger en PDF"
+                                    />
+                                  </div>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="fr-callout fr-callout--info">
+                      <p className="fr-callout__text">
+                        Aucun document d&apos;architecture ne vous a été partagé
+                        pour le moment.
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Section 2 : Tous les autres DA (readonly) */}
+                  <h2
+                    className="fr-h3 fr-mt-4w"
+                    style={{ marginBottom: "1.5rem" }}
+                  >
+                    Tous les Documents d&apos;Architecture
+                  </h2>
+                  {otherDaList.length > 0 ? (
+                    <div className="fr-table fr-table--layout-fixed fr-table--no-caption">
+                      <div className="fr-table__content">
+                        <table>
+                          <caption>
+                            Tous les Documents d&apos;Architecture
+                          </caption>
+                          <thead>
+                            <tr>
+                              <th scope="col">Nom du projet</th>
+                              <th
+                                scope="col"
+                                className="fr-col--xs"
+                                style={{ textAlign: "right" }}
+                              >
+                                Date de création
+                              </th>
+                              <th
+                                scope="col"
+                                className="fr-col--xs"
+                                style={{ textAlign: "right" }}
+                              >
+                                Dernière modification
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {otherDaList.map((da) => (
+                              <tr key={da.id}>
+                                <td>
+                                  <Link href={`/view/${da.id}`}>
+                                    <strong>{da.nom}</strong>
+                                  </Link>
+                                </td>
+                                <td
+                                  className="fr-col--xs"
+                                  style={{ textAlign: "right" }}
+                                >
+                                  {new Date(da.createdAt).toLocaleDateString(
+                                    "fr-FR",
+                                  )}
+                                </td>
+                                <td
+                                  className="fr-col--xs"
+                                  style={{ textAlign: "right" }}
+                                >
+                                  {new Date(da.updatedAt).toLocaleDateString(
+                                    "fr-FR",
+                                  )}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="fr-callout fr-callout--info">
+                      <p className="fr-callout__text">
+                        Aucun autre document d&apos;architecture disponible.
+                      </p>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </div>

@@ -42,13 +42,10 @@ export default function DeleteDAButton({
   return (
     <button
       type="button"
-      className="fr-btn fr-btn--sm fr-btn--tertiary"
+      className="fr-btn fr-btn--sm fr-btn--tertiary fr-icon-close-line"
       onClick={handleDelete}
       disabled={isDeleting}
-      title={`Supprimer ${daNom}`}
-    >
-      <span className="fr-icon-delete-line" aria-hidden="true"></span>
-      {isDeleting ? "Suppression…" : "Supprimer"}
-    </button>
+      title="Supprimer"
+    />
   );
 }

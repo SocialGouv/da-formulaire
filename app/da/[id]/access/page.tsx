@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import Autocomplete from "@/app/_components/Autocomplete";
 
 interface AccessEntry {
   id: string;
@@ -162,21 +163,16 @@ export default function AccessPage() {
                                 </td>
                                 <td style={{ textAlign: "right" }}>
                                   <button
-                                    className="fr-btn fr-btn--sm fr-btn--tertiary-no-outline"
+                                    className="fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-close-line"
                                     type="button"
+                                    title="Retirer"
                                     onClick={() =>
                                       handleRevoke(
                                         entry.userId,
                                         `${entry.userGivenName} ${entry.userUsualName}`,
                                       )
                                     }
-                                  >
-                                    <span
-                                      className="fr-icon-close-line"
-                                      aria-hidden="true"
-                                    ></span>
-                                    Retirer
-                                  </button>
+                                  />
                                 </td>
                               </tr>
                             ))}
@@ -214,27 +210,23 @@ export default function AccessPage() {
                       flexWrap: "wrap",
                     }}
                   >
-                    <div className="fr-select-group" style={{ flex: 1 }}>
-                      <label className="fr-label" htmlFor="user-select">
-                        Utilisateur
-                      </label>
-                      <select
-                        className="fr-select"
+                    <div style={{ flex: 1 }}>
+                      <Autocomplete
                         id="user-select"
-                        value={selectedUserId}
-                        onChange={(e) => setSelectedUserId(e.target.value)}
-                      >
-                        <option value="">Sélectionner un utilisateur</option>
-                        {availableUsers
+                        label="Utilisateur"
+                        placeholder="Rechercher un utilisateur…"
+                        options={availableUsers
                           .filter((u) => !u.isAdmin)
-                          .map((user) => (
-                            <option key={user.id} value={user.id}>
-                              {user.givenName} {user.usualName} ({user.email})
-                            </option>
-                          ))}
-                      </select>
+                          .map((user) => ({
+                            value: user.id,
+                            label: `${user.givenName ?? ""} ${user.usualName ?? ""}`.trim(),
+                            detail: user.email,
+                          }))}
+                        value={selectedUserId}
+                        onChange={setSelectedUserId}
+                      />
                     </div>
-                    <div className="fr-select-group">
+                    <div className="fr-select-group" style={{ marginBottom: 0 }}>
                       <label className="fr-label" htmlFor="role-select">
                         Rôle
                       </label>

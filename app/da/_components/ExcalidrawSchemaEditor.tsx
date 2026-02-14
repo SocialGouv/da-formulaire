@@ -92,6 +92,12 @@ export default function ExcalidrawSchemaEditor({
     if (excalidrawAPI) {
       excalidrawAPI.updateScene(template);
       setHasGenerated(true);
+      // Centrer le contenu après la génération du template
+      setTimeout(() => {
+        excalidrawAPI.scrollToContent(excalidrawAPI.getSceneElements(), {
+          fitToContent: true,
+        });
+      }, 100);
     }
   };
 
@@ -145,6 +151,12 @@ export default function ExcalidrawSchemaEditor({
           const parsedData = JSON.parse(initialData);
           excalidrawAPI.updateScene(parsedData);
           setHasGenerated(true);
+          // Centrer le contenu après le chargement initial
+          setTimeout(() => {
+            excalidrawAPI.scrollToContent(excalidrawAPI.getSceneElements(), {
+              fitToContent: true,
+            });
+          }, 100);
         } catch (error) {
           console.error("Erreur lors du chargement des données initiales:", error);
         }

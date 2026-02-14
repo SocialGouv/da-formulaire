@@ -23,6 +23,21 @@ export async function createForm(
 }
 
 /**
+ * Liste tous les DA (pour affichage readonly).
+ */
+export async function getAllForms() {
+  return db
+    .select({
+      id: forms.id,
+      nom: forms.nom,
+      createdAt: forms.createdAt,
+      updatedAt: forms.updatedAt,
+    })
+    .from(forms)
+    .orderBy(desc(forms.updatedAt));
+}
+
+/**
  * Récupère un DA par son ID.
  */
 export async function getFormById(formId: string) {

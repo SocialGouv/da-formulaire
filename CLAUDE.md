@@ -101,7 +101,7 @@ This project uses **vanilla DSFR** (pure HTML/CSS from @gouvfr/dsfr package).
 1. **ALWAYS consult the official DSFR documentation** at https://www.systeme-de-design.gouv.fr/ BEFORE any implementation
 2. Use existing DSFR components and classes (fr-btn, fr-input, etc.)
 3. Propose implementation to user before coding
-4. **ALWAYS verify the result in Chrome MCP** after modification to ensure correctness
+4. **ALWAYS verify the result in Chrome** (via Claude in Chrome MCP) after modification to ensure correctness
 
 **DSFR structure:**
 
@@ -133,50 +133,32 @@ Use native DSFR classes. Custom CSS (app/dsfr-extensions.css) should be exceptio
 
 ## Development environment
 
-### Chrome DevTools MCP (chrome-devtools-mcp)
+### Chrome MCP (Claude in Chrome)
 
-On utilise `chrome-devtools-mcp` pour tester et vérifier le rendu des pages dans Chrome.
+On utilise l'extension **"Claude in Chrome"** (MCP SDK) pour tester et vérifier le rendu des pages dans Chrome. C'est l'extension la plus fiable et la plus complète.
 
-**Prérequis : L'utilisateur doit lancer Chrome avec le profil de debug AVANT la session Claude Code.**
+**Setup par session :**
+1. Appeler `mcp__Claude_in_Chrome__tabs_context_mcp` avec `createIfEmpty: true` pour initialiser le contexte
+2. Utiliser le `tabId` retourné pour toutes les opérations suivantes
 
-```bash
-# Lancer Chrome avec remote debugging activé (profil dédié MCP)
-/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome \
-  --remote-debugging-port=9222 \
-  --user-data-dir="$HOME/.chrome-mcp-profile" \
-  --no-first-run --no-default-browser-check &
-```
+**Outils principaux :**
+- `mcp__Claude_in_Chrome__computer` (action: `screenshot`) — Prendre un screenshot de la page
+- `mcp__Claude_in_Chrome__get_page_text` — Récupérer le contenu textuel de la page
+- `mcp__Claude_in_Chrome__javascript_tool` — Exécuter du JS dans l'onglet
+- `mcp__Claude_in_Chrome__navigate` — Naviguer vers une URL
+- `mcp__Claude_in_Chrome__read_page` — Lire l'arbre d'accessibilité (DOM structuré)
+- `mcp__Claude_in_Chrome__find` — Trouver des éléments par description naturelle
+- `mcp__Claude_in_Chrome__read_console_messages` — Lire les messages console (debug)
+- `mcp__Claude_in_Chrome__read_network_requests` — Inspecter les requêtes réseau
 
-**⚠️ IMPORTANT — Profil dédié MCP (`~/.chrome-mcp-profile`) :**
-- Chrome 136+ exige `--user-data-dir` pour activer le remote debugging
-- Utiliser un profil **séparé et léger**, dédié uniquement au debug MCP (`~/.chrome-mcp-profile`)
-- Ne PAS réutiliser le profil de navigation quotidien (trop d'onglets → timeout MCP)
-- Ce profil persiste les sessions de login entre les redémarrages
-- Si le profil accumule trop d'onglets (>5), le supprimer et relancer : `rm -rf ~/.chrome-mcp-profile`
-
-**Alias recommandé** (à ajouter dans `~/.zshrc`) :
-```bash
-alias chrome:debug='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222 --user-data-dir="$HOME/.chrome-mcp-profile" --no-first-run --no-default-browser-check > /dev/null 2>&1 &'
-```
-
-**Vérification de la connexion :**
-```bash
-curl -s http://127.0.0.1:9222/json/version
-# Doit retourner du JSON avec la version de Chrome
-```
-
-**En cas de problème de connexion MCP (timeout) :**
-1. Vérifier que Chrome tourne avec le bon port : `curl -s http://127.0.0.1:9222/json/version`
-2. Si pas de réponse → Chrome n'est pas lancé avec le bon flag. Le fermer (`pkill -9 "Google Chrome"`) et relancer avec la commande ci-dessus
-3. Si timeout malgré la réponse JSON → trop d'onglets ouverts. Supprimer le profil : `rm -rf ~/.chrome-mcp-profile` et relancer
-4. Ne JAMAIS lancer Chrome via `open -a` (les flags ne passent pas correctement)
-5. Tuer les processus zombies si nécessaire : `pkill -f "chrome-devtools-mcp"`
+**Note :** Ne PAS utiliser chrome-devtools-mcp (désinstallé) ni Control Chrome (instable sur macOS).
 
 ### Vérification UI
 
-- **All UI modifications must be verified in Chrome MCP** to ensure they render correctly with DSFR
-- Utiliser `mcp__chrome-devtools__take_screenshot` pour vérifier le rendu visuel
-- Utiliser `mcp__chrome-devtools__take_snapshot` pour inspecter l'arbre d'accessibilité
+- **Toute modification UI doit être vérifiée dans Chrome** pour s'assurer du bon rendu DSFR
+- Utiliser `mcp__Claude_in_Chrome__computer` (screenshot) pour vérification visuelle
+- Utiliser `mcp__Claude_in_Chrome__javascript_tool` pour des vérifications DOM ciblées
+- Utiliser `mcp__Claude_in_Chrome__read_console_messages` pour détecter les erreurs JS
 
 ## Documentation
 

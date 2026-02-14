@@ -20,27 +20,27 @@ export default function ReadonlyCadre11({ daData }: ReadonlyCadreProps) {
         <p className="fr-text--bold fr-text--sm fr-mb-0">
           Perte de données maximale admissible (PDMA)
         </p>
-        <p className="fr-text--sm" style={{ whiteSpace: "pre-wrap" }}>
-          {justifications.perteDeDonneesMaximaleAdmissible || "—"}
-        </p>
+        <div className="fr-readonly-value">
+          {justifications.perteDeDonneesMaximaleAdmissible || <span className="fr-readonly-value--empty">—</span>}
+        </div>
       </div>
 
       <div className="fr-mb-4w">
         <p className="fr-text--bold fr-text--sm fr-mb-0">
           Durée maximale d{"'"}interruption admissible (DMIA)
         </p>
-        <p className="fr-text--sm" style={{ whiteSpace: "pre-wrap" }}>
-          {justifications.dureeMaximaleInterruptionAdmissible || "—"}
-        </p>
+        <div className="fr-readonly-value">
+          {justifications.dureeMaximaleInterruptionAdmissible || <span className="fr-readonly-value--empty">—</span>}
+        </div>
       </div>
 
       <div className="fr-mb-4w">
         <p className="fr-text--bold fr-text--sm fr-mb-0">
           Performances applicatives
         </p>
-        <p className="fr-text--sm" style={{ whiteSpace: "pre-wrap" }}>
-          {justifications.performancesApplicatives || "—"}
-        </p>
+        <div className="fr-readonly-value">
+          {justifications.performancesApplicatives || <span className="fr-readonly-value--empty">—</span>}
+        </div>
       </div>
 
       <h3 className="fr-h3 fr-mt-6w">

@@ -94,24 +94,32 @@ export default function ReadonlyCadre4({ daData }: { daData: DAData }) {
       <h3 className="fr-h3 fr-mt-6w">Echelle DICT EBIOS (1 &agrave; 4) &ndash; global SI</h3>
 
       {exigences.map((exigence) => (
-        <div key={exigence.label}>
-          <h4 className="fr-h4 fr-mt-4w">{exigence.label}</h4>
+        <div className="fr-readonly-group" key={exigence.label}>
+          <h4 className="fr-readonly-group__title">{exigence.label}</h4>
           <div className="fr-grid-row fr-grid-row--gutters">
             <div className="fr-col-3">
-              <h3 className="fr-h4 fr-mt-4w">Niveau Front</h3>
-              <p className="fr-text--sm">{exigence.frontNiveau}</p>
+              <h5 className="fr-h4">Niveau Front</h5>
+              <div className="fr-readonly-value">
+                {exigence.frontNiveau || <span className="fr-readonly-value--empty">—</span>}
+              </div>
             </div>
             <div className="fr-col-9">
-              <h3 className="fr-h4 fr-mt-4w">Pr&eacute;cisions Front</h3>
-              <p className="fr-text--sm">{exigence.frontPrecisions}</p>
+              <h5 className="fr-h4">Pr&eacute;cisions Front</h5>
+              <div className="fr-readonly-value">
+                {exigence.frontPrecisions || <span className="fr-readonly-value--empty">—</span>}
+              </div>
             </div>
             <div className="fr-col-3">
-              <h3 className="fr-h4 fr-mt-4w">Niveau Back</h3>
-              <p className="fr-text--sm">{exigence.backNiveau}</p>
+              <h5 className="fr-h4">Niveau Back</h5>
+              <div className="fr-readonly-value">
+                {exigence.backNiveau || <span className="fr-readonly-value--empty">—</span>}
+              </div>
             </div>
             <div className="fr-col-9">
-              <h3 className="fr-h4 fr-mt-4w">Pr&eacute;cisions Back</h3>
-              <p className="fr-text--sm">{exigence.backPrecisions}</p>
+              <h5 className="fr-h4">Pr&eacute;cisions Back</h5>
+              <div className="fr-readonly-value">
+                {exigence.backPrecisions || <span className="fr-readonly-value--empty">—</span>}
+              </div>
             </div>
           </div>
         </div>
@@ -151,25 +159,31 @@ export default function ReadonlyCadre4({ daData }: { daData: DAData }) {
 
       {/* Echelle IMPACT EBIOS */}
       <h3 className="fr-h3 fr-mt-6w">Echelle IMPACT EBIOS &ndash; global SI</h3>
-      <div className="fr-grid-row fr-grid-row--gutters">
-        <div className="fr-col-6">
-          <h3 className="fr-h4 fr-mt-4w">Domaine</h3>
-          <p className="fr-text--sm">{impact.domaine}</p>
-        </div>
-        <div className="fr-col-6">
-          <h3 className="fr-h4 fr-mt-4w">Niveau</h3>
-          <p className="fr-text--sm">{impact.niveau}</p>
-        </div>
-        <div className="fr-col-12">
-          <h3 className="fr-h4 fr-mt-4w">Description</h3>
-          <div className="fr-text--sm" style={{ whiteSpace: "pre-wrap" }}>
-            {impact.description}
+      <div className="fr-readonly-group">
+        <div className="fr-grid-row fr-grid-row--gutters">
+          <div className="fr-col-6">
+            <h4 className="fr-h4">Domaine</h4>
+            <div className="fr-readonly-value">
+              {impact.domaine || <span className="fr-readonly-value--empty">—</span>}
+            </div>
           </div>
-        </div>
-        <div className="fr-col-12">
-          <h3 className="fr-h4 fr-mt-4w">Contexte applicatif</h3>
-          <div className="fr-text--sm" style={{ whiteSpace: "pre-wrap" }}>
-            {impact.contexteApplicatif}
+          <div className="fr-col-6">
+            <h4 className="fr-h4">Niveau</h4>
+            <div className="fr-readonly-value">
+              {impact.niveau || <span className="fr-readonly-value--empty">—</span>}
+            </div>
+          </div>
+          <div className="fr-col-12">
+            <h4 className="fr-h4">Description</h4>
+            <div className="fr-readonly-value">
+              {impact.description || <span className="fr-readonly-value--empty">—</span>}
+            </div>
+          </div>
+          <div className="fr-col-12">
+            <h4 className="fr-h4">Contexte applicatif</h4>
+            <div className="fr-readonly-value">
+              {impact.contexteApplicatif || <span className="fr-readonly-value--empty">—</span>}
+            </div>
           </div>
         </div>
       </div>
@@ -214,33 +228,43 @@ export default function ReadonlyCadre4({ daData }: { daData: DAData }) {
 
       {/* Garantie de service */}
       <h3 className="fr-h3 fr-mt-6w">Garantie de service</h3>
-      <div className="fr-grid-row fr-grid-row--gutters">
-        <div className="fr-col-6">
-          <h3 className="fr-h4 fr-mt-4w">Plan de Continuit&eacute; d&apos;Activit&eacute; (PCA)</h3>
-          <p className="fr-text--sm">{garantie.planDeContinuiteActivite_PCA}</p>
-        </div>
-        <div className="fr-col-6">
-          <h3 className="fr-h4 fr-mt-4w">Plan de Reprise d&apos;Activit&eacute; (PRA)</h3>
-          <p className="fr-text--sm">{garantie.planDeRepriseActivite_PRA}</p>
-        </div>
-        <div className="fr-col-6">
-          <h3 className="fr-h4 fr-mt-4w">Perte de Donn&eacute;es Maximale Admissible (PDMA)</h3>
-          <p className="fr-text--sm">{garantie.perteDeDonneesNonAdmissible}</p>
-        </div>
-        <div className="fr-col-6">
-          <h3 className="fr-h4 fr-mt-4w">Dur&eacute;e Maximale d&apos;Interruption Admissible (DMIA)</h3>
-          <p className="fr-text--sm">{garantie.dureMaximaleInterruptionAdmissible_DMIA}</p>
-        </div>
-        <div className="fr-col-12">
-          <h3 className="fr-h4 fr-mt-4w">Impact M&eacute;tier en cas de perte de donn&eacute;es</h3>
-          <div className="fr-text--sm" style={{ whiteSpace: "pre-wrap" }}>
-            {garantie.impactMetierEnCasDePerteDeDonnees}
+      <div className="fr-readonly-group">
+        <div className="fr-grid-row fr-grid-row--gutters">
+          <div className="fr-col-6">
+            <h4 className="fr-h4">Plan de Continuit&eacute; d&apos;Activit&eacute; (PCA)</h4>
+            <div className="fr-readonly-value">
+              {garantie.planDeContinuiteActivite_PCA || <span className="fr-readonly-value--empty">—</span>}
+            </div>
           </div>
-        </div>
-        <div className="fr-col-12">
-          <h3 className="fr-h4 fr-mt-4w">Impact M&eacute;tier en cas de d&eacute;faillance service</h3>
-          <div className="fr-text--sm" style={{ whiteSpace: "pre-wrap" }}>
-            {garantie.impactMetierEnCasDeDefaillanceService}
+          <div className="fr-col-6">
+            <h4 className="fr-h4">Plan de Reprise d&apos;Activit&eacute; (PRA)</h4>
+            <div className="fr-readonly-value">
+              {garantie.planDeRepriseActivite_PRA || <span className="fr-readonly-value--empty">—</span>}
+            </div>
+          </div>
+          <div className="fr-col-6">
+            <h4 className="fr-h4">Perte de Donn&eacute;es Maximale Admissible (PDMA)</h4>
+            <div className="fr-readonly-value">
+              {garantie.perteDeDonneesNonAdmissible || <span className="fr-readonly-value--empty">—</span>}
+            </div>
+          </div>
+          <div className="fr-col-6">
+            <h4 className="fr-h4">Dur&eacute;e Maximale d&apos;Interruption Admissible (DMIA)</h4>
+            <div className="fr-readonly-value">
+              {garantie.dureMaximaleInterruptionAdmissible_DMIA || <span className="fr-readonly-value--empty">—</span>}
+            </div>
+          </div>
+          <div className="fr-col-12">
+            <h4 className="fr-h4">Impact M&eacute;tier en cas de perte de donn&eacute;es</h4>
+            <div className="fr-readonly-value">
+              {garantie.impactMetierEnCasDePerteDeDonnees || <span className="fr-readonly-value--empty">—</span>}
+            </div>
+          </div>
+          <div className="fr-col-12">
+            <h4 className="fr-h4">Impact M&eacute;tier en cas de d&eacute;faillance service</h4>
+            <div className="fr-readonly-value">
+              {garantie.impactMetierEnCasDeDefaillanceService || <span className="fr-readonly-value--empty">—</span>}
+            </div>
           </div>
         </div>
       </div>
@@ -315,14 +339,14 @@ export default function ReadonlyCadre4({ daData }: { daData: DAData }) {
 
       {/* Impact m\u00e9tier en cas d'anomalie */}
       <h3 className="fr-h4 fr-mt-4w">Impact m&eacute;tier en cas d&apos;anomalie</h3>
-      <div className="fr-text--sm" style={{ whiteSpace: "pre-wrap" }}>
-        {cadre.impactMetierEnCasDAnomalie}
+      <div className="fr-readonly-value">
+        {cadre.impactMetierEnCasDAnomalie || <span className="fr-readonly-value--empty">—</span>}
       </div>
 
       {/* Impact de charge sur les performances */}
       <h3 className="fr-h4 fr-mt-4w">Impact de charge sur les performances de l&apos;application</h3>
-      <div className="fr-text--sm" style={{ whiteSpace: "pre-wrap" }}>
-        {cadre.impactDeChargeSurPerformances}
+      <div className="fr-readonly-value">
+        {cadre.impactDeChargeSurPerformances || <span className="fr-readonly-value--empty">—</span>}
       </div>
     </div>
   );

@@ -25,19 +25,27 @@ export default function ReadonlyCadre9({ daData }: ReadonlyCadreProps) {
           <div className="fr-grid-row fr-grid-row--gutters">
             <div className="fr-col-4">
               <p className="fr-text--bold fr-text--sm fr-mb-0">Type</p>
-              <p className="fr-text--sm">{serveur.type}</p>
+              <div className="fr-readonly-value">
+                {serveur.type || <span className="fr-readonly-value--empty">—</span>}
+              </div>
             </div>
             <div className="fr-col-4">
               <p className="fr-text--bold fr-text--sm fr-mb-0">Rôle</p>
-              <p className="fr-text--sm">{serveur.role || "—"}</p>
+              <div className="fr-readonly-value">
+                {serveur.role || <span className="fr-readonly-value--empty">—</span>}
+              </div>
             </div>
             <div className="fr-col-2">
               <p className="fr-text--bold fr-text--sm fr-mb-0">vCPU</p>
-              <p className="fr-text--sm">{serveur.vCPU}</p>
+              <div className="fr-readonly-value">
+                {serveur.vCPU || <span className="fr-readonly-value--empty">—</span>}
+              </div>
             </div>
             <div className="fr-col-2">
               <p className="fr-text--bold fr-text--sm fr-mb-0">RAM (GO)</p>
-              <p className="fr-text--sm">{serveur.ramGO}</p>
+              <div className="fr-readonly-value">
+                {serveur.ramGO || <span className="fr-readonly-value--empty">—</span>}
+              </div>
             </div>
           </div>
 

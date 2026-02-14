@@ -19,21 +19,23 @@ export default function ReadonlyCadre1({ daData }: { daData: DAData }) {
   return (
     <div>
       <h3 className="fr-h4 fr-mt-4w">Nom du projet applicatif</h3>
-      <p className="fr-text--sm">{cadre.nomDuProjet}</p>
+      <div className="fr-readonly-value">
+        {cadre.nomDuProjet || <span className="fr-readonly-value--empty">—</span>}
+      </div>
 
       <h3 className="fr-h4 fr-mt-6w">Contexte projet applicatif</h3>
-      <div className="fr-text--sm" style={{ whiteSpace: "pre-wrap" }}>
-        {cadre.contexteProjetApplicatif}
+      <div className="fr-readonly-value">
+        {cadre.contexteProjetApplicatif || <span className="fr-readonly-value--empty">—</span>}
       </div>
 
       <h3 className="fr-h4 fr-mt-6w">Enjeux projet applicatif</h3>
-      <div className="fr-text--sm" style={{ whiteSpace: "pre-wrap" }}>
-        {cadre.enjeuxProjetApplicatif}
+      <div className="fr-readonly-value">
+        {cadre.enjeuxProjetApplicatif || <span className="fr-readonly-value--empty">—</span>}
       </div>
 
       <h3 className="fr-h4 fr-mt-6w">Objectifs projet applicatif</h3>
-      <div className="fr-text--sm" style={{ whiteSpace: "pre-wrap" }}>
-        {cadre.objectifsProjetApplicatif}
+      <div className="fr-readonly-value">
+        {cadre.objectifsProjetApplicatif || <span className="fr-readonly-value--empty">—</span>}
       </div>
 
       {filteredPlanning.length > 0 && (

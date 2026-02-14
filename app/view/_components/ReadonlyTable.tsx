@@ -38,7 +38,13 @@ export default function ReadonlyTable({
     })
   );
 
-  if (filteredRows.length === 0) return null;
+  if (filteredRows.length === 0) {
+    return (
+      <div className="fr-readonly-value">
+        <span className="fr-readonly-value--empty">Aucune donnée</span>
+      </div>
+    );
+  }
 
   return (
     <div className="fr-table fr-table--no-caption fr-table--bordered fr-table--sm">

@@ -1,6 +1,29 @@
 app:
   ~chart: app
   probesPath: /api/healthz
+  env:
+    - name: PROCONNECT_ISSUER
+      value: "https://fca.integ01.dev-agentconnect.fr/api/v2"
+    - name: PROCONNECT_CLIENT_ID
+      valueFrom:
+        secretKeyRef:
+          name: proconnect
+          key: PROCONNECT_CLIENT_ID
+    - name: PROCONNECT_CLIENT_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: proconnect
+          key: PROCONNECT_CLIENT_SECRET
+    - name: AUTH_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: proconnect
+          key: AUTH_SECRET
+    - name: ALLOWED_EMAIL_DOMAINS
+      valueFrom:
+        configMapKeyRef:
+          name: da-manager
+          key: ALLOWED_EMAIL_DOMAINS
 
 pg:
   ~chart: pg

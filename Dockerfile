@@ -43,6 +43,10 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
+# NextAuth URL (propagée depuis le build pour le callback OAuth)
+ARG NEXTAUTH_URL
+ENV NEXTAUTH_URL=$NEXTAUTH_URL
+
 # Créer un utilisateur non-root pour la sécurité
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs

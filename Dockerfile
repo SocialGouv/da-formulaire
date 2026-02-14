@@ -28,9 +28,9 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 
-# NextAuth URL (injectée au build pour le callback OAuth)
-ARG NEXTAUTH_URL
-ENV NEXTAUTH_URL=$NEXTAUTH_URL
+# Auth.js URL (injectée au build pour le callback OAuth)
+ARG AUTH_URL
+ENV AUTH_URL=$AUTH_URL
 
 # Build de l'application
 RUN pnpm build
@@ -43,9 +43,9 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# NextAuth URL (propagée depuis le build pour le callback OAuth)
-ARG NEXTAUTH_URL
-ENV NEXTAUTH_URL=$NEXTAUTH_URL
+# Auth.js URL (propagée depuis le build pour le callback OAuth)
+ARG AUTH_URL
+ENV AUTH_URL=$AUTH_URL
 
 # Créer un utilisateur non-root pour la sécurité
 RUN addgroup --system --gid 1001 nodejs && \

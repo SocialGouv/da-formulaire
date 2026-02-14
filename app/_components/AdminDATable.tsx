@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import DeleteDAButton from "./DeleteDAButton";
 
 interface DAItem {
@@ -41,11 +42,15 @@ export default function AdminDATable({
   daList,
   versionCounts,
 }: AdminDATableProps) {
+  const router = useRouter();
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
   const [versionsData, setVersionsData] = useState<
     Record<string, VersionEntry[]>
   >({});
   const [loadingRows, setLoadingRows] = useState<Set<string>>(new Set());
+  const [deletingVersions, setDeletingVersions] = useState<Set<string>>(
+    new Set(),
+  );
 
   const toggleRow = async (daId: string) => {
     const newExpanded = new Set(expandedRows);
@@ -75,6 +80,45 @@ export default function AdminDATable({
           return next;
         });
       }
+    }
+  };
+
+  const deleteVersion = async (
+    daId: string,
+    versionId: string,
+    versionLabel: string,
+  ) => {
+    const confirmed = confirm(
+      `Êtes-vous sûr de vouloir supprimer la version "${versionLabel}" ?\n\nCette action est irréversible.`,
+    );
+    if (!confirmed) return;
+
+    setDeletingVersions((prev) => new Set(prev).add(versionId));
+    try {
+      const res = await fetch(`/api/da/${daId}/versions/${versionId}`, {
+        method: "DELETE",
+      });
+
+      if (res.ok) {
+        // Retirer la version du cache local
+        setVersionsData((prev) => ({
+          ...prev,
+          [daId]: (prev[daId] || []).filter((v) => v.id !== versionId),
+        }));
+        // Rafraîchir la page pour mettre à jour le compteur de versions
+        router.refresh();
+      } else {
+        const data = await res.json();
+        alert(data.error || "Erreur lors de la suppression");
+      }
+    } catch {
+      alert("Erreur réseau lors de la suppression");
+    } finally {
+      setDeletingVersions((prev) => {
+        const next = new Set(prev);
+        next.delete(versionId);
+        return next;
+      });
     }
   };
 
@@ -121,6 +165,8 @@ export default function AdminDATable({
                   versions={versions}
                   versionCount={count}
                   onToggle={toggleRow}
+                  onDeleteVersion={deleteVersion}
+                  deletingVersions={deletingVersions}
                 />
               );
             })}
@@ -138,6 +184,8 @@ function ExpandableRow({
   versions,
   versionCount,
   onToggle,
+  onDeleteVersion,
+  deletingVersions,
 }: {
   da: DAItem;
   isExpanded: boolean;
@@ -145,42 +193,57 @@ function ExpandableRow({
   versions: VersionEntry[] | undefined;
   versionCount: number;
   onToggle: (id: string) => void;
+  onDeleteVersion: (
+    daId: string,
+    versionId: string,
+    versionLabel: string,
+  ) => void;
+  deletingVersions: Set<string>;
 }) {
   return (
     <>
       {/* Ligne DA parent */}
       <tr>
         <td>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            {versionCount > 0 ? (
-              <span
-                role="button"
-                tabIndex={0}
-                className={
-                  isExpanded
-                    ? "fr-icon-arrow-down-s-line"
-                    : "fr-icon-arrow-right-s-line"
-                }
-                aria-expanded={isExpanded}
-                aria-controls={`versions-${da.id}`}
-                onClick={() => onToggle(da.id)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    onToggle(da.id);
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "1.5rem",
+                flexShrink: 0,
+              }}
+            >
+              {versionCount > 0 && (
+                <span
+                  role="button"
+                  tabIndex={0}
+                  className={
+                    isExpanded
+                      ? "fr-icon-arrow-down-s-line"
+                      : "fr-icon-arrow-right-s-line"
                   }
-                }}
-                title={`${versionCount} version(s)`}
-                style={{ cursor: "pointer", fontSize: "1rem" }}
-              />
-            ) : (
-              <span
-                style={{
-                  display: "inline-block",
-                  width: "1rem",
-                }}
-              />
-            )}
+                  aria-expanded={isExpanded}
+                  aria-controls={`versions-${da.id}`}
+                  onClick={() => onToggle(da.id)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      onToggle(da.id);
+                    }
+                  }}
+                  title={`${versionCount} version(s)`}
+                  style={{
+                    cursor: "pointer",
+                    fontSize: "1rem",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                />
+              )}
+            </span>
             <Link href={`/view/${da.id}`}>
               <strong>{da.nom}</strong>
             </Link>
@@ -233,8 +296,8 @@ function ExpandableRow({
       </tr>
 
       {/* Sous-lignes versions */}
-      {isExpanded && (
-        isLoading ? (
+      {isExpanded &&
+        (isLoading ? (
           <tr>
             <td
               colSpan={5}
@@ -247,39 +310,56 @@ function ExpandableRow({
             </td>
           </tr>
         ) : versions && versions.length > 0 ? (
-          versions.map((v) => (
-            <tr
-              key={v.id}
-              style={{ background: "var(--background-alt-grey)" }}
-            >
-              <td style={{ paddingLeft: "3rem" }}>
-                <Link
-                  href={`/view/${da.id}/versions/${v.id}`}
-                  className="fr-text--sm"
-                >
-                  v{v.versionNumber}
-                  {v.name ? ` \u2014 ${v.name}` : ""}
-                </Link>
-              </td>
-              <td>
-                <span className="fr-text--sm">{formatAuthorName(v)}</span>
-              </td>
-              <td style={{ textAlign: "right" }}>
-                <span className="fr-text--sm">
-                  {new Date(v.createdAt).toLocaleString("fr-FR")}
-                </span>
-              </td>
-              <td></td>
-              <td style={{ textAlign: "right" }}>
-                <Link
-                  href={`/api/export-pdf/${da.id}/versions/${v.id}`}
-                  target="_blank"
-                  className="fr-btn fr-btn--sm fr-btn--secondary fr-icon-download-line"
-                  title="Télécharger en PDF"
-                />
-              </td>
-            </tr>
-          ))
+          versions.map((v) => {
+            const versionLabel = `v${v.versionNumber}${v.name ? ` — ${v.name}` : ""}`;
+            return (
+              <tr
+                key={v.id}
+                style={{ background: "var(--background-alt-grey)" }}
+              >
+                <td style={{ paddingLeft: "3rem" }}>
+                  <Link
+                    href={`/view/${da.id}/versions/${v.id}`}
+                    className="fr-text--sm"
+                  >
+                    {versionLabel}
+                  </Link>
+                </td>
+                <td>
+                  <span className="fr-text--sm">{formatAuthorName(v)}</span>
+                </td>
+                <td style={{ textAlign: "right" }}>
+                  <span className="fr-text--sm">
+                    {new Date(v.createdAt).toLocaleString("fr-FR")}
+                  </span>
+                </td>
+                <td></td>
+                <td style={{ textAlign: "right" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "0.25rem",
+                      justifyContent: "flex-end",
+                    }}
+                  >
+                    <Link
+                      href={`/api/export-pdf/${da.id}/versions/${v.id}`}
+                      target="_blank"
+                      className="fr-btn fr-btn--sm fr-btn--secondary fr-icon-download-line"
+                      title="Télécharger en PDF"
+                    />
+                    <button
+                      type="button"
+                      className="fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-close-line"
+                      title="Supprimer cette version"
+                      disabled={deletingVersions.has(v.id)}
+                      onClick={() => onDeleteVersion(da.id, v.id, versionLabel)}
+                    />
+                  </div>
+                </td>
+              </tr>
+            );
+          })
         ) : (
           <tr>
             <td
@@ -294,8 +374,7 @@ function ExpandableRow({
               </span>
             </td>
           </tr>
-        )
-      )}
+        ))}
     </>
   );
 }

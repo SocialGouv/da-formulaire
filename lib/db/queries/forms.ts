@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { forms, formAccess, users } from "@/lib/db/schema";
+import { forms, formAccess, users, editLogs } from "@/lib/db/schema";
 import { eq, desc, sql, and, ne } from "drizzle-orm";
 import type { DAData } from "@/types/da.types";
 
@@ -78,17 +78,46 @@ export async function getFormById(formId: string) {
  */
 export async function getFormsForUser(userId: string, isAdmin: boolean) {
   if (isAdmin) {
+    // Sous-requête : dernier éditeur via edit_logs
+    const lastEditorSubquery = db
+      .select({
+        formId: editLogs.formId,
+        userId: editLogs.userId,
+      })
+      .from(editLogs)
+      .where(
+        sql`${editLogs.id} = (
+          SELECT el2.id FROM edit_logs el2
+          WHERE el2.form_id = ${editLogs.formId}
+          ORDER BY el2.created_at DESC
+          LIMIT 1
+        )`,
+      )
+      .as("last_editor");
+
+    // Fallback : dernier éditeur, sinon créateur du DA
     return db
       .select({
         id: forms.id,
         nom: forms.nom,
         createdAt: forms.createdAt,
         updatedAt: forms.updatedAt,
-        authorGivenName: users.givenName,
-        authorUsualName: users.usualName,
+        authorGivenName:
+          sql<string>`COALESCE(${users.givenName}, creator.given_name)`.as(
+            "author_given_name",
+          ),
+        authorUsualName:
+          sql<string>`COALESCE(${users.usualName}, creator.usual_name)`.as(
+            "author_usual_name",
+          ),
       })
       .from(forms)
-      .leftJoin(users, eq(forms.createdBy, users.id))
+      .leftJoin(lastEditorSubquery, eq(forms.id, lastEditorSubquery.formId))
+      .leftJoin(users, eq(lastEditorSubquery.userId, users.id))
+      .leftJoin(
+        sql`users as creator`,
+        sql`creator.id = ${forms.createdBy}`,
+      )
       .orderBy(desc(forms.updatedAt));
   }
 

@@ -5,8 +5,8 @@ import { getVersionById } from "@/lib/db/queries/versions";
 import type { DAData } from "@/types/da.types";
 
 /**
- * POST /api/da/[id]/versions/[versionId]/restore — Restaurer un snapshot
- * Remplace les données du DA par celles du snapshot.
+ * POST /api/da/[id]/versions/[versionId]/restore — Restaurer une version
+ * Remplace les données du DA par celles de la version.
  */
 export async function POST(
   request: NextRequest,
@@ -19,7 +19,7 @@ export async function POST(
 
   if (!session.user.isAdmin) {
     return NextResponse.json(
-      { error: "Seuls les administrateurs peuvent restaurer un snapshot" },
+      { error: "Seuls les administrateurs peuvent restaurer une version" },
       { status: 403 },
     );
   }
@@ -43,7 +43,7 @@ export async function POST(
     );
   }
 
-  // Restaurer : écraser forms.data avec les données du snapshot (sans optimistic locking)
+  // Restaurer : écraser forms.data avec les données de la version (sans optimistic locking)
   const updated = await updateFormData(id, version.data as DAData);
 
   if (!updated) {

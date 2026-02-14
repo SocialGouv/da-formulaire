@@ -2,8 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { auth } from "@/auth";
 import { getFormsForUser, getAllForms } from "@/lib/db/queries/forms";
+import { getVersionCountsForForms } from "@/lib/db/queries/versions";
 import ProConnectLoginButton from "./_components/ProConnectLoginButton";
-import DeleteDAButton from "./_components/DeleteDAButton";
+import AdminDATable from "./_components/AdminDATable";
 
 export default async function Home() {
   const session = await auth();
@@ -17,6 +18,12 @@ export default async function Home() {
     session?.user?.dbUserId && !session.user.isAdmin
       ? await getAllForms()
       : [];
+
+  // Compteurs de versions pour l'affichage admin
+  const versionCounts =
+    session?.user?.isAdmin && daList.length > 0
+      ? await getVersionCountsForForms(daList.map((da) => da.id))
+      : {};
 
   // IDs des DA partagés pour les exclure de la liste "tous les DA"
   const sharedIds = new Set(daList.map((da) => da.id));
@@ -52,109 +59,14 @@ export default async function Home() {
                     </Link>
                   </div>
                   {daList.length > 0 ? (
-                    <div className="fr-table fr-table--layout-fixed fr-table--no-caption">
-                      <div className="fr-table__content">
-                        <table>
-                          <caption>
-                            Liste des Documents d&apos;Architecture
-                          </caption>
-                          <thead>
-                            <tr>
-                              <th scope="col">Nom du projet</th>
-                              <th
-                                scope="col"
-                                className="fr-col--xs"
-                                style={{ textAlign: "right" }}
-                              >
-                                Date de création
-                              </th>
-                              <th
-                                scope="col"
-                                className="fr-col--xs"
-                                style={{ textAlign: "right" }}
-                              >
-                                Dernière modification
-                              </th>
-                              <th
-                                scope="col"
-                                className="fr-col--sm"
-                                style={{ textAlign: "right" }}
-                              ></th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {daList.map((da) => (
-                              <tr key={da.id}>
-                                <td>
-                                  <Link href={`/view/${da.id}`}>
-                                    <strong>{da.nom}</strong>
-                                  </Link>
-                                </td>
-                                <td
-                                  className="fr-col--xs"
-                                  style={{ textAlign: "right" }}
-                                >
-                                  {new Date(da.createdAt).toLocaleDateString(
-                                    "fr-FR",
-                                  )}
-                                </td>
-                                <td
-                                  className="fr-col--xs"
-                                  style={{ textAlign: "right" }}
-                                >
-                                  {new Date(da.updatedAt).toLocaleDateString(
-                                    "fr-FR",
-                                  )}
-                                </td>
-                                <td
-                                  className="fr-col--sm"
-                                  style={{ textAlign: "right" }}
-                                >
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      gap: "0.25rem",
-                                      justifyContent: "flex-end",
-                                    }}
-                                  >
-                                    <Link
-                                      href={`/da/${da.id}`}
-                                      className="fr-btn fr-btn--sm fr-icon-edit-line"
-                                      title="Éditer"
-                                    />
-                                    <Link
-                                      href={`/api/export-pdf/${da.id}`}
-                                      target="_blank"
-                                      className="fr-btn fr-btn--sm fr-btn--secondary fr-icon-download-line"
-                                      title="Télécharger en PDF"
-                                    />
-                                    <Link
-                                      href={`/da/${da.id}/snapshots`}
-                                      className="fr-btn fr-btn--sm fr-btn--tertiary fr-icon-git-branch-line"
-                                      title="Snapshots"
-                                    />
-                                    <Link
-                                      href={`/da/${da.id}/logs`}
-                                      className="fr-btn fr-btn--sm fr-btn--tertiary fr-icon-time-line"
-                                      title="Historique"
-                                    />
-                                    <Link
-                                      href={`/da/${da.id}/access`}
-                                      className="fr-btn fr-btn--sm fr-btn--tertiary fr-icon-team-line"
-                                      title="Accès"
-                                    />
-                                    <DeleteDAButton
-                                      daId={da.id}
-                                      daNom={da.nom}
-                                    />
-                                  </div>
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
+                    <AdminDATable
+                      daList={daList.map((da) => ({
+                        ...da,
+                        createdAt: da.createdAt.toISOString(),
+                        updatedAt: da.updatedAt.toISOString(),
+                      }))}
+                      versionCounts={versionCounts}
+                    />
                   ) : (
                     <div className="fr-callout fr-callout--info fr-mt-6w">
                       <p className="fr-callout__text">

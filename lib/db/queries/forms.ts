@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { forms, formAccess } from "@/lib/db/schema";
+import { forms, formAccess, users } from "@/lib/db/schema";
 import { eq, desc, sql } from "drizzle-orm";
 import type { DAData } from "@/types/da.types";
 
@@ -62,8 +62,11 @@ export async function getFormsForUser(userId: string, isAdmin: boolean) {
         nom: forms.nom,
         createdAt: forms.createdAt,
         updatedAt: forms.updatedAt,
+        authorGivenName: users.givenName,
+        authorUsualName: users.usualName,
       })
       .from(forms)
+      .leftJoin(users, eq(forms.createdBy, users.id))
       .orderBy(desc(forms.updatedAt));
   }
 

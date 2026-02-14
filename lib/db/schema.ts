@@ -71,7 +71,7 @@ export const formAccess = pgTable(
 );
 
 // ============================================================================
-// VERSIONS / SNAPSHOTS (versions des DA)
+// VERSIONS (versions des DA)
 // ============================================================================
 
 export const versions = pgTable("versions", {

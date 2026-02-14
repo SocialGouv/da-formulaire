@@ -5,29 +5,29 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-interface SnapshotEntry {
+interface VersionEntry {
   id: string;
   versionNumber: number;
   name: string;
   createdAt: string;
 }
 
-export default function SnapshotsPage() {
+export default function VersionsPage() {
   const params = useParams();
   const router = useRouter();
   const formId = params.id as string;
 
   const [daNom, setDaNom] = useState<string>("");
-  const [snapshots, setSnapshots] = useState<SnapshotEntry[]>([]);
+  const [versions, setVersions] = useState<VersionEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [newSnapshotName, setNewSnapshotName] = useState("");
+  const [newVersionName, setNewVersionName] = useState("");
   const [isCreating, setIsCreating] = useState(false);
 
   useEffect(() => {
     const load = async () => {
       setIsLoading(true);
       try {
-        const [daRes, snapRes] = await Promise.all([
+        const [daRes, versionsRes] = await Promise.all([
           fetch(`/api/da/${formId}`),
           fetch(`/api/da/${formId}/versions`),
         ]);
@@ -35,9 +35,9 @@ export default function SnapshotsPage() {
           const da = await daRes.json();
           setDaNom(da.nom);
         }
-        if (snapRes.ok) {
-          const data = await snapRes.json();
-          setSnapshots(data);
+        if (versionsRes.ok) {
+          const data = await versionsRes.json();
+          setVersions(data);
         }
       } catch (error) {
         console.error("Erreur lors du chargement:", error);
@@ -49,37 +49,37 @@ export default function SnapshotsPage() {
   }, [formId]);
 
   const handleCreate = async () => {
-    if (!newSnapshotName.trim()) return;
+    if (!newVersionName.trim()) return;
 
     setIsCreating(true);
     try {
       const response = await fetch(`/api/da/${formId}/versions`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: newSnapshotName.trim() }),
+        body: JSON.stringify({ name: newVersionName.trim() }),
       });
 
       if (response.ok) {
-        setNewSnapshotName("");
-        const snapRes = await fetch(`/api/da/${formId}/versions`);
-        if (snapRes.ok) {
-          setSnapshots(await snapRes.json());
+        setNewVersionName("");
+        const versionsRes = await fetch(`/api/da/${formId}/versions`);
+        if (versionsRes.ok) {
+          setVersions(await versionsRes.json());
         }
       } else {
         const data = await response.json();
-        alert(data.error || "Erreur lors de la création du snapshot");
+        alert(data.error || "Erreur lors de la création de la version");
       }
     } catch {
-      alert("Erreur lors de la création du snapshot");
+      alert("Erreur lors de la création de la version");
     } finally {
       setIsCreating(false);
     }
   };
 
-  const handleRestore = async (snapshotId: string, snapshotName: string) => {
+  const handleRestore = async (versionId: string, versionName: string) => {
     if (
       !confirm(
-        `Restaurer le snapshot "${snapshotName}" ?\n\nLes données actuelles du DA seront remplacées par celles de ce snapshot.`,
+        `Restaurer la version "${versionName}" ?\n\nLes données actuelles du DA seront remplacées par celles de cette version.`,
       )
     ) {
       return;
@@ -87,25 +87,25 @@ export default function SnapshotsPage() {
 
     try {
       const response = await fetch(
-        `/api/da/${formId}/versions/${snapshotId}/restore`,
+        `/api/da/${formId}/versions/${versionId}/restore`,
         { method: "POST" },
       );
       if (response.ok) {
-        alert("Snapshot restauré avec succès.");
+        alert("Version restaurée avec succès.");
         router.refresh();
       } else {
         const data = await response.json();
         alert(data.error || "Erreur lors de la restauration");
       }
     } catch {
-      alert("Erreur lors de la restauration du snapshot");
+      alert("Erreur lors de la restauration de la version");
     }
   };
 
-  const handleDelete = async (snapshotId: string, snapshotName: string) => {
+  const handleDelete = async (versionId: string, versionName: string) => {
     if (
       !confirm(
-        `Supprimer le snapshot "${snapshotName}" ?\n\nCette action est irréversible.`,
+        `Supprimer la version "${versionName}" ?\n\nCette action est irréversible.`,
       )
     ) {
       return;
@@ -113,17 +113,17 @@ export default function SnapshotsPage() {
 
     try {
       const response = await fetch(
-        `/api/da/${formId}/versions/${snapshotId}`,
+        `/api/da/${formId}/versions/${versionId}`,
         { method: "DELETE" },
       );
       if (response.ok) {
-        setSnapshots((prev) => prev.filter((s) => s.id !== snapshotId));
+        setVersions((prev) => prev.filter((v) => v.id !== versionId));
       } else {
         const data = await response.json();
         alert(data.error || "Erreur lors de la suppression");
       }
     } catch {
-      alert("Erreur lors de la suppression du snapshot");
+      alert("Erreur lors de la suppression de la version");
     }
   };
 
@@ -135,7 +135,7 @@ export default function SnapshotsPage() {
             Retour à la liste des DA
           </Link>
 
-          <h1 className="fr-h2 fr-mb-1w">Snapshots</h1>
+          <h1 className="fr-h2 fr-mb-1w">Versions</h1>
           {daNom && (
             <p className="fr-text--lg fr-text--bold fr-mb-4w">{daNom}</p>
           )}
@@ -149,7 +149,7 @@ export default function SnapshotsPage() {
               background: "var(--background-alt-grey)",
             }}
           >
-            <h2 className="fr-h6 fr-mb-2w">Créer un snapshot</h2>
+            <h2 className="fr-h6 fr-mb-2w">Créer une version</h2>
             <div
               style={{
                 display: "flex",
@@ -158,16 +158,16 @@ export default function SnapshotsPage() {
               }}
             >
               <div className="fr-input-group" style={{ flex: 1, marginBottom: 0 }}>
-                <label className="fr-label" htmlFor="snapshot-name">
-                  Nom du snapshot
+                <label className="fr-label" htmlFor="version-name">
+                  Nom de la version
                 </label>
                 <input
                   className="fr-input"
                   type="text"
-                  id="snapshot-name"
+                  id="version-name"
                   placeholder="Ex: V1 - Validation comité"
-                  value={newSnapshotName}
-                  onChange={(e) => setNewSnapshotName(e.target.value)}
+                  value={newVersionName}
+                  onChange={(e) => setNewVersionName(e.target.value)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") handleCreate();
                   }}
@@ -177,24 +177,24 @@ export default function SnapshotsPage() {
                 className="fr-btn"
                 type="button"
                 onClick={handleCreate}
-                disabled={!newSnapshotName.trim() || isCreating}
+                disabled={!newVersionName.trim() || isCreating}
               >
                 {isCreating ? "Création..." : "Créer"}
               </button>
             </div>
           </div>
 
-          {/* Liste des snapshots */}
+          {/* Liste des versions */}
           {isLoading ? (
             <p>Chargement...</p>
-          ) : snapshots.length > 0 ? (
+          ) : versions.length > 0 ? (
             <div>
               <h2 className="fr-h6 fr-mb-2w">
-                Snapshots existants ({snapshots.length})
+                Versions existantes ({versions.length})
               </h2>
-              {snapshots.map((snapshot) => (
+              {versions.map((version) => (
                 <div
-                  key={snapshot.id}
+                  key={version.id}
                   className="fr-p-3w fr-mb-2w"
                   style={{
                     display: "flex",
@@ -205,11 +205,11 @@ export default function SnapshotsPage() {
                   }}
                 >
                   <div>
-                    <span className="fr-text--bold">{snapshot.name}</span>
+                    <span className="fr-text--bold">{version.name}</span>
                     <br />
                     <span className="fr-text--xs fr-text--mention-grey">
-                      v{snapshot.versionNumber} —{" "}
-                      {new Date(snapshot.createdAt).toLocaleString("fr-FR")}
+                      v{version.versionNumber} —{" "}
+                      {new Date(version.createdAt).toLocaleString("fr-FR")}
                     </span>
                   </div>
                   <div style={{ display: "flex", gap: "0.5rem" }}>
@@ -217,7 +217,7 @@ export default function SnapshotsPage() {
                       className="fr-btn fr-btn--sm fr-btn--tertiary"
                       type="button"
                       onClick={() =>
-                        handleRestore(snapshot.id, snapshot.name)
+                        handleRestore(version.id, version.name)
                       }
                     >
                       <span
@@ -230,9 +230,9 @@ export default function SnapshotsPage() {
                       className="fr-btn fr-btn--sm fr-btn--tertiary-no-outline"
                       type="button"
                       onClick={() =>
-                        handleDelete(snapshot.id, snapshot.name)
+                        handleDelete(version.id, version.name)
                       }
-                      title="Supprimer ce snapshot"
+                      title="Supprimer cette version"
                     >
                       <span
                         className="fr-icon-delete-line"
@@ -246,7 +246,7 @@ export default function SnapshotsPage() {
           ) : (
             <div className="fr-callout fr-callout--info">
               <p className="fr-callout__text">
-                Aucun snapshot. Créez-en un pour figer une version du document.
+                Aucune version. Créez-en une pour figer une version du document.
               </p>
             </div>
           )}

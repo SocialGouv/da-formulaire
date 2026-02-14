@@ -38,7 +38,7 @@ export async function GET(
 }
 
 /**
- * DELETE /api/da/[id]/versions/[versionId] — Supprimer un snapshot (admin uniquement)
+ * DELETE /api/da/[id]/versions/[versionId] — Supprimer une version (admin uniquement)
  */
 export async function DELETE(
   request: NextRequest,
@@ -51,7 +51,7 @@ export async function DELETE(
 
   if (!session.user.isAdmin) {
     return NextResponse.json(
-      { error: "Seuls les administrateurs peuvent supprimer un snapshot" },
+      { error: "Seuls les administrateurs peuvent supprimer une version" },
       { status: 403 },
     );
   }

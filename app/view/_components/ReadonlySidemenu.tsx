@@ -22,10 +22,12 @@ export default function ReadonlySidemenu({
   id,
   canEdit,
   projectName,
+  pdfUrl,
 }: {
   id: string;
   canEdit: boolean;
   projectName: string;
+  pdfUrl?: string;
 }) {
   const [activeSectionId, setActiveSectionId] = useState<number | null>(null);
 
@@ -96,7 +98,7 @@ export default function ReadonlySidemenu({
             )}
             <li>
               <Link
-                href={`/api/export-pdf/${id}`}
+                href={pdfUrl || `/api/export-pdf/${id}`}
                 target="_blank"
                 className="fr-btn fr-btn--sm fr-btn--tertiary"
               >

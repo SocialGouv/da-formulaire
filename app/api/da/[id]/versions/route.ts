@@ -35,7 +35,7 @@ export async function GET(
 }
 
 /**
- * POST /api/da/[id]/versions — Créer un snapshot nommé
+ * POST /api/da/[id]/versions — Créer une version nommée
  */
 export async function POST(
   request: NextRequest,

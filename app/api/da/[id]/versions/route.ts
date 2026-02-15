@@ -8,6 +8,8 @@ import {
 
 /**
  * GET /api/da/[id]/versions — Liste des versions d'un DA
+ * Accessible à tout utilisateur authentifié (les versions sont visibles
+ * en lecture seule, comme la vue /view/[id]).
  */
 export async function GET(
   request: NextRequest,
@@ -19,15 +21,6 @@ export async function GET(
   }
 
   const { id } = await params;
-
-  const access = await checkFormAccess(
-    id,
-    session.user.dbUserId,
-    session.user.isAdmin,
-  );
-  if (!access) {
-    return NextResponse.json({ error: "Accès refusé" }, { status: 403 });
-  }
 
   const versionList = await getVersionsForForm(id);
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 
 interface User {
@@ -14,11 +14,17 @@ interface User {
   updatedAt: string;
 }
 
+type SortColumn = "nom" | "email" | "role" | "date";
+type SortDirection = "ascending" | "descending";
+
 export default function Users() {
   const router = useRouter();
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [sortColumn, setSortColumn] = useState<SortColumn>("nom");
+  const [sortDirection, setSortDirection] =
+    useState<SortDirection>("ascending");
 
   const loadUsers = async () => {
     try {
@@ -44,6 +50,58 @@ export default function Users() {
   useEffect(() => {
     loadUsers();
   }, []);
+
+  const sortedUsers = useMemo(() => {
+    const sorted = [...users];
+    sorted.sort((a, b) => {
+      let cmp = 0;
+      switch (sortColumn) {
+        case "nom": {
+          const nameA = `${a.givenName || ""} ${a.usualName || ""}`.trim();
+          const nameB = `${b.givenName || ""} ${b.usualName || ""}`.trim();
+          cmp = nameA.localeCompare(nameB, "fr", { sensitivity: "base" });
+          break;
+        }
+        case "email":
+          cmp = a.email.localeCompare(b.email, "fr", { sensitivity: "base" });
+          break;
+        case "role":
+          cmp = (a.isAdmin ? 0 : 1) - (b.isAdmin ? 0 : 1);
+          break;
+        case "date":
+          cmp =
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+          break;
+      }
+      return sortDirection === "ascending" ? cmp : -cmp;
+    });
+    return sorted;
+  }, [users, sortColumn, sortDirection]);
+
+  const handleSort = (column: SortColumn) => {
+    if (sortColumn === column) {
+      setSortDirection((prev) =>
+        prev === "ascending" ? "descending" : "ascending",
+      );
+    } else {
+      setSortColumn(column);
+      setSortDirection("ascending");
+    }
+  };
+
+  function sortButtonClass(column: SortColumn): string {
+    if (sortColumn !== column) return "fr-btn fr-btn--sort";
+    return sortDirection === "ascending"
+      ? "fr-btn fr-btn--sort-asc"
+      : "fr-btn fr-btn--sort-desc";
+  }
+
+  function sortAria(
+    column: SortColumn,
+  ): "ascending" | "descending" | "none" {
+    if (sortColumn !== column) return "none";
+    return sortDirection;
+  }
 
   const handleToggleAdmin = async (userId: string, currentIsAdmin: boolean) => {
     try {
@@ -130,98 +188,131 @@ export default function Users() {
         </div>
       </div>
 
-      <div className="fr-table fr-table--no-scroll fr-table--no-caption fr-table--bordered fr-table--sm">
-        <div className="fr-table__wrapper">
-          <div className="fr-table__container">
-            <div className="fr-table__content">
-              <table>
-                <caption>Liste des utilisateurs</caption>
-                <thead>
-                  <tr>
-                    <th scope="col">Nom</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Rôle</th>
-                    <th scope="col">Date d&apos;inscription</th>
-                    <th scope="col" style={{ textAlign: "right" }}>
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {users.map((user) => (
-                    <tr key={user.id}>
-                      <td>
-                        {user.givenName} {user.usualName}
-                      </td>
-                      <td>{user.email}</td>
-                      <td>
-                        {user.isAdmin ? (
-                          <span className="fr-badge fr-badge--info">
-                            Administrateur
-                          </span>
-                        ) : (
-                          <span className="fr-badge fr-badge--new">
-                            Utilisateur
-                          </span>
-                        )}
-                      </td>
-                      <td>
-                        {new Date(user.createdAt).toLocaleDateString("fr-FR")}
-                      </td>
-                      <td style={{ textAlign: "right" }}>
-                        <div
-                          style={{
-                            display: "flex",
-                            gap: "0.5rem",
-                            justifyContent: "flex-end",
-                          }}
-                        >
-                          <button
-                            className={`fr-btn fr-btn--sm ${user.isAdmin ? "fr-btn--secondary" : ""}`}
-                            type="button"
-                            title={
-                              user.isAdmin
-                                ? "Retirer les droits admin"
-                                : "Passer administrateur"
-                            }
-                            onClick={() =>
-                              handleToggleAdmin(user.id, user.isAdmin)
-                            }
-                          >
-                            <span
-                              className={
-                                user.isAdmin
-                                  ? "fr-icon-subtract-line"
-                                  : "fr-icon-shield-line"
-                              }
-                              aria-hidden="true"
-                            ></span>
-                            {user.isAdmin ? "Retirer admin" : "Passer admin"}
-                          </button>
-                          <button
-                            className="fr-btn fr-btn--sm fr-btn--tertiary-no-outline"
-                            type="button"
-                            title="Supprimer"
-                            onClick={() =>
-                              handleDelete(
-                                user.id,
-                                `${user.givenName} ${user.usualName}`,
-                              )
-                            }
-                          >
-                            <span
-                              className="fr-icon-delete-line"
-                              aria-hidden="true"
-                            ></span>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+      <div className="fr-table fr-table--layout-fixed fr-table--no-caption">
+        <div className="fr-table__content">
+          <table>
+            <caption>Liste des utilisateurs</caption>
+            <thead>
+              <tr>
+                <th scope="col">
+                  <div className="fr-cell--sort">
+                    Nom
+                    <button
+                      type="button"
+                      className={sortButtonClass("nom")}
+                      aria-sort={sortAria("nom")}
+                      onClick={() => handleSort("nom")}
+                    >
+                      Trier
+                    </button>
+                  </div>
+                </th>
+                <th scope="col">
+                  <div className="fr-cell--sort">
+                    Email
+                    <button
+                      type="button"
+                      className={sortButtonClass("email")}
+                      aria-sort={sortAria("email")}
+                      onClick={() => handleSort("email")}
+                    >
+                      Trier
+                    </button>
+                  </div>
+                </th>
+                <th scope="col">
+                  <div className="fr-cell--sort">
+                    Rôle
+                    <button
+                      type="button"
+                      className={sortButtonClass("role")}
+                      aria-sort={sortAria("role")}
+                      onClick={() => handleSort("role")}
+                    >
+                      Trier
+                    </button>
+                  </div>
+                </th>
+                <th scope="col" style={{ textAlign: "right" }}>
+                  <div
+                    className="fr-cell--sort"
+                    style={{ justifyContent: "flex-end" }}
+                  >
+                    Inscription
+                    <button
+                      type="button"
+                      className={sortButtonClass("date")}
+                      aria-sort={sortAria("date")}
+                      onClick={() => handleSort("date")}
+                    >
+                      Trier
+                    </button>
+                  </div>
+                </th>
+                <th
+                  scope="col"
+                  style={{ textAlign: "right" }}
+                ></th>
+              </tr>
+            </thead>
+            <tbody>
+              {sortedUsers.map((user) => (
+                <tr key={user.id}>
+                  <td>
+                    {user.givenName} {user.usualName}
+                  </td>
+                  <td>{user.email}</td>
+                  <td>
+                    {user.isAdmin ? (
+                      <span className="fr-badge fr-badge--info">
+                        Administrateur
+                      </span>
+                    ) : (
+                      <span className="fr-badge fr-badge--new">
+                        Utilisateur
+                      </span>
+                    )}
+                  </td>
+                  <td style={{ textAlign: "right" }}>
+                    {new Date(user.createdAt).toLocaleDateString("fr-FR")}
+                  </td>
+                  <td style={{ textAlign: "right" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: "0.25rem",
+                        justifyContent: "flex-end",
+                      }}
+                    >
+                      <button
+                        className={`fr-btn fr-btn--sm fr-btn--tertiary-no-outline ${user.isAdmin ? "fr-icon-subtract-line" : "fr-icon-shield-line"}`}
+                        type="button"
+                        title={
+                          user.isAdmin
+                            ? "Retirer les droits admin"
+                            : "Passer administrateur"
+                        }
+                        onClick={() =>
+                          handleToggleAdmin(user.id, user.isAdmin)
+                        }
+                      />
+                      <button
+                        className="fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-delete-line"
+                        type="button"
+                        title="Supprimer"
+                        onClick={() =>
+                          handleDelete(
+                            user.id,
+                            `${user.givenName} ${user.usualName}`,
+                          )
+                        }
+                      />
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

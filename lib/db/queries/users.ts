@@ -11,6 +11,7 @@ export async function findOrCreateUser(
   email: string,
   givenName: string | undefined,
   usualName: string | undefined,
+  forceAdmin?: boolean,
 ) {
   // Chercher l'utilisateur existant
   const existing = await db
@@ -27,6 +28,7 @@ export async function findOrCreateUser(
         email,
         givenName,
         usualName,
+        ...(forceAdmin !== undefined && { isAdmin: forceAdmin }),
         updatedAt: new Date(),
       })
       .where(eq(users.proconnectSub, proconnectSub))
@@ -48,7 +50,7 @@ export async function findOrCreateUser(
       email,
       givenName,
       usualName,
-      isAdmin: isFirstUser,
+      isAdmin: forceAdmin ?? isFirstUser,
     })
     .returning();
 
@@ -97,9 +99,3 @@ export async function countAdmins(): Promise<number> {
   return value;
 }
 
-/**
- * Supprime un utilisateur.
- */
-export async function deleteUser(userId: string) {
-  await db.delete(users).where(eq(users.id, userId));
-}

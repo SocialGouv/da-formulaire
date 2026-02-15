@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { checkFormAccess } from "@/lib/db/queries/forms";
 import { getVersionById } from "@/lib/db/queries/versions";
 import type { DAData } from "@/types/da.types";
 import ReadonlyDA from "../../../_components/ReadonlyDA";
@@ -17,15 +16,6 @@ export default async function ViewVersion({
   }
 
   const { id, versionId } = await params;
-
-  const access = await checkFormAccess(
-    id,
-    session.user.dbUserId,
-    session.user.isAdmin,
-  );
-  if (!access) {
-    redirect("/");
-  }
 
   const version = await getVersionById(versionId);
   if (!version || version.formId !== id) {

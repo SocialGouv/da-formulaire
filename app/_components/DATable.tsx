@@ -179,8 +179,8 @@ export default function DATable({
     return sortDirection;
   }
 
-  // Nombre de colonnes selon le mode
-  const colCount = mode === "admin" ? 4 : mode === "editor" ? 4 : 3;
+  // Nombre de colonnes (toujours 4 : nom, auteur, date, actions)
+  const colCount = 4;
 
   return (
     <div className="fr-table fr-table--layout-fixed fr-table--no-caption">
@@ -231,12 +231,10 @@ export default function DATable({
                   </button>
                 </div>
               </th>
-              {mode !== "viewer" && (
-                <th
-                  scope="col"
-                  style={{ textAlign: "right" }}
-                ></th>
-              )}
+              <th
+                scope="col"
+                style={{ textAlign: "right" }}
+              ></th>
             </tr>
           </thead>
           <tbody>
@@ -349,58 +347,49 @@ function ExpandableRow({
         <td style={{ textAlign: "right" }}>
           {new Date(da.updatedAt).toLocaleDateString("fr-FR")}
         </td>
-        {mode !== "viewer" && (
-          <td style={{ textAlign: "right" }}>
-            <div
-              style={{
-                display: "flex",
-                gap: "0.25rem",
-                justifyContent: "flex-end",
-              }}
-            >
-              {mode === "admin" && (
-                <Link
-                  href={`/da/${da.id}`}
-                  className="fr-btn fr-btn--sm fr-icon-edit-line"
-                  title="Éditer"
-                />
-              )}
-              {mode === "editor" && (
-                <Link
-                  href={`/da/${da.id}`}
-                  className="fr-btn fr-btn--sm fr-icon-edit-line"
-                  title="Éditer"
-                />
-              )}
+        <td style={{ textAlign: "right" }}>
+          <div
+            style={{
+              display: "flex",
+              gap: "0.25rem",
+              justifyContent: "flex-end",
+            }}
+          >
+            {(mode === "admin" || mode === "editor") && (
               <Link
-                href={`/api/export-pdf/${da.id}`}
-                target="_blank"
-                className="fr-btn fr-btn--sm fr-btn--secondary fr-icon-download-line"
-                title="Télécharger en PDF"
+                href={`/da/${da.id}`}
+                className="fr-btn fr-btn--sm fr-icon-edit-line"
+                title="Éditer"
               />
-              {mode === "admin" && (
-                <>
-                  <Link
-                    href={`/da/${da.id}/versions`}
-                    className="fr-btn fr-btn--sm fr-btn--tertiary fr-icon-git-branch-line"
-                    title="Versions"
-                  />
-                  <Link
-                    href={`/da/${da.id}/logs`}
-                    className="fr-btn fr-btn--sm fr-btn--tertiary fr-icon-time-line"
-                    title="Historique"
-                  />
-                  <Link
-                    href={`/da/${da.id}/access`}
-                    className="fr-btn fr-btn--sm fr-btn--tertiary fr-icon-team-line"
-                    title="Accès"
-                  />
-                  <DeleteDAButton daId={da.id} daNom={da.nom} />
-                </>
-              )}
-            </div>
-          </td>
-        )}
+            )}
+            <Link
+              href={`/api/export-pdf/${da.id}`}
+              target="_blank"
+              className="fr-btn fr-btn--sm fr-btn--secondary fr-icon-download-line"
+              title="Télécharger en PDF"
+            />
+            <Link
+              href={`/da/${da.id}/logs`}
+              className="fr-btn fr-btn--sm fr-btn--tertiary fr-icon-time-line"
+              title="Historique"
+            />
+            {mode === "admin" && (
+              <>
+                <Link
+                  href={`/da/${da.id}/versions`}
+                  className="fr-btn fr-btn--sm fr-btn--tertiary fr-icon-git-branch-line"
+                  title="Versions"
+                />
+                <Link
+                  href={`/da/${da.id}/access`}
+                  className="fr-btn fr-btn--sm fr-btn--tertiary fr-icon-team-line"
+                  title="Accès"
+                />
+                <DeleteDAButton daId={da.id} daNom={da.nom} />
+              </>
+            )}
+          </div>
+        </td>
       </tr>
 
       {/* Sous-lignes versions */}
@@ -441,35 +430,33 @@ function ExpandableRow({
                     {new Date(v.createdAt).toLocaleString("fr-FR")}
                   </span>
                 </td>
-                {mode !== "viewer" && (
-                  <td style={{ textAlign: "right" }}>
-                    <div
-                      style={{
-                        display: "flex",
-                        gap: "0.25rem",
-                        justifyContent: "flex-end",
-                      }}
-                    >
-                      <Link
-                        href={`/api/export-pdf/${da.id}/versions/${v.id}`}
-                        target="_blank"
-                        className="fr-btn fr-btn--sm fr-btn--secondary fr-icon-download-line"
-                        title="Télécharger en PDF"
+                <td style={{ textAlign: "right" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "0.25rem",
+                      justifyContent: "flex-end",
+                    }}
+                  >
+                    <Link
+                      href={`/api/export-pdf/${da.id}/versions/${v.id}`}
+                      target="_blank"
+                      className="fr-btn fr-btn--sm fr-btn--secondary fr-icon-download-line"
+                      title="Télécharger en PDF"
+                    />
+                    {mode === "admin" && (
+                      <button
+                        type="button"
+                        className="fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-close-line"
+                        title="Supprimer cette version"
+                        disabled={deletingVersions.has(v.id)}
+                        onClick={() =>
+                          onDeleteVersion(da.id, v.id, versionLabel)
+                        }
                       />
-                      {mode === "admin" && (
-                        <button
-                          type="button"
-                          className="fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-close-line"
-                          title="Supprimer cette version"
-                          disabled={deletingVersions.has(v.id)}
-                          onClick={() =>
-                            onDeleteVersion(da.id, v.id, versionLabel)
-                          }
-                        />
-                      )}
-                    </div>
-                  </td>
-                )}
+                    )}
+                  </div>
+                </td>
               </tr>
             );
           })

@@ -42,19 +42,34 @@ export default function ProConnectLoginButton() {
             <span className="fr-text--sm fr-text--bold">ou</span>
             <hr style={{ flex: 1 }} />
           </div>
-          <button
-            type="button"
-            className="fr-btn fr-btn--secondary fr-btn--icon-left fr-icon-code-s-line"
-            onClick={() => {
-              signIn("dev-login", {
-                email: "dev@test.fr",
-                name: "Utilisateur Dev",
-                callbackUrl: "/",
-              });
-            }}
-          >
-            Connexion Dev (bypass)
-          </button>
+          <div style={{ display: "flex", gap: "1rem" }}>
+            <button
+              type="button"
+              className="fr-btn fr-btn--secondary fr-btn--icon-left fr-icon-admin-line"
+              onClick={() => {
+                signIn("dev-login", {
+                  email: "admin@test.fr",
+                  name: "Admin Dev",
+                  callbackUrl: "/",
+                });
+              }}
+            >
+              Admin Dev
+            </button>
+            <button
+              type="button"
+              className="fr-btn fr-btn--tertiary fr-btn--icon-left fr-icon-user-line"
+              onClick={() => {
+                signIn("dev-login", {
+                  email: "utilisateur@test.fr",
+                  name: "Utilisateur Dev",
+                  callbackUrl: "/",
+                });
+              }}
+            >
+              Utilisateur Dev
+            </button>
+          </div>
         </>
       )}
     </div>

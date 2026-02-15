@@ -250,13 +250,15 @@ export async function deleteForm(formId: string) {
 
 /**
  * Vérifie si un utilisateur a accès à un DA.
- * Retourne le rôle ('viewer' | 'editor') ou null si pas d'accès.
+ * - Admin → "admin"
+ * - Accès explicite via formAccess → "editor" | "viewer"
+ * - Tout utilisateur authentifié → "viewer" (accès lecture par défaut)
  */
 export async function checkFormAccess(
   formId: string,
   userId: string,
   isAdmin: boolean,
-): Promise<"admin" | "editor" | "viewer" | null> {
+): Promise<"admin" | "editor" | "viewer"> {
   if (isAdmin) return "admin";
 
   const [access] = await db
@@ -267,5 +269,5 @@ export async function checkFormAccess(
     )
     .limit(1);
 
-  return (access?.role as "viewer" | "editor") ?? null;
+  return (access?.role as "editor" | "viewer") ?? "viewer";
 }

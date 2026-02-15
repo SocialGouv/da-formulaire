@@ -27,15 +27,16 @@ const devProvider = Credentials({
   async authorize(credentials) {
     if (!isDev) return null;
 
-    const email = (credentials.email as string) || "dev@test.fr";
+    const email = (credentials.email as string) || "utilisateur@test.fr";
     const name = (credentials.name as string) || "Utilisateur Dev";
     const parts = name.split(" ");
     const givenName = parts[0] || "Utilisateur";
     const usualName = parts.slice(1).join(" ") || "Dev";
     const proconnectSub = `dev-${email}`;
+    const forceAdmin = email === "admin@test.fr";
 
     // Créer/retrouver l'utilisateur en DB (même logique que ProConnect)
-    await findOrCreateUser(proconnectSub, email, givenName, usualName);
+    await findOrCreateUser(proconnectSub, email, givenName, usualName, forceAdmin);
 
     return {
       id: proconnectSub,
@@ -137,6 +138,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const email = user.email || "";
         const givenName = user.givenName;
         const usualName = user.usualName;
+        const forceAdmin =
+          account.provider === "dev-login" && email === "admin@test.fr"
+            ? true
+            : account.provider === "dev-login"
+              ? false
+              : undefined;
 
         try {
           const dbUser = await findOrCreateUser(
@@ -144,6 +151,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             email,
             givenName,
             usualName,
+            forceAdmin,
           );
 
           token.id = proconnectSub;

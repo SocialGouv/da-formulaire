@@ -36,6 +36,30 @@ pnpm lint         # Run ESLint
 - Access control via `formAccess` table (roles: admin, editor, viewer)
 - Auth: NextAuth v5 with ProConnect OIDC + dev credentials fallback
 
+### Access Control Rules
+
+Every authenticated user has **read access to all DA and all versions** by default. The `checkFormAccess()` function never returns `null` — it returns `"viewer"` for any authenticated user without explicit access.
+
+| Action | Who can do it |
+|--------|--------------|
+| View any DA (readonly) | All authenticated users |
+| View any version (readonly) | All authenticated users |
+| Download any DA as PDF | All authenticated users |
+| Download any version as PDF | All authenticated users |
+| View edit logs of any DA | All authenticated users |
+| Edit a DA | Admin, or user with explicit `editor` access via `formAccess` |
+| Create a named version | Admin, or user with explicit `editor` access via `formAccess` |
+| Create a new DA | Admin only |
+| Share a DA (manage access) | Admin only |
+| Delete a DA | Admin only |
+| Delete a version | Admin only |
+
+**Implementation details:**
+- `checkFormAccess(formId, userId, isAdmin)` returns `"admin"` | `"editor"` | `"viewer"` (never `null`)
+- Admin status comes from `users.isAdmin` field, not from `formAccess` table
+- The `formAccess` table stores explicit `editor`/`viewer` grants for non-admin users
+- The first user to sign up is automatically promoted to admin
+
 ### Application Structure
 
 **Routes:**

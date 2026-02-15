@@ -17,19 +17,16 @@ export default async function ViewDA({
 
   const { id } = await params;
 
+  const form = await getFormById(id);
+  if (!form) {
+    redirect("/");
+  }
+
   const access = await checkFormAccess(
     id,
     session.user.dbUserId,
     session.user.isAdmin,
   );
-  if (!access) {
-    redirect("/");
-  }
-
-  const form = await getFormById(id);
-  if (!form) {
-    redirect("/");
-  }
 
   const daData = form.data as DAData;
   const canEdit = access === "admin" || access === "editor";

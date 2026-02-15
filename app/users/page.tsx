@@ -124,33 +124,6 @@ export default function Users() {
     }
   };
 
-  const handleDelete = async (userId: string, userName: string) => {
-    if (
-      !confirm(
-        `Êtes-vous sûr de vouloir supprimer l'utilisateur "${userName}" ? Cette action est irréversible.`,
-      )
-    ) {
-      return;
-    }
-
-    try {
-      const response = await fetch(`/api/users/${userId}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        const data = await response.json();
-        alert(data.error || "Erreur lors de la suppression");
-        return;
-      }
-
-      // Recharger la liste
-      await loadUsers();
-    } catch {
-      alert("Erreur lors de la suppression de l'utilisateur");
-    }
-  };
-
   if (isLoading) {
     return (
       <div className="fr-container fr-my-4w">
@@ -252,7 +225,9 @@ export default function Users() {
                 <th
                   scope="col"
                   style={{ textAlign: "right" }}
-                ></th>
+                >
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -277,37 +252,18 @@ export default function Users() {
                     {new Date(user.createdAt).toLocaleDateString("fr-FR")}
                   </td>
                   <td style={{ textAlign: "right" }}>
-                    <div
-                      style={{
-                        display: "flex",
-                        gap: "0.25rem",
-                        justifyContent: "flex-end",
-                      }}
-                    >
-                      <button
-                        className={`fr-btn fr-btn--sm fr-btn--tertiary-no-outline ${user.isAdmin ? "fr-icon-subtract-line" : "fr-icon-shield-line"}`}
-                        type="button"
-                        title={
-                          user.isAdmin
-                            ? "Retirer les droits admin"
-                            : "Passer administrateur"
-                        }
-                        onClick={() =>
-                          handleToggleAdmin(user.id, user.isAdmin)
-                        }
-                      />
-                      <button
-                        className="fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-delete-line"
-                        type="button"
-                        title="Supprimer"
-                        onClick={() =>
-                          handleDelete(
-                            user.id,
-                            `${user.givenName} ${user.usualName}`,
-                          )
-                        }
-                      />
-                    </div>
+                    <button
+                      className={`fr-btn fr-btn--sm fr-btn--tertiary-no-outline ${user.isAdmin ? "fr-icon-subtract-line" : "fr-icon-shield-line"}`}
+                      type="button"
+                      title={
+                        user.isAdmin
+                          ? "Retirer les droits admin"
+                          : "Passer administrateur"
+                      }
+                      onClick={() =>
+                        handleToggleAdmin(user.id, user.isAdmin)
+                      }
+                    />
                   </td>
                 </tr>
               ))}

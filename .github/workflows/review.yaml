@@ -52,6 +52,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             AUTH_URL=https://${{ steps.env.outputs.subdomain }}.ovh.fabrique.social.gouv.fr
+            NEXT_PUBLIC_ENABLE_DEV_LOGIN=true
           registry: "${{ vars.REGISTRY_URL }}"
           registry-username: "${{ secrets.REGISTRY_USERNAME }}"
           registry-password: "${{ secrets.REGISTRY_PASSWORD }}"

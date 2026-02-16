@@ -5,4 +5,3 @@ metadata:
 data:
   ALLOWED_EMAIL_DOMAINS: "sg.social.gouv.fr,beta.gouv.fr,yopmail.com,test.fr"
   ENABLE_DEV_LOGIN: "true"
-  NEXT_PUBLIC_ENABLE_DEV_LOGIN: "true"

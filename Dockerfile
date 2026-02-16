@@ -32,6 +32,10 @@ ENV NODE_ENV=production
 ARG AUTH_URL
 ENV AUTH_URL=$AUTH_URL
 
+# Activer les boutons de login dev (review/preprod uniquement)
+ARG NEXT_PUBLIC_ENABLE_DEV_LOGIN
+ENV NEXT_PUBLIC_ENABLE_DEV_LOGIN=$NEXT_PUBLIC_ENABLE_DEV_LOGIN
+
 # Build de l'application
 RUN pnpm build
 

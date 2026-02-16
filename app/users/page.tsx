@@ -211,7 +211,7 @@ export default function Users() {
                 </th>
                 <th scope="col">
                   <div className="fr-cell--sort">
-                    Admin
+                    Rôle
                     <button
                       type="button"
                       className={sortButtonClass("role")}
@@ -250,11 +250,13 @@ export default function Users() {
                         htmlFor={`toggle-admin-${user.id}`}
                       >
                         {user.isAdmin ? (
-                          <span className="fr-badge fr-badge--info">
+                          <span className="fr-badge fr-badge--yellow-tournesol fr-badge--no-icon">
+                            <span className="fr-icon-admin-fill fr-icon--sm" aria-hidden="true" style={{ marginRight: "0.25rem" }} />
                             Administrateur
                           </span>
                         ) : (
-                          <span className="fr-badge fr-badge--new">
+                          <span className="fr-badge fr-badge--no-icon">
+                            <span className="fr-icon-user-line fr-icon--sm" aria-hidden="true" style={{ marginRight: "0.25rem" }} />
                             Utilisateur
                           </span>
                         )}

@@ -335,7 +335,7 @@ export default function FormulaireDA() {
     <main id="content" className="fr-main" role="main">
       <div className="fr-container">
         <div className="fr-grid-row fr-grid-row--gutters fr-grid-row--center">
-          <div className="fr-col-12 fr-col-md-4">
+          <div className="fr-col-12 fr-col-md-3">
             <nav
               className="fr-sidemenu fr-sidemenu--sticky-full-height"
               role="navigation"
@@ -344,14 +344,29 @@ export default function FormulaireDA() {
               <div className="fr-sidemenu__inner">
                 <ul className="fr-btns-group fr-mt-2w">
                   <li>
-                    <Link href="/" className="fr-btn">
+                    <Link href="/" className="fr-btn fr-btn--sm">
                       <span
                         className="fr-icon-arrow-left-line"
                         aria-hidden="true"
                       ></span>
-                      Retour à la liste des DA
+                      Retour
                     </Link>
                   </li>
+                  {formId && (
+                    <li>
+                      <Link
+                        href={`/api/export-pdf/${formId}`}
+                        target="_blank"
+                        className="fr-btn fr-btn--sm fr-btn--tertiary"
+                      >
+                        <span
+                          className="fr-icon-download-line"
+                          aria-hidden="true"
+                        ></span>
+                        PDF
+                      </Link>
+                    </li>
+                  )}
                 </ul>
                 <button
                   aria-expanded="false"
@@ -359,7 +374,7 @@ export default function FormulaireDA() {
                   type="button"
                   className="fr-sidemenu__btn"
                 >
-                  Dans cette rubrique
+                  Sommaire
                 </button>
                 <div className="fr-collapse" id="sidemenu-collapse-1">
                   <div
@@ -383,7 +398,7 @@ export default function FormulaireDA() {
               </div>
             </nav>
           </div>
-          <div className="content-editorial fr-col-12 fr-col-md-8 fr-mt-2w">
+          <div className="content-editorial fr-col-12 fr-col-md-9 fr-mt-2w">
             <h1 className="fr-h1">
               {formId
                 ? `${daData.cadre1_ProjetActeurs.nomDuProjet || "Document d'Architecture"}`

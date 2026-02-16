@@ -220,7 +220,7 @@ export default function DATable({
                   className="fr-cell--sort"
                   style={{ justifyContent: "flex-end" }}
                 >
-                  Date
+                  Dernière mise à jour
                   <button
                     type="button"
                     className={sortButtonClass("date")}
@@ -345,7 +345,9 @@ function ExpandableRow({
         </td>
         <td>{formatAuthorName(da)}</td>
         <td style={{ textAlign: "right" }}>
-          {new Date(da.updatedAt).toLocaleDateString("fr-FR")}
+          <Link href={`/da/${da.id}/logs`}>
+            {new Date(da.updatedAt).toLocaleString("fr-FR")}
+          </Link>
         </td>
         <td style={{ textAlign: "right" }}>
           <div
@@ -367,11 +369,6 @@ function ExpandableRow({
               target="_blank"
               className="fr-btn fr-btn--sm fr-btn--secondary fr-icon-download-line"
               title="Télécharger en PDF"
-            />
-            <Link
-              href={`/da/${da.id}/logs`}
-              className="fr-btn fr-btn--sm fr-btn--tertiary fr-icon-time-line"
-              title="Historique"
             />
             {mode === "admin" && (
               <>

@@ -2,7 +2,9 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { findOrCreateUser } from "@/lib/db/queries/users";
 
-const isDev = process.env.NODE_ENV === "development";
+const isDev =
+  process.env.NODE_ENV === "development" ||
+  process.env.ENABLE_DEV_LOGIN === "true";
 
 const allowedEmailDomains = (process.env.ALLOWED_EMAIL_DOMAINS || "")
   .split(",")

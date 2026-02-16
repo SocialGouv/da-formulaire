@@ -13,7 +13,7 @@ export async function findOrCreateUser(
   usualName: string | undefined,
   forceAdmin?: boolean,
 ) {
-  // Chercher l'utilisateur existant
+  // Chercher l'utilisateur existant par proconnectSub
   const existing = await db
     .select()
     .from(users)
@@ -32,6 +32,28 @@ export async function findOrCreateUser(
         updatedAt: new Date(),
       })
       .where(eq(users.proconnectSub, proconnectSub))
+      .returning();
+    return updated;
+  }
+
+  // Chercher un user seed existant par email (créé au démarrage avec un proconnectSub placeholder)
+  const seeded = await db
+    .select()
+    .from(users)
+    .where(eq(users.email, email))
+    .limit(1);
+
+  if (seeded.length > 0) {
+    // Rattacher le vrai proconnectSub au user seed
+    const [updated] = await db
+      .update(users)
+      .set({
+        proconnectSub,
+        givenName,
+        usualName,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, seeded[0].id))
       .returning();
     return updated;
   }

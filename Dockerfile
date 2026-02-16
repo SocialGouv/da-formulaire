@@ -58,6 +58,9 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+# Copier les fichiers de migration Drizzle (pour migration automatique au démarrage)
+COPY --from=builder --chown=nextjs:nodejs /app/drizzle ./drizzle
+
 # Créer le répertoire pour les DA documents avec les bonnes permissions
 RUN mkdir -p /app/public/da && \
     chown -R nextjs:nodejs /app/public/da

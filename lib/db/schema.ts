@@ -17,7 +17,7 @@ import type { DAData } from "@/types/da.types";
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),
   proconnectSub: text("proconnect_sub").notNull().unique(),
-  email: text("email").notNull(),
+  email: text("email").notNull().unique(),
   givenName: text("given_name"),
   usualName: text("usual_name"),
   isAdmin: boolean("is_admin").notNull().default(false),

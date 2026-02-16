@@ -25,6 +25,7 @@ jobs:
         uses: SocialGouv/token-bureau@main
         with:
           token-bureau-url: https://token-bureau.fabrique.social.gouv.fr
+          audience: socialgouv
 
       - uses: actions/checkout@v5
         with:

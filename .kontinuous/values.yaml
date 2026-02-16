@@ -24,6 +24,12 @@ app:
         configMapKeyRef:
           name: da-manager
           key: ALLOWED_EMAIL_DOMAINS
+    - name: ENABLE_DEV_LOGIN
+      valueFrom:
+        configMapKeyRef:
+          name: da-manager
+          key: ENABLE_DEV_LOGIN
+          optional: true
     - name: DATABASE_URL
       valueFrom:
         secretKeyRef:

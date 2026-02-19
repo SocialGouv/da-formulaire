@@ -9,6 +9,14 @@ import "./dsfr-extensions.css";
 export const metadata: Metadata = {
   title: "Formulaire DA - Document d'Architecture",
   description: "Formulaire pour créer des Documents d'Architecture (DA)",
+  icons: {
+    icon: [
+      { url: "/dsfr/favicon/favicon.svg", type: "image/svg+xml" },
+      { url: "/dsfr/favicon/favicon.ico", type: "image/x-icon", sizes: "32x32" },
+    ],
+    apple: "/dsfr/favicon/apple-touch-icon.png",
+  },
+  manifest: "/dsfr/favicon/manifest.webmanifest",
 };
 
 export default function RootLayout({

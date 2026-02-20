@@ -202,7 +202,7 @@ La section `code` est la plus utile : elle contient la structure HTML, les class
 
 ## GitHub Actions — Mode CI (headless)
 
-Quand Claude Code tourne dans GitHub Actions (déclenché par un label `claude` sur un ticket) :
+Quand Claude Code tourne dans GitHub Actions :
 
 - **Pas de navigateur** : les outils Chrome MCP ne sont pas disponibles. Sauter l'étape "vérifier dans Chrome" du workflow DSFR. Le MCP DSFR (`dsfr-mcp`) est disponible en CI.
 - **Build** : Exécuter `pnpm build` pour valider que le code compile.
@@ -214,3 +214,24 @@ Quand Claude Code tourne dans GitHub Actions (déclenché par un label `claude` 
 - **node_modules** : Ne JAMAIS lire les fichiers dans `node_modules/`. Pour la documentation DSFR, utiliser exclusivement le MCP DSFR (`mcp__dsfr__*`).
 - **Créer des fichiers** : Utiliser l'outil `Write` (qui crée les dossiers parents automatiquement). Ne PAS utiliser `mkdir` sauf nécessité absolue.
 - **Commandes Bash refusées** : Si une commande bash est refusée par les permissions, ne PAS insister ni essayer de contourner. Utiliser un autre outil (Write, Edit, Read, Glob, Grep) ou signaler le blocage dans un commentaire.
+
+### Vérification de l'environnement review
+
+Quand l'environnement review est déployé, un commentaire `@claude` est automatiquement posté sur la PR avec l'URL de review, des critères d'acceptance et la méthodologie de test.
+
+**Ce que Claude doit faire :**
+
+1. Suivre la méthodologie décrite dans le commentaire (étapes 1 à 4)
+2. Vérifier le health endpoint, la page d'accueil, et les pages authentifiées
+3. Si un problème est détecté : corriger le code et pousser les modifications
+4. Si tout est OK : poster un commentaire confirmant la réussite
+
+**Dev login via curl :**
+
+L'env review a `ENABLE_DEV_LOGIN=true`. Pour s'authentifier :
+
+1. `curl -sL <url>/api/auth/csrf` → extraire `csrfToken` du JSON
+2. `curl -sL -c cookies.txt -X POST <url>/api/auth/callback/dev-login -d 'csrfToken=...&email=admin@test.fr&name=Admin+Dev'`
+3. Utiliser `-b cookies.txt` pour les requêtes suivantes
+
+La boucle déploiement → vérification → correction est limitée à **3 itérations**. Au-delà, le reviewer humain prend le relais.

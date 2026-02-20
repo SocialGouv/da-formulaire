@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a French government "Document d'Architecture" (DA) form builder - a Next.js application that allows users to create, edit, and export structured architecture documents. The application uses the DSFR (Système de Design de l'État français) design system and provides a multi-step form interface for capturing comprehensive architecture documentation.
+This is a French government "Document d'Architecture" (DA) form builder - a **desktop-only** Next.js application that allows users to create, edit, and export structured architecture documents. The application uses the DSFR (Système de Design de l'État français) design system and provides a multi-step form interface for capturing comprehensive architecture documentation. **There is no mobile version** — this is an internal tool used on desktop browsers only.
 
 ## Key Commands
 
@@ -204,13 +204,12 @@ La section `code` est la plus utile : elle contient la structure HTML, les class
 
 Quand Claude Code tourne dans GitHub Actions (déclenché par un label `claude` sur un ticket) :
 
-- **Pas de navigateur** : les outils Chrome MCP et DSFR MCP ne sont pas disponibles. Sauter l'étape "vérifier dans Chrome" du workflow DSFR.
+- **Pas de navigateur** : les outils Chrome MCP ne sont pas disponibles. Sauter l'étape "vérifier dans Chrome" du workflow DSFR. Le MCP DSFR (`dsfr-mcp`) est disponible en CI.
 - **Build** : Exécuter `pnpm build` pour valider que le code compile.
 - **Lint** : Exécuter `pnpm lint` pour vérifier les erreurs de style.
 - **Tests** : Ne PAS lancer `pnpm test:ci` (pas de PostgreSQL dans ce workflow). Les tests tournent automatiquement dans le pipeline CI séparé.
 - **Review env** : La branche `feat/claude-*` déclenche automatiquement un déploiement review. Le reviewer humain vérifie visuellement.
 - **Itération** : Si un humain commente `@claude` sur la PR avec du feedback, lire attentivement et itérer.
 - **Commits** : Utiliser les conventional commits (`feat:`, `fix:`, `chore:`). Référencer le numéro d'issue (`#42`).
-- **PR** : Après avoir poussé les changements, créer la PR avec `gh pr create --title "..." --body "... Closes #<numéro> ..."`. Toujours inclure `Closes #<numéro>` dans le body pour lier automatiquement la PR à l'issue et fermer l'issue au merge.
 - **Créer des fichiers** : Utiliser l'outil `Write` (qui crée les dossiers parents automatiquement). Ne PAS utiliser `mkdir` sauf nécessité absolue.
 - **Commandes Bash refusées** : Si une commande bash est refusée par les permissions, ne PAS insister ni essayer de contourner. Utiliser un autre outil (Write, Edit, Read, Glob, Grep) ou signaler le blocage dans un commentaire.

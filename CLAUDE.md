@@ -212,3 +212,5 @@ Quand Claude Code tourne dans GitHub Actions (déclenché par un label `claude` 
 - **Itération** : Si un humain commente `@claude` sur la PR avec du feedback, lire attentivement et itérer.
 - **Commits** : Utiliser les conventional commits (`feat:`, `fix:`, `chore:`). Référencer le numéro d'issue (`#42`).
 - **PR** : Toujours inclure `Closes #<numéro>` dans la description de la PR pour lier automatiquement la PR à l'issue et fermer l'issue au merge.
+- **Créer des fichiers** : Utiliser l'outil `Write` (qui crée les dossiers parents automatiquement). Ne PAS utiliser `mkdir` sauf nécessité absolue.
+- **Commandes Bash refusées** : Si une commande bash est refusée par les permissions, ne PAS insister ni essayer de contourner. Utiliser un autre outil (Write, Edit, Read, Glob, Grep) ou signaler le blocage dans un commentaire.

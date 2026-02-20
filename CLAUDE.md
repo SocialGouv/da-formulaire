@@ -199,3 +199,16 @@ On utilise l'extension **"Claude in Chrome"** (MCP SDK) pour tester et vérifier
 La section `code` est la plus utile : elle contient la structure HTML, les classes CSS, et les variantes.
 
 **Note :** Le site systeme-de-design.gouv.fr bloque WebFetch/curl (Cloudflare 403). Le MCP server fournit la même doc en local. Pour les pages non couvertes par le MCP (exemples interactifs, Storybook), utiliser Chrome MCP.
+
+## GitHub Actions — Mode CI (headless)
+
+Quand Claude Code tourne dans GitHub Actions (déclenché par un label `claude` sur un ticket) :
+
+- **Pas de navigateur** : les outils Chrome MCP et DSFR MCP ne sont pas disponibles. Sauter l'étape "vérifier dans Chrome" du workflow DSFR.
+- **Build** : Exécuter `pnpm build` pour valider que le code compile.
+- **Lint** : Exécuter `pnpm lint` pour vérifier les erreurs de style.
+- **Tests** : Ne PAS lancer `pnpm test:ci` (pas de PostgreSQL dans ce workflow). Les tests tournent automatiquement dans le pipeline CI séparé.
+- **Review env** : La branche `feat/claude-*` déclenche automatiquement un déploiement review. Le reviewer humain vérifie visuellement.
+- **Itération** : Si un humain commente `@claude` sur la PR avec du feedback, lire attentivement et itérer.
+- **Commits** : Utiliser les conventional commits (`feat:`, `fix:`, `chore:`). Référencer le numéro d'issue (`#42`).
+- **PR** : Toujours inclure `Closes #<numéro>` dans la description de la PR pour lier automatiquement la PR à l'issue et fermer l'issue au merge.

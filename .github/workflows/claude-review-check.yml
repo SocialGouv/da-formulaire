@@ -17,20 +17,24 @@ jobs:
     permissions:
       pull-requests: write
       issues: write
+      id-token: write
     steps:
       - uses: actions/checkout@v5
         with:
           ref: ${{ github.event.deployment.ref }}
 
-      - name: Find associated PR
+      - name: Find associated PR and issue
         id: pr
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          PR_NUMBER=$(gh pr list \
+          PR_JSON=$(gh pr list \
             --head "${{ github.event.deployment.ref }}" \
-            --json number --jq '.[0].number')
+            --json number,body --jq '.[0]')
+          PR_NUMBER=$(echo "$PR_JSON" | jq -r '.number')
+          ISSUE_NUMBER=$(echo "$PR_JSON" | jq -r '.body' | grep -oP '(?i)closes?\s+#\K\d+' | head -1)
           echo "number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
+          echo "issue=$ISSUE_NUMBER" >> "$GITHUB_OUTPUT"
 
       - name: Check iteration count (max 3)
         if: steps.pr.outputs.number != ''
@@ -73,47 +77,41 @@ jobs:
           done
           echo "ready=false" >> "$GITHUB_OUTPUT"
 
+      - name: Get token
+        if: >
+          steps.pr.outputs.number != '' &&
+          steps.count.outputs.skip != 'true' &&
+          steps.health.outputs.ready == 'true'
+        id: app-token
+        uses: SocialGouv/token-bureau@main
+        with:
+          token-bureau-url: https://token-bureau.fabrique.social.gouv.fr
+          audience: socialgouv
+
       - name: Post @claude comment
         if: >
           steps.pr.outputs.number != '' &&
           steps.count.outputs.skip != 'true' &&
           steps.health.outputs.ready == 'true'
         env:
-          GH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
           REVIEW_URL: ${{ steps.health.outputs.review_url }}
           PR_NUMBER: ${{ steps.pr.outputs.number }}
+          ISSUE_NUMBER: ${{ steps.pr.outputs.issue }}
           ITERATION: ${{ steps.count.outputs.count }}
         run: |
           ITER=$((ITERATION + 1))
-          gh pr comment "$PR_NUMBER" --body "@claude L'environnement review est déployé (vérification $ITER/3) : $REVIEW_URL
+          ISSUE_REF=""
+          if [ -n "$ISSUE_NUMBER" ]; then
+            ISSUE_REF="
+          - [ ] Changements de l'issue #$ISSUE_NUMBER vérifiés"
+          fi
+          BODY="@claude L'environnement review est déployé (vérification $ITER/3) : $REVIEW_URL
 
-          ## Critères d'acceptance
+          ## Vérification review
 
-          1. **Health check** : \`GET $REVIEW_URL/api/healthz\` retourne HTTP 200
-          2. **Page d'accueil (sans auth)** : \`GET $REVIEW_URL/\` retourne HTTP 200, contient les classes DSFR (\`fr-header\`, \`fr-footer\`)
-          3. **Pages authentifiées** : après dev login, les pages \`/view/\` et \`/da/\` répondent sans erreur 500
+          - [ ] Health check (\`/api/healthz\` → 200)
+          - [ ] Dev login fonctionnel$ISSUE_REF
 
-          ## Méthodologie de test
-
-          **Étape 1 — Vérifications sans auth :**
-          \`\`\`bash
-          curl -sL -o /dev/null -w '%{http_code}' $REVIEW_URL/api/healthz
-          curl -sL $REVIEW_URL/ | head -100
-          \`\`\`
-
-          **Étape 2 — Dev login via curl :**
-          \`\`\`bash
-          CSRF=\$(curl -sL $REVIEW_URL/api/auth/csrf | jq -r '.csrfToken')
-          curl -sL -c cookies.txt -X POST $REVIEW_URL/api/auth/callback/dev-login \\
-            -d \"csrfToken=\$CSRF&email=admin@test.fr&name=Admin+Dev\"
-          \`\`\`
-
-          **Étape 3 — Vérifications avec auth :**
-          \`\`\`bash
-          curl -sL -b cookies.txt $REVIEW_URL/ | head -100
-          curl -sL -b cookies.txt -o /dev/null -w '%{http_code}' $REVIEW_URL/view/1
-          \`\`\`
-
-          **Étape 4 — Résultat :**
-          - Si tout est OK : poste un commentaire confirmant que la vérification a réussi
-          - Si un problème est détecté : corrige le code source et pousse les modifications"
+          Vérifie l'environnement et coche les critères en éditant ce commentaire. Pour le dernier point, réfère-toi à l'issue source et au diff de la PR pour déterminer quoi tester. Si un problème est détecté, corrige et pousse."
+          gh pr comment "$PR_NUMBER" --body "$BODY"

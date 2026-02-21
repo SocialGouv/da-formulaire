@@ -204,7 +204,8 @@ La section `code` est la plus utile : elle contient la structure HTML, les class
 
 Quand Claude Code tourne dans GitHub Actions :
 
-- **Pas de navigateur** : les outils Chrome MCP ne sont pas disponibles. Sauter l'étape "vérifier dans Chrome" du workflow DSFR. Le MCP DSFR (`dsfr-mcp`) est disponible en CI.
+- **Pas de Chrome MCP** : les outils Chrome MCP ne sont pas disponibles. Sauter l'étape "vérifier dans Chrome" du workflow DSFR. Le MCP DSFR (`dsfr-mcp`) est disponible en CI.
+- **Playwright** : Chromium headless est installé dans le workflow `claude-pr`. Utiliser Playwright pour vérifier l'environnement review (voir section dédiée ci-dessous).
 - **Build** : Exécuter `pnpm build` pour valider que le code compile.
 - **Lint** : Exécuter `pnpm lint` pour vérifier les erreurs de style.
 - **Tests** : Ne PAS lancer `pnpm test:ci` (pas de PostgreSQL dans ce workflow). Les tests tournent automatiquement dans le pipeline CI séparé.
@@ -217,21 +218,68 @@ Quand Claude Code tourne dans GitHub Actions :
 
 ### Vérification de l'environnement review
 
-Quand l'environnement review est déployé, un commentaire `@claude` est automatiquement posté sur la PR avec l'URL de review, des critères d'acceptance et la méthodologie de test.
+Quand l'environnement review est déployé, un commentaire `@claude Review :` est automatiquement posté sur la PR avec l'URL de review et l'issue associée. Claude doit vérifier que l'app fonctionne et que les changements de l'issue sont effectifs.
+
+**Approche :** Utiliser Playwright (Chromium headless, pré-installé dans le workflow) pour naviguer dans l'app, pas juste `curl`. Écrire un script Node ad-hoc adapté à l'issue, l'exécuter avec `node script.js`.
 
 **Ce que Claude doit faire :**
 
-1. Suivre la méthodologie décrite dans le commentaire (étapes 1 à 4)
-2. Vérifier le health endpoint, la page d'accueil, et les pages authentifiées
-3. Si un problème est détecté : corriger le code et pousser les modifications
-4. Si tout est OK : poster un commentaire confirmant la réussite
+1. Lire l'issue source et le diff de la PR pour comprendre quoi vérifier
+2. Écrire un script Playwright qui teste les changements spécifiques
+3. Exécuter le script et analyser les résultats
+4. Si un problème est détecté : corriger le code et pousser
+5. Si tout est OK : marquer la PR ready for review (`gh pr ready`)
 
-**Dev login via curl :**
+**Pattern Playwright pour la vérification review :**
 
-L'env review a `ENABLE_DEV_LOGIN=true`. Pour s'authentifier :
+```javascript
+const { chromium } = require('playwright');
 
-1. `curl -sL <url>/api/auth/csrf` → extraire `csrfToken` du JSON
-2. `curl -sL -c cookies.txt -X POST <url>/api/auth/callback/dev-login -d 'csrfToken=...&email=admin@test.fr&name=Admin+Dev'`
-3. Utiliser `-b cookies.txt` pour les requêtes suivantes
+(async () => {
+  const REVIEW_URL = process.env.REVIEW_URL || 'https://...';
+  const browser = await chromium.launch();
+  const context = await browser.newContext();
+  const page = await context.newPage();
+
+  // Capturer les erreurs JS
+  const errors = [];
+  page.on('pageerror', err => errors.push(err.message));
+
+  // 1. Health check
+  const health = await page.goto(`${REVIEW_URL}/api/healthz`);
+  console.log('Health:', health.status());
+
+  // 2. Dev login
+  const csrf = await (await page.goto(`${REVIEW_URL}/api/auth/csrf`)).json();
+  await page.goto(`${REVIEW_URL}/api/auth/callback/dev-login`, {
+    method: 'POST',
+    // Note: utiliser page.request pour les POST
+  });
+  // Alternative plus simple : passer par le formulaire de login
+  await page.goto(`${REVIEW_URL}/api/auth/signin`);
+  await page.fill('input[name="email"]', 'admin@test.fr');
+  await page.fill('input[name="name"]', 'Admin Dev');
+  await page.click('button[type="submit"]');
+
+  // 3. Vérifications avec auth (adapter selon l'issue)
+  await page.goto(`${REVIEW_URL}/`);
+  console.log('Title:', await page.title());
+  await page.screenshot({ path: 'homepage.png', fullPage: true });
+
+  // 4. Résultat
+  if (errors.length > 0) {
+    console.error('JS errors detected:', errors);
+    process.exit(1);
+  }
+  console.log('All checks passed');
+  await browser.close();
+})();
+```
+
+**Points importants :**
+- Adapter le script à chaque issue (ne pas faire un test générique)
+- Playwright auto-wait : pas besoin de `waitForSelector`, les actions attendent automatiquement
+- Prendre des screenshots en cas d'échec pour le diagnostic
+- L'env review a `ENABLE_DEV_LOGIN=true`
 
 La boucle déploiement → vérification → correction est limitée à **3 itérations**. Au-delà, le reviewer humain prend le relais.

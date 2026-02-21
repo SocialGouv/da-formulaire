@@ -104,7 +104,7 @@ jobs:
         run: |
           ALREADY=$(gh api \
             "repos/${{ github.repository }}/issues/$PR_NUMBER/comments" \
-            --jq "[.[] | select(.body | contains(\"$SHA\"))] | length")
+            --jq "[.[] | select(.body | contains(\"@claude Review :\")) | select(.body | contains(\"$SHA\"))] | length")
           if [ "$ALREADY" -gt 0 ]; then
             echo "skip=true" >> "$GITHUB_OUTPUT"
             echo "Review already posted for commit $SHA. Skipping."

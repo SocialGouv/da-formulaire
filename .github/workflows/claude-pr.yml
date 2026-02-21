@@ -51,6 +51,7 @@ jobs:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           branch_prefix: "feat/claude-"
           show_full_output: true
+          allowed_bots: "tokenbureau[bot]"
           claude_args: >-
             --max-turns 100
             --mcp-config '{"mcpServers":{"dsfr":{"command":"npx","args":["-y","dsfr-mcp"]}}}'
